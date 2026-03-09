@@ -1,0 +1,140 @@
+.innovation {
+  background: var(--near-black);
+  position: relative;
+  overflow: hidden;
+}
+
+.innovation-orb {
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(218, 18, 18, 0.08) 0%,
+    rgba(10, 61, 122, 0.05) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: orbPulse 8s ease-in-out infinite;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.6; }
+  50% { transform: translateY(-50%) scale(1.15); opacity: 1; }
+}
+
+.innovation-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.innovation-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 80px;
+}
+
+.innovation-blurb {
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 400px;
+}
+
+/* Pillar Cards */
+.innovation-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.pillar-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 56px 44px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.pillar-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-4px);
+}
+
+.pillar-glass {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.pillar-accent-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-red), var(--mid-blue));
+  transition: width 0.6s var(--ease-out-expo);
+}
+
+.pillar-card:hover .pillar-accent-line {
+  width: 100%;
+}
+
+.pillar-icon {
+  font-size: 36px;
+  margin-bottom: 28px;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.pillar-card:hover .pillar-icon {
+  opacity: 1;
+}
+
+.pillar-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.pillar-text {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.85;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .innovation-header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .innovation-pillars {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .innovation-pillars {
+    grid-template-columns: 1fr;
+  }
+  .pillar-card {
+    padding: 40px 32px;
+  }
+}
