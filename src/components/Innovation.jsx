@@ -2,78 +2,106 @@ import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import './Innovation.css';
 
-const pillars = [
-  {
-    icon: '⚡',
-    title: 'Engineering Precision',
-    text: 'Every installation, gate system, and manufactured component is engineered to exact tolerances, built to last, and backed by a decade of technical mastery.',
-  },
-  {
-    icon: '☀️',
-    title: 'Sustainable Energy',
-    text: "We are leading Sri Lanka's energy transition — from rooftop solar to industrial storage systems — helping businesses and homes reduce costs and carbon.",
-  },
-  {
-    icon: '🚗',
-    title: 'Automotive Innovation',
-    text: 'Custom vehicle engineering at a level rarely seen locally — combining craftsmanship, performance, and specialized commercial fleet solutions.',
-  },
-];
+import imgEngineering from '../assets/innovation_engineering.png';
+import imgSolar from '../assets/innovation_solar.png';
+import imgAutomotive from '../assets/innovation_automotive.png';
 
 export default function Innovation() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
+
+  const fade = (delay = 0) => ({
+    initial: { opacity: 0, y: 24 },
+    animate: inView ? { opacity: 1, y: 0 } : {},
+    transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
+  });
 
   return (
     <section id="innovation" className="innovation" ref={ref}>
-      <div className="innovation-orb" />
       <div className="innovation-inner section-padding">
-        <div className="innovation-header">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="section-label">
-              <span className="label-line" style={{ background: 'var(--accent-red)' }} />
-              <span className="label-text" style={{ color: 'var(--accent-red)' }}>What Drives Us</span>
-            </div>
-            <h2 className="display-lg" style={{ color: 'var(--white)' }}>
-              Innovation<br />
-              <span style={{ fontStyle: 'italic', opacity: 0.3 }}>at our core.</span>
-            </h2>
-          </motion.div>
-          <motion.p
-            className="innovation-blurb body-lg"
-            initial={{ opacity: 0, y: 40 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Every company in the Elcardo group is built around a core
-            competency — deep technical expertise, continuous R&D, and an
-            uncompromising standard of quality.
-          </motion.p>
-        </div>
+        {/* Header */}
+        <motion.div className="innovation-header" {...fade(0)}>
+          <div className="section-label">
+            <span className="label-line" style={{ background: 'var(--accent-red)' }} />
+            <span className="label-text" style={{ color: 'var(--accent-red)' }}>What Drives Us</span>
+          </div>
+          <h2 className="display-lg innovation-title">
+            Innovation<br />
+            <span className="innovation-title-italic">at our core.</span>
+          </h2>
+          <p className="innovation-sub">
+            A few ways <strong>Elcardo Group</strong> delivers excellence.
+          </p>
+        </motion.div>
 
-        <div className="innovation-pillars">
-          {pillars.map((pillar, i) => (
-            <motion.div
-              className="pillar-card"
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.8,
-                delay: 0.3 + i * 0.12,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <div className="pillar-accent-line" />
-              <div className="pillar-icon">{pillar.icon}</div>
-              <h3 className="pillar-title">{pillar.title}</h3>
-              <p className="pillar-text">{pillar.text}</p>
-              <div className="pillar-glass" />
-            </motion.div>
-          ))}
+        {/* ===== BENTO GRID ===== */}
+        <div className="bento">
+
+          {/* ---- Card 1: Engineering image (tall-left) ---- */}
+          <motion.div className="bento__card bento__card--a" {...fade(0.1)}>
+            <p className="bento__label">Engineering Precision</p>
+            <p className="bento__caption">unibody design</p>
+            <div className="bento__img-wrap bento__img-wrap--bottom">
+              <img src={imgEngineering} alt="Engineering" />
+            </div>
+          </motion.div>
+
+          {/* ---- Card 2: Stat – 10+ years ---- */}
+          <motion.div className="bento__card bento__card--b" {...fade(0.18)}>
+            <p className="bento__pre">Over</p>
+            <p className="bento__big">
+              10<sup>+</sup>
+            </p>
+            <p className="bento__unit">years</p>
+            <p className="bento__footnote">
+              of technical mastery across<br />engineering & manufacturing
+            </p>
+          </motion.div>
+
+          {/* ---- Card 3: Solar image (top-right) ---- */}
+          <motion.div className="bento__card bento__card--c" {...fade(0.24)}>
+            <p className="bento__label">Sustainable Energy</p>
+            <p className="bento__caption">solar & storage systems</p>
+            <div className="bento__img-wrap bento__img-wrap--fill">
+              <img src={imgSolar} alt="Solar Energy" />
+            </div>
+          </motion.div>
+
+          {/* ---- Card 4: Stat – 65% ---- */}
+          <motion.div className="bento__card bento__card--d" {...fade(0.3)}>
+            <p className="bento__pre">Up to</p>
+            <p className="bento__big">
+              65<span className="bento__pct">%</span>
+            </p>
+            <p className="bento__unit">cost reduction</p>
+            <p className="bento__footnote">
+              with our solar energy<br />solutions for businesses
+            </p>
+          </motion.div>
+
+          {/* ---- Card 5: Automotive image (center-bottom) ---- */}
+          <motion.div className="bento__card bento__card--e" {...fade(0.36)}>
+            <p className="bento__label">Automotive Innovation</p>
+            <p className="bento__caption">custom fleet solutions</p>
+            <div className="bento__img-wrap bento__img-wrap--fill">
+              <img src={imgAutomotive} alt="Automotive" />
+            </div>
+          </motion.div>
+
+          {/* ---- Card 6: Feature – Full Stack ---- */}
+          <motion.div className="bento__card bento__card--f" {...fade(0.42)}>
+            <div className="bento__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+            <p className="bento__feat-title">Full-Stack<br />Industrial Solutions</p>
+            <p className="bento__feat-desc">
+              From gates to solar to vehicles —<br />end-to-end under one roof.
+            </p>
+          </motion.div>
+
         </div>
       </div>
     </section>
