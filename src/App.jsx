@@ -1,3 +1,5 @@
+import { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
@@ -11,7 +13,9 @@ import Clients from './components/Clients';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 
-function App() {
+const RollerGatesPage = lazy(() => import('./pages/RollerGatesPage'));
+
+function HomePage() {
   return (
     <SmoothScroll>
       <CustomCursor />
@@ -28,6 +32,32 @@ function App() {
       </main>
       <Footer />
     </SmoothScroll>
+  );
+}
+
+function App() {
+  return (
+    <Suspense fallback={
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#000',
+        color: '#fff',
+        fontFamily: 'var(--font-body)',
+        fontSize: '14px',
+        letterSpacing: '3px',
+        textTransform: 'uppercase',
+      }}>
+        Loading...
+      </div>
+    }>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/roller-gates" element={<RollerGatesPage />} />
+      </Routes>
+    </Suspense>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import imgRollerGates from '../assets/company_roller_gates.png';
 import imgSolar from '../assets/company_solar.png';
 import imgBattery from '../assets/company_battery.png';
@@ -15,6 +16,7 @@ const companies = [
     desc: 'Industrial-grade automated gate systems, roller shutters, and entry automation for commercial and industrial facilities across Sri Lanka.',
     tag: 'Engineering',
     img: imgRollerGates,
+    link: '/roller-gates',
   },
   {
     num: '02',
@@ -95,9 +97,13 @@ export default function Companies() {
       </div>
 
       <div className="companies-list">
-        {companies.map((company, i) => (
-          <motion.a
-            href="#"
+        {companies.map((company, i) => {
+          const RowTag = company.link ? Link : 'a';
+          const rowProps = company.link
+            ? { to: company.link }
+            : { href: '#' };
+          return (
+          <motion.div
             className={`company-row ${hoveredIdx === i ? 'is-hovered' : ''}`}
             key={company.num}
             data-cursor="expand"
@@ -111,6 +117,7 @@ export default function Companies() {
               ease: [0.16, 1, 0.3, 1],
             }}
           >
+            <RowTag {...rowProps} style={{ display: 'contents', color: 'inherit', textDecoration: 'none' }}>
             <span className="company-num">{company.num}</span>
             <div className="company-name">{company.name}</div>
             <div className="company-img-cell">
@@ -128,8 +135,10 @@ export default function Companies() {
               </div>
             </div>
             <div className="company-hover-bg" />
-          </motion.a>
-        ))}
+            </RowTag>
+          </motion.div>
+          );
+        })}
       </div>
     </section>
   );
