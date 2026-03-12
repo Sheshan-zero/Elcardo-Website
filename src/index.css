@@ -102,7 +102,7 @@ button {
    ============================================================ */
 .display-xl {
   font-family: var(--font-display);
-  font-size: clamp(56px, 8vw, 120px);
+  font-size: clamp(44px, 6.5vw, 96px);
   font-weight: 500;
   line-height: 1.02;
   letter-spacing: -2px;
@@ -194,6 +194,13 @@ button {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+@media (max-width: 1440px) {
+  :root {
+    --section-padding: 120px;
+    --container-padding: 5.5vw;
+  }
+}
+
 @media (max-width: 1024px) {
   :root {
     --section-padding: 100px;

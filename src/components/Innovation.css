@@ -250,7 +250,7 @@
 @media (max-width: 600px) {
   .bento {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, 280px);
+    grid-template-rows: repeat(6, 240px);
     gap: 10px;
   }
   .bento__card--a { grid-column: 1; grid-row: 1; }

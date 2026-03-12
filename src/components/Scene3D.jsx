@@ -23,25 +23,25 @@ function HeroTorusKnot() {
   return (
     <group position={[2, 0.5, 0]}>
       <mesh ref={meshRef}>
-        <torusKnotGeometry args={[1.8, 0.5, 128, 16, 2, 3]} />
+        <torusKnotGeometry args={[1.8, 0.5, 80, 12, 2, 3]} />
         <meshStandardMaterial
           color="#0A3D7A"
           transparent
-          opacity={0.06}
+          opacity={0.12}
           side={THREE.DoubleSide}
           roughness={0.8}
         />
       </mesh>
       <lineSegments ref={wireRef}>
-        <edgesGeometry args={[new THREE.TorusKnotGeometry(1.8, 0.5, 64, 8, 2, 3)]} />
-        <lineBasicMaterial color="#DA1212" transparent opacity={0.15} />
+        <edgesGeometry args={[new THREE.TorusKnotGeometry(1.8, 0.5, 48, 6, 2, 3)]} />
+        <lineBasicMaterial color="#DA1212" transparent opacity={0.3} />
       </lineSegments>
     </group>
   );
 }
 
 /* ===== Orbiting Ring ===== */
-function OrbitRing({ radius, speed, rotAxis, color }) {
+function OrbitRing({ radius, speed, rotAxis, color, opacity = 0.22 }) {
   const ref = useRef();
 
   useFrame((state) => {
@@ -55,15 +55,15 @@ function OrbitRing({ radius, speed, rotAxis, color }) {
 
   return (
     <mesh ref={ref} position={[2, 0.5, 0]}>
-      <torusGeometry args={[radius, 0.008, 8, 100]} />
-      <meshBasicMaterial color={color} transparent opacity={0.12} />
+      <torusGeometry args={[radius, 0.008, 8, 64]} />
+      <meshBasicMaterial color={color} transparent opacity={opacity} />
     </mesh>
   );
 }
 
 /* ===== Floating Particles ===== */
 function Particles() {
-  const count = 120;
+  const count = 60;
   const ref = useRef();
 
   const [positions, colors] = useMemo(() => {
@@ -102,9 +102,9 @@ function Particles() {
         <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.04}
+        size={0.055}
         transparent
-        opacity={0.7}
+        opacity={0.85}
         vertexColors
         sizeAttenuation
       />
@@ -139,19 +139,19 @@ function FloatingShapes() {
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.6}>
         <lineSegments ref={octRef} position={[-3, 2, -2]}>
           <edgesGeometry args={[new THREE.OctahedronGeometry(0.7, 0)]} />
-          <lineBasicMaterial color="#0A3D7A" transparent opacity={0.15} />
+          <lineBasicMaterial color="#0A3D7A" transparent opacity={0.28} />
         </lineSegments>
       </Float>
       <Float speed={2} rotationIntensity={0.3} floatIntensity={0.4}>
         <lineSegments ref={tetRef} position={[5, -2, -1]}>
           <edgesGeometry args={[new THREE.TetrahedronGeometry(0.5, 0)]} />
-          <lineBasicMaterial color="#DA1212" transparent opacity={0.12} />
+          <lineBasicMaterial color="#DA1212" transparent opacity={0.24} />
         </lineSegments>
       </Float>
       <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.5}>
         <lineSegments ref={icoRef} position={[-4.5, -1.5, -3]}>
           <edgesGeometry args={[new THREE.IcosahedronGeometry(0.5, 0)]} />
-          <lineBasicMaterial color="#FFFFFF" transparent opacity={0.06} />
+          <lineBasicMaterial color="#FFFFFF" transparent opacity={0.04} />
         </lineSegments>
       </Float>
     </>
@@ -169,14 +169,14 @@ export default function Scene3D() {
     }}>
       <Canvas
         camera={{ position: [0, 0, 8], fov: 50 }}
-        dpr={[1, 1.5]}
+        dpr={[1, 1.2]}
         style={{ background: 'transparent' }}
         gl={{ alpha: true, antialias: true }}
       >
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 8, 10]} intensity={0.6} color="#0A3D7A" />
-        <pointLight position={[-8, -5, 5]} intensity={0.3} color="#DA1212" />
-        <directionalLight position={[5, 5, 5]} intensity={0.2} color="#FFFFFF" />
+        <ambientLight intensity={0.45} />
+        <pointLight position={[10, 8, 10]} intensity={0.8} color="#0A3D7A" />
+        <pointLight position={[-8, -5, 5]} intensity={0.45} color="#DA1212" />
+        <directionalLight position={[5, 5, 5]} intensity={0.35} color="#FFFFFF" />
 
         <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.3}>
           <HeroTorusKnot />
@@ -184,7 +184,8 @@ export default function Scene3D() {
 
         <OrbitRing radius={3.2} speed={0.04} rotAxis="y" color="#0A3D7A" />
         <OrbitRing radius={3.8} speed={-0.03} rotAxis="x" color="#DA1212" />
-        <OrbitRing radius={4.5} speed={0.02} rotAxis="z" color="#FFFFFF" />
+        <OrbitRing radius={4.5} speed={0.02} rotAxis="z" color="#FFFFFF" opacity={0.05} />
+        {/* White ring kept very subtle */}
 
         <FloatingShapes />
         <Particles />

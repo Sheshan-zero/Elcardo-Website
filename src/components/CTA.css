@@ -116,3 +116,16 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 480px) {
+  .cta {
+    padding: 72px var(--container-padding);
+  }
+  .btn-red, .btn-outline {
+    padding: 14px 36px;
+    font-size: 13px;
+  }
+  .cta-sub {
+    font-size: 15px;
+  }
+}

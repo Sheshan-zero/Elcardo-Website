@@ -86,7 +86,7 @@ export default function Hero() {
             className="hero-eyebrow"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="hero-eyebrow-line" />
             <span>Sri Lanka's Industrial Group — Est. 2013</span>
@@ -96,7 +96,7 @@ export default function Hero() {
             className="hero-headline display-xl"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
           >
             Engineering<br />
             <span className="text-italic">Tomorrow's</span><br />
@@ -107,7 +107,7 @@ export default function Hero() {
             className="hero-sub body-lg"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
           >
             A diversified group delivering engineering, renewable energy,
             automotive innovation, and hospitality solutions across Sri Lanka.
@@ -117,7 +117,7 @@ export default function Hero() {
             className="hero-actions"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
           >
             <a href="#companies" className="btn-primary" data-cursor="expand">
               Explore Our Companies
@@ -153,7 +153,7 @@ export default function Hero() {
         className="hero-scroll-indicator"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
       >
         <div className="scroll-bar" />
         <span className="scroll-label">Scroll</span>

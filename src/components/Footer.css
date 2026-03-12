@@ -157,3 +157,21 @@
     text-align: center;
   }
 }
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 56px var(--container-padding) 32px;
+  }
+  .footer-tagline {
+    font-size: 13px;
+  }
+  .footer-col ul a {
+    font-size: 13px;
+  }
+  .footer-copy {
+    font-size: 11px;
+  }
+  .footer-links a {
+    font-size: 11px;
+  }
+}
