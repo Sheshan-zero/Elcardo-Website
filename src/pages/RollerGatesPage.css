@@ -1,6 +1,37 @@
 /* ============================================================
-   ROLLER GATES PAGE — Apple-Inspired Product Page
+   ROLLER GATES PAGE — Premium 3D Cinematic Product Page
+   Apple-inspired dark theme with cinematic typography
    ============================================================ */
+
+/* ─── Global Page ─── */
+.rg-page {
+  background: #000;
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ─── Section Loader ─── */
+.rg-section-loader {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #080808;
+}
+
+.rg-section-loader-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-top-color: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  animation: rgSpin 0.8s linear infinite;
+}
+
+@keyframes rgSpin {
+  to { transform: rotate(360deg); }
+}
 
 /* ===== NAV BAR ===== */
 .rg-nav {
@@ -9,14 +40,14 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  height: 56px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--container-padding);
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  padding: 0 var(--container-padding, 48px);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -24,22 +55,20 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.rg-nav-back:hover {
-  color: #fff;
-}
+.rg-nav-back:hover { color: #fff; }
 
 .rg-nav-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
   position: absolute;
   left: 50%;
@@ -50,85 +79,70 @@
   font-size: 12px;
   font-weight: 600;
   color: #fff;
-  background: var(--accent-red);
-  padding: 8px 24px;
+  background: #ff6b00;
+  padding: 7px 22px;
   border-radius: 100px;
   text-decoration: none;
-  transition: all 0.3s var(--ease-out-expo);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .rg-nav-cta:hover {
-  background: var(--accent-red-light);
+  background: #ff8533;
   transform: translateY(-1px);
 }
 
-/* ===== SHARED ===== */
-.rg-section-label {
+/* ─── Shared ─── */
+.rg-hero-italic {
+  font-style: italic;
+  opacity: 0.3;
+}
+
+.rg-feature-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #ff6b00;
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
-.rg-label-line {
-  width: 36px;
+.rg-feature-label::before {
+  content: '';
+  width: 32px;
   height: 1.5px;
-  background: var(--accent-red);
+  background: #ff6b00;
+  flex-shrink: 0;
 }
 
-.rg-section-label span {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent-red);
-}
-
-.rg-hero-italic {
-  font-style: italic;
-  opacity: 0.35;
-}
-
-/* ===== 1. HERO ===== */
-.rg-hero {
+/* ============================================================
+   1. HERO — Cinematic 3D Entry
+   ============================================================ */
+.rg-hero--3d {
   height: 100vh;
   min-height: 700px;
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding: 0 var(--container-padding);
-  padding-bottom: 120px;
   overflow: hidden;
 }
 
-.rg-hero-bg {
+.rg-hero-canvas-wrap {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
 
-.rg-hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+.rg-hero-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.rg-hero-overlay {
+.rg-hero-overlay-content {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.4) 40%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
-}
-
-.rg-hero-content {
-  position: relative;
-  z-index: 2;
+  bottom: 100px;
+  left: var(--container-padding, 48px);
+  z-index: 10;
   max-width: 800px;
 }
 
@@ -137,43 +151,64 @@
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--accent-red);
-  margin-bottom: 24px;
+  color: #ff6b00;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.rg-eyebrow-line {
+  width: 40px;
+  height: 1.5px;
+  background: #ff6b00;
 }
 
 .rg-hero-headline {
-  font-family: var(--font-display);
-  font-size: clamp(42px, 7vw, 100px);
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(48px, 8vw, 110px);
   font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -2px;
+  line-height: 0.95;
+  letter-spacing: -3px;
   color: #fff;
 }
 
 .rg-hero-sub {
-  font-size: clamp(18px, 2vw, 24px);
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
-  margin-top: 24px;
-  letter-spacing: 3px;
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 32px;
+  letter-spacing: 5px;
   text-transform: uppercase;
+}
+
+.rg-hero-cta-wrap {
+  margin-top: 40px;
 }
 
 .rg-hero-scroll-cue {
-  margin-top: 56px;
+  position: absolute;
+  bottom: 40px;
+  right: var(--container-padding, 48px);
+  z-index: 10;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  color: rgba(255, 255, 255, 0.25);
-  font-size: 10px;
+  gap: 10px;
+}
+
+.rg-hero-scroll-cue span {
+  font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  writing-mode: vertical-rl;
 }
 
 .rg-scroll-line {
-  width: 40px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
+  width: 1px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.12);
   position: relative;
   overflow: hidden;
 }
@@ -181,616 +216,565 @@
 .rg-scroll-line::after {
   content: '';
   position: absolute;
-  left: -100%;
-  top: 0;
+  top: -100%;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: var(--accent-red);
-  animation: scrollLineAnim 2s ease-in-out infinite;
+  background: #ff6b00;
+  animation: rgScrollAnim 2s ease-in-out infinite;
 }
 
-@keyframes scrollLineAnim {
-  0% { left: -100%; }
-  100% { left: 100%; }
+@keyframes rgScrollAnim {
+  0% { top: -100%; }
+  100% { top: 100%; }
 }
 
-/* ===== 2. INTRO ===== */
-.rg-intro {
-  background: #000;
-  text-align: center;
+/* ============================================================
+   2. PRODUCT INTRO — Floating Gate Specimen
+   ============================================================ */
+.rg-intro--3d {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background: #0a0a0a;
+}
+
+.rg-intro-canvas-col {
+  position: relative;
+  min-height: 60vh;
+}
+
+.rg-intro-canvas-col canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rg-intro-text-col {
   display: flex;
-  justify-content: center;
-}
-
-.rg-intro-content {
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  padding: 80px var(--container-padding, 48px);
 }
 
-.rg-intro-content .rg-section-label {
-  justify-content: center;
+.rg-intro-statement {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(24px, 2.8vw, 38px);
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: -0.5px;
 }
 
-.rg-intro-headline {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 72px);
+.rg-intro-statement strong {
+  color: #f5f5f7;
   font-weight: 500;
+}
+
+/* ============================================================
+   3. INTERACTIVE MODEL — Full Product Explorer
+   ============================================================ */
+.rg-interactive {
+  padding: 120px 0;
+  background: #080808;
+}
+
+.rg-interactive-header {
+  text-align: center;
+  padding: 0 var(--container-padding, 48px);
+  margin-bottom: 40px;
+}
+
+.rg-interactive-title {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 500;
+  color: #f5f5f7;
   line-height: 1.08;
   letter-spacing: -1px;
-  color: #f5f5f7;
 }
 
-.rg-intro-body {
-  font-size: clamp(16px, 1.3vw, 19px);
-  font-weight: 300;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.45);
-  margin-top: 32px;
-  max-width: 520px;
+.rg-interactive-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 16px;
 }
 
-/* ===== 3. 3D MODEL ===== */
-.rg-3d-section {
-  background: #0a0a0f;
-  padding: var(--section-padding) var(--container-padding);
+.rg-interactive-canvas-wrap {
   position: relative;
-}
-
-.rg-3d-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.rg-3d-header .rg-section-label {
-  justify-content: center;
-}
-
-.rg-3d-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 4.5vw, 64px);
-  font-weight: 500;
-  color: #f5f5f7;
-  letter-spacing: -1px;
-}
-
-.rg-3d-sub {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.35);
-  margin-top: 12px;
-}
-
-.rg-3d-canvas-wrap {
   width: 100%;
-  height: 60vh;
-  min-height: 400px;
-  max-height: 700px;
-  border-radius: 20px;
-  overflow: hidden;
-  background: radial-gradient(ellipse at center, rgba(218, 18, 18, 0.05), transparent 60%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  height: 70vh;
+  min-height: 500px;
 }
 
-/* 3D Hotspots */
-.rg-hotspot {
-  background: none;
-  border: none;
-  cursor: pointer;
+.rg-interactive-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Hotspot styles */
+.rg-hotspot-trigger {
   position: relative;
-  display: flex;
-  align-items: center;
-  pointer-events: all;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
-.rg-hotspot-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--accent-red);
-  border: 2px solid #fff;
-  box-shadow: 0 0 20px rgba(218, 18, 18, 0.5);
-  animation: hotspotPulse 2s ease-in-out infinite;
-}
-
-@keyframes hotspotPulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(218, 18, 18, 0.4); }
-  50% { box-shadow: 0 0 25px rgba(218, 18, 18, 0.7); }
-}
-
-.rg-hotspot-tooltip {
+.rg-hotspot-card {
   position: absolute;
-  left: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  background: rgba(20,20,30,0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
   padding: 16px 20px;
   min-width: 200px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rg-hotspot-card--visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.05);
+  pointer-events: auto;
+}
+
+.rg-hotspot-card h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.rg-hotspot-card p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+
+/* Lift Gate button */
+.rg-lift-toggle {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff6b00;
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rg-lift-toggle:hover {
+  background: #ff8533;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255,107,0,0.3);
+}
+
+/* ============================================================
+   4. SCROLL STORYTELLING — Pin + Reveal
+   ============================================================ */
+.rg-story {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.rg-story-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.rg-story-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rg-story-text-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   pointer-events: none;
 }
 
-.rg-hotspot-tooltip strong {
-  font-size: 13px;
-  font-weight: 600;
-  color: #f5f5f7;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.rg-hotspot-tooltip p {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* 3D Info Panel */
-.rg-3d-info-panel {
-  position: absolute;
-  bottom: calc(var(--section-padding) + 20px);
-  left: var(--container-padding);
-  background: rgba(10, 10, 15, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 28px 32px;
-  max-width: 360px;
-  z-index: 10;
-}
-
-.rg-3d-info-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.rg-3d-info-close:hover {
-  color: #fff;
-}
-
-.rg-3d-info-panel h4 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #f5f5f7;
-  margin-bottom: 8px;
-}
-
-.rg-3d-info-panel p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.45);
-  line-height: 1.7;
-}
-
-/* ===== 4. SCROLL STORYTELLING ===== */
-.rg-story {
-  height: 100vh;
-  position: relative;
-  background: #000;
-  overflow: hidden;
-  display: flex;
-}
-
-.rg-story-visual {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.rg-story-door {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: relative;
-  z-index: 2;
-}
-
-.rg-story-behind {
-  position: absolute;
-  inset: 0;
-  background: #0a0a0f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-}
-
-.rg-story-mechanism {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.rg-mech-line {
-  width: 200px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
-  opacity: 0.4;
-}
-
-.rg-story-mechanism span {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.2);
-}
-
-.rg-story-captions {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 var(--container-padding);
-  max-width: 600px;
-}
-
-.rg-story-caption {
-  position: absolute;
-  bottom: 15vh;
-  left: var(--container-padding);
-}
-
-.rg-story-caption h3 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 48px);
+.rg-story-text-block h2 {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(36px, 5vw, 72px);
   font-weight: 500;
-  color: #f5f5f7;
-  margin-bottom: 12px;
+  color: #fff;
+  letter-spacing: -2px;
+  line-height: 1.05;
 }
 
-.rg-story-caption p {
-  font-size: 16px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
+.rg-story-text-block p {
+  font-size: 17px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 20px;
 }
 
-/* ===== 5. X-RAY SECTION ===== */
+/* ============================================================
+   5. X-RAY SECTION — Component Reveal
+   ============================================================ */
 .rg-xray {
-  height: 100vh;
   position: relative;
-  background: #000;
+  height: 100vh;
   overflow: hidden;
-}
-
-.rg-xray-visual {
-  position: absolute;
-  inset: 0;
-}
-
-.rg-xray-base {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.4);
-}
-
-.rg-xray-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  opacity: 0;
-}
-
-.rg-xray-grid {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  padding: 15vh var(--container-padding);
-  gap: 20px;
-}
-
-.rg-xray-label {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.rg-xray-label:nth-child(even) {
-  justify-content: flex-end;
-  flex-direction: row-reverse;
-}
-
-.rg-xray-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent-red);
-  flex-shrink: 0;
-  box-shadow: 0 0 15px rgba(218, 18, 18, 0.5);
-}
-
-.rg-xray-line {
-  width: 60px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-  flex-shrink: 0;
-}
-
-.rg-xray-text strong {
-  display: block;
-  font-size: 16px;
-  font-weight: 600;
-  color: #f5f5f7;
-  margin-bottom: 2px;
-}
-
-.rg-xray-text span {
-  font-size: 13px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
+  background: #050508;
 }
 
 .rg-xray-header {
   position: absolute;
-  bottom: 10vh;
-  left: var(--container-padding);
-  z-index: 3;
+  top: 60px;
+  left: var(--container-padding, 48px);
+  z-index: 10;
 }
 
-.rg-xray-header h2 {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 72px);
+.rg-xray-title {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(28px, 4vw, 52px);
   font-weight: 500;
   color: #f5f5f7;
-  line-height: 1.05;
+  letter-spacing: -1px;
+  line-height: 1.1;
 }
 
-/* ===== 6. MATERIALS ===== */
-.rg-materials {
-  background: #000;
+.rg-xray-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.rg-xray-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rg-xray-label {
+  background: rgba(0,212,255,0.12);
+  border: 1px solid rgba(0,212,255,0.3);
+  color: #00d4ff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   6. MATERIALS — 3D Material Showcase
+   ============================================================ */
+.rg-materials-3d {
+  padding: 140px var(--container-padding, 48px);
+  background: #0a0a0f;
+}
+
+.rg-materials-3d-header {
   text-align: center;
-}
-
-.rg-materials-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-bottom: 72px;
 }
 
-.rg-materials-content .rg-section-label {
-  justify-content: center;
-}
-
-.rg-materials-headline {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 72px);
+.rg-materials-title {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(36px, 5vw, 68px);
   font-weight: 500;
   color: #f5f5f7;
   line-height: 1.08;
   letter-spacing: -1px;
 }
 
-.rg-materials-grid {
+.rg-materials-3d-panels {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.rg-material-card {
-  background: #1d1d1f;
+.rg-mat-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 20px;
-  padding: 48px 32px;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: all 0.4s var(--ease-out-expo);
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.rg-material-card:hover {
+.rg-mat-panel:hover {
+  background: rgba(255,255,255,0.06);
   transform: translateY(-8px);
-  border-color: rgba(218, 18, 18, 0.15);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255,107,0,0.15);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
 }
 
-.rg-material-icon {
-  color: var(--accent-red);
-  margin-bottom: 24px;
+.rg-mat-panel-canvas {
+  height: 260px;
 }
 
-.rg-material-card h4 {
-  font-size: 18px;
+.rg-mat-panel-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rg-mat-panel-info {
+  padding: 28px 24px;
+}
+
+.rg-mat-panel-info h3 {
+  font-size: 20px;
   font-weight: 600;
   color: #f5f5f7;
   margin-bottom: 12px;
 }
 
-.rg-material-card p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.6;
+.rg-mat-panel-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
 }
 
-/* ===== 7. FEATURES ===== */
-.rg-feature-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-  align-items: center;
+.rg-mat-panel-info li {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
 }
 
-.rg-feature-dark {
-  background: #0a0a0f;
+.rg-mat-panel-info li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #ff6b00;
 }
 
-.rg-feature-light {
-  background: #f5f5f7;
+.rg-mat-spec-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.rg-feature-reverse {
-  direction: rtl;
-}
-
-.rg-feature-reverse > * {
-  direction: ltr;
-}
-
-.rg-feature-text {
-  padding: 80px var(--container-padding);
-}
-
-.rg-feature-label {
+.rg-mat-spec-bar-label {
+  display: flex;
+  justify-content: space-between;
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--accent-red);
-  display: block;
-  margin-bottom: 24px;
-}
-
-.rg-feature-headline {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 4.5vw, 64px);
   font-weight: 500;
-  color: #f5f5f7;
-  line-height: 1.08;
-  letter-spacing: -1px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.rg-feature-headline-dark {
-  color: var(--primary-navy);
-}
-
-.rg-feature-desc {
-  font-size: 17px;
-  font-weight: 300;
-  color: var(--mid-gray);
-  margin-top: 24px;
-  line-height: 1.7;
-  max-width: 400px;
-}
-
-.rg-feature-img-wrap {
-  height: 100%;
+.rg-mat-spec-bar-track {
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
   overflow: hidden;
 }
 
-.rg-feature-img-wrap img {
-  width: 100%;
+.rg-mat-spec-bar-fill {
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-out-expo);
+  background: linear-gradient(90deg, #ff6b00, #ff8533);
+  border-radius: 2px;
 }
 
-.rg-feature-block:hover .rg-feature-img-wrap img {
-  transform: scale(1.03);
+/* ============================================================
+   7. FEATURES — Alternating Immersive Blocks
+   ============================================================ */
+.rg-features-3d {
+  background: #0f0f0f;
 }
 
-/* ===== 8. VARIANTS ===== */
-.rg-variants {
+.rg-feat-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.rg-feat-block--reverse {
+  direction: rtl;
+}
+
+.rg-feat-block--reverse > * {
+  direction: ltr;
+}
+
+.rg-feat-block-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px calc(var(--container-padding, 48px) + 20px);
+}
+
+.rg-feat-block-title {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 500;
+  color: #f5f5f7;
+  line-height: 1.06;
+  letter-spacing: -1px;
+}
+
+.rg-feat-block-desc {
+  font-size: clamp(15px, 1.1vw, 17px);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 28px;
+  line-height: 1.75;
+  max-width: 420px;
+}
+
+.rg-feat-block-canvas {
+  min-height: 400px;
+}
+
+.rg-feat-block-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Phone mockup (Html inside Three.js) */
+.rg-phone-screen {
+  width: 120px;
+  background: #0a0a1a;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: -apple-system, sans-serif;
+  text-align: center;
+}
+
+.rg-phone-header {
+  font-size: 10px;
+  font-weight: 700;
+  color: #ff6b00;
+  margin-bottom: 8px;
+}
+
+.rg-phone-status {
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+
+.rg-phone-btn {
+  background: #ff6b00;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ============================================================
+   8. VARIANTS — 3D Product Cards
+   ============================================================ */
+.rg-variants-3d {
+  padding: 140px var(--container-padding, 48px);
   background: #000;
+}
+
+.rg-variants-3d-inner {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .rg-variants-header {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-bottom: 64px;
 }
 
-.rg-variants-header .rg-section-label {
+.rg-variants-header .rg-feature-label {
   justify-content: center;
 }
 
 .rg-variants-title {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 72px);
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(36px, 5vw, 68px);
   font-weight: 500;
   color: #f5f5f7;
   letter-spacing: -1px;
 }
 
-.rg-variants-grid {
+.rg-variants-3d-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
-.rg-variant-card {
-  background: #1d1d1f;
-  border-radius: 24px;
-  padding: 48px 36px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: all 0.5s var(--ease-out-expo);
-  display: flex;
-  flex-direction: column;
+.rg-variant-card-3d {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  will-change: transform;
 }
 
-.rg-variant-card:hover {
-  transform: translateY(-12px);
-  border-color: rgba(218, 18, 18, 0.2);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+.rg-variant-card-canvas {
+  height: 240px;
+  overflow: hidden;
 }
 
-.rg-variant-number {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent-red);
-  letter-spacing: 2px;
-  margin-bottom: 20px;
+.rg-variant-card-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.rg-variant-name {
-  font-family: var(--font-display);
-  font-size: 32px;
+.rg-variant-card-body {
+  padding: 28px 24px 24px;
+}
+
+.rg-variant-card-body h3 {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: 24px;
   font-weight: 500;
   color: #f5f5f7;
+  margin-bottom: 10px;
+}
+
+.rg-variant-card-body p {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.65;
   margin-bottom: 16px;
 }
 
-.rg-variant-desc {
-  font-size: 15px;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.7;
-  margin-bottom: 24px;
-  flex: 1;
-}
-
 .rg-variant-specs {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255,255,255,0.2);
   letter-spacing: 0.5px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 24px;
+  padding-top: 16px;
+  display: block;
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 
-.rg-variant-cta {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent-red);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: gap 0.3s var(--ease-out-expo);
-  cursor: pointer;
+/* ============================================================
+   9. GALLERY — Parallax Depth Stack
+   ============================================================ */
+.rg-gallery-3d {
+  padding: 140px var(--container-padding, 48px);
+  background: #080808;
 }
 
-.rg-variant-card:hover .rg-variant-cta {
-  gap: 14px;
-}
-
-/* ===== 9. GALLERY ===== */
-.rg-gallery {
-  background: #f5f5f7;
+.rg-gallery-3d-inner {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .rg-gallery-header {
@@ -798,148 +782,190 @@
 }
 
 .rg-gallery-title {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 500;
-  color: var(--primary-navy);
-  line-height: 1.08;
-  letter-spacing: -1px;
-}
-
-.rg-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.rg-gallery-item {
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-
-.rg-gallery-img-wrap {
-  height: 360px;
-  overflow: hidden;
-}
-
-.rg-gallery-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-out-expo);
-}
-
-.rg-gallery-item:hover .rg-gallery-img-wrap img {
-  transform: scale(1.08);
-}
-
-.rg-gallery-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 24px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.rg-gallery-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.rg-gallery-location {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* ===== 10. STATS ===== */
-.rg-stats {
-  background: var(--primary-navy);
-  text-align: center;
-}
-
-.rg-stats-header {
-  margin-bottom: 72px;
-}
-
-.rg-stats-title {
-  font-family: var(--font-display);
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
   font-size: clamp(36px, 5vw, 64px);
   font-weight: 500;
   color: #f5f5f7;
   line-height: 1.08;
   letter-spacing: -1px;
+}
+
+.rg-gallery-3d-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.rg-parallax-card {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  height: 400px;
+  cursor: pointer;
+}
+
+.rg-parallax-bg {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+}
+
+.rg-parallax-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  filter: blur(4px);
+}
+
+.rg-parallax-fg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.rg-parallax-fg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rg-parallax-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.rg-parallax-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.rg-parallax-loc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+}
+
+.rg-parallax-blur-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  backdrop-filter: blur(0px);
+  transition: backdrop-filter 0.3s;
+  pointer-events: none;
+}
+
+/* ============================================================
+   10. STATS — Particle Counter Animation
+   ============================================================ */
+.rg-stats-3d {
+  position: relative;
+  padding: 140px var(--container-padding, 48px);
+  background: #050505;
+  overflow: hidden;
+}
+
+.rg-stats-canvas-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.rg-stats-canvas-bg canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rg-stats-content {
+  position: relative;
+  z-index: 1;
 }
 
 .rg-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
-  overflow: hidden;
-  max-width: 1000px;
+  gap: 0;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .rg-stat-card {
-  background: var(--primary-navy);
-  padding: 56px 24px;
-  transition: background 0.4s;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
 }
 
-.rg-stat-card:hover {
-  background: rgba(255, 255, 255, 0.03);
+.rg-stat-card::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: rgba(255,255,255,0.06);
 }
 
-.rg-stat-number {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 4vw, 56px);
+.rg-stat-card:last-child::after {
+  display: none;
+}
+
+.rg-stat-num {
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
   font-weight: 600;
   color: #f5f5f7;
   line-height: 1;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
 }
 
 .rg-stat-label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+  color: rgba(255,255,255,0.3);
   margin-top: 12px;
 }
 
-/* ===== 11. CTA ===== */
-.rg-cta {
-  background: #000;
-  padding: 160px var(--container-padding);
-  text-align: center;
+/* ============================================================
+   11. CTA — Closing Cinematic
+   ============================================================ */
+.rg-cta-3d {
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-.rg-cta::before {
-  content: '';
+.rg-cta-canvas-bg {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(218, 18, 18, 0.08), transparent 60%);
-  pointer-events: none;
+  inset: 0;
+  z-index: 0;
 }
 
-.rg-cta-content {
+.rg-cta-canvas-bg canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rg-cta-3d-content {
   position: relative;
-  z-index: 1;
+  z-index: 10;
+  text-align: center;
+  padding: 60px var(--container-padding, 48px);
 }
 
 .rg-cta-headline {
-  font-family: var(--font-display);
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
   font-size: clamp(36px, 5.5vw, 80px);
   font-weight: 500;
   color: #f5f5f7;
@@ -950,9 +976,9 @@
 .rg-cta-sub {
   font-size: 17px;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.35);
-  margin: 28px auto 0;
-  max-width: 460px;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 32px auto 0;
+  max-width: 420px;
 }
 
 .rg-cta-buttons {
@@ -960,11 +986,12 @@
   gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 52px;
+  margin-top: 56px;
 }
 
+/* Button variants */
 .rg-btn-primary {
-  background: var(--accent-red);
+  background: #ff6b00;
   color: #fff;
   padding: 18px 48px;
   border-radius: 100px;
@@ -974,179 +1001,127 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.4s var(--ease-out-expo);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .rg-btn-primary:hover {
-  background: var(--accent-red-light);
+  background: #ff8533;
   transform: translateY(-3px);
-  box-shadow: 0 20px 60px rgba(218, 18, 18, 0.35);
+  box-shadow: 0 20px 60px rgba(255,107,0,0.35);
+}
+
+.rg-btn-primary--white {
+  background: #fff;
+  color: #000;
+}
+
+.rg-btn-primary--white:hover {
+  background: #f0f0f0;
+  box-shadow: 0 20px 60px rgba(255,255,255,0.2);
 }
 
 .rg-btn-outline {
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
   padding: 18px 48px;
   border-radius: 100px;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.4s var(--ease-out-expo);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .rg-btn-outline:hover {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.4);
   color: #fff;
   transform: translateY(-2px);
+}
+
+.rg-btn-outline--glow:hover {
+  box-shadow: 0 0 20px rgba(255,255,255,0.4);
 }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
-  .rg-feature-block {
+  .rg-intro--3d {
     grid-template-columns: 1fr;
-    min-height: auto;
   }
 
-  .rg-feature-reverse {
+  .rg-intro-canvas-col {
+    min-height: 50vh;
+  }
+
+  .rg-feat-block,
+  .rg-feat-block--reverse {
+    grid-template-columns: 1fr;
+    min-height: auto;
     direction: ltr;
   }
 
-  .rg-feature-img-wrap {
-    height: 50vh;
-    min-height: 300px;
+  .rg-feat-block-canvas {
+    min-height: 50vh;
   }
 
-  .rg-variants-grid {
-    grid-template-columns: 1fr;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  .rg-gallery-grid {
+  .rg-materials-3d-panels {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .rg-variants-3d-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
   .rg-stats-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .rg-materials-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-    margin: 0 auto;
+  .rg-stat-card:nth-child(2)::after {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
-  .rg-hero {
-    padding-bottom: 80px;
-    align-items: flex-end;
+  .rg-hero-overlay-content {
+    bottom: 72px;
   }
 
   .rg-hero-headline {
-    font-size: 40px;
+    font-size: 44px;
+    letter-spacing: -1.5px;
   }
 
   .rg-nav-title {
     display: none;
   }
 
-  .rg-gallery-grid {
+  .rg-intro--3d {
     grid-template-columns: 1fr;
   }
 
-  .rg-gallery-img-wrap {
-    height: 260px;
+  .rg-intro-text-col {
+    padding: 60px var(--container-padding, 24px);
   }
 
-  .rg-feature-text {
-    padding: 56px var(--container-padding);
-  }
-
-  .rg-xray-grid {
+  .rg-materials-3d-panels {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
   }
 
-  .rg-xray-label:nth-child(even) {
-    justify-content: flex-start;
-    flex-direction: row;
+  .rg-gallery-3d-grid {
+    grid-template-columns: 1fr;
   }
 
-  .rg-3d-canvas-wrap {
-    height: 50vh;
-    min-height: 350px;
-  }
-
-  .rg-cta {
-    padding: 100px var(--container-padding);
-  }
-}
-
-@media (max-width: 480px) {
-  .rg-hero-headline {
-    font-size: 32px;
-    letter-spacing: -1px;
-  }
-
-  .rg-hero-sub {
-    font-size: 14px;
-    letter-spacing: 2px;
-  }
-
-  .rg-hero-scroll-cue {
-    display: none;
+  .rg-parallax-card {
+    height: 300px;
   }
 
   .rg-stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .rg-stat-card {
-    padding: 36px 20px;
-  }
-
-  .rg-stat-number {
-    font-size: 32px;
-  }
-
-  .rg-cta-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .rg-btn-primary, .rg-btn-outline {
-    width: 100%;
-    max-width: 280px;
-    text-align: center;
-    justify-content: center;
-    padding: 14px 36px;
-  }
-
-  .rg-3d-info-panel {
-    left: 16px;
-    right: 16px;
-    max-width: none;
-  }
-
-  .rg-variant-card {
-    padding: 36px 28px;
-  }
-
-  .rg-variant-name {
-    font-size: 26px;
-  }
-}
-
-@media (max-width: 375px) {
-  .rg-hero-headline {
-    font-size: 28px;
-  }
-
-  .rg-nav-cta {
-    font-size: 11px;
-    padding: 6px 18px;
+  .rg-feat-block-text {
+    padding: 60px var(--container-padding, 24px);
   }
 }
