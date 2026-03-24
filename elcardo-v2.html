@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elcardo Industries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --navy: #0B1F3B;
+  --navy-mid: #122848;
+  --white: #FFFFFF;
+  --off-white: #F8F7F4;
+  --stone: #E8E5DF;
+  --mid: #9CA3AF;
+  --text: #1A1A1A;
+  --amber: #D97706;
+  --amber-light: #F59E0B;
+  --border: rgba(11,31,59,0.1);
+  --border-light: rgba(255,255,255,0.12);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 8px; height: 8px;
+  background: var(--navy);
+  border-radius: 50%;
+  position: fixed; z-index: 9999;
+  pointer-events: none;
+  transition: transform 0.15s ease;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(11,31,59,0.3);
+  border-radius: 50%;
+  position: fixed; z-index: 9998;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translate(-50%, -50%);
+}
+.cursor-ring.expand {
+  width: 64px; height: 64px;
+  border-color: var(--amber);
+  background: rgba(217,119,6,0.05);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  padding: 0 6vw;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.5s, border-color 0.5s;
+  background: transparent;
+}
+nav.scrolled {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.logo-hex {
+  width: 30px; height: 30px;
+  background: var(--navy);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  position: relative;
+}
+.logo-hex::after {
+  content: '';
+  position: absolute; inset: 4px;
+  background: var(--amber);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.logo-name {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  transition: color 0.4s;
+}
+nav.scrolled .logo-name { color: var(--navy); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px; font-weight: 400;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--white); }
+nav.scrolled .nav-links a { color: var(--mid); }
+nav.scrolled .nav-links a:hover { color: var(--navy); }
+
+.nav-contact {
+  font-size: 13px; font-weight: 500;
+  color: var(--white) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  padding: 8px 22px;
+  border-radius: 100px;
+  transition: all 0.3s !important;
+}
+.nav-contact:hover {
+  background: var(--white) !important;
+  color: var(--navy) !important;
+  border-color: var(--white) !important;
+}
+nav.scrolled .nav-contact {
+  color: var(--navy) !important;
+  border-color: var(--navy) !important;
+}
+nav.scrolled .nav-contact:hover {
+  background: var(--navy) !important;
+  color: var(--white) !important;
+}
+
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--white); transition: all 0.3s;
+}
+nav.scrolled .hamburger span { background: var(--navy); }
+
+/* MOBILE NAV */
+.mobile-nav {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: var(--navy);
+  flex-direction: column;
+  align-items: center; justify-content: center; gap: 36px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px; color: var(--white);
+  text-decoration: none; letter-spacing: 1px;
+  opacity: 0; transform: translateY(20px);
+  animation: mnavIn 0.4s forwards;
+}
+.mobile-nav a:nth-child(1) { animation-delay: 0.05s; }
+.mobile-nav a:nth-child(2) { animation-delay: 0.1s; }
+.mobile-nav a:nth-child(3) { animation-delay: 0.15s; }
+.mobile-nav a:nth-child(4) { animation-delay: 0.2s; }
+.mobile-nav a:nth-child(5) { animation-delay: 0.25s; }
+.mobile-nav a:nth-child(6) { animation-delay: 0.3s; }
+@keyframes mnavIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.mobile-close {
+  position: absolute; top: 24px; right: 6vw;
+  background: none; border: none; color: var(--white);
+  font-size: 28px; cursor: pointer;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  height: 100vh; min-height: 700px;
+  position: relative;
+  display: flex; align-items: flex-end;
+  background: var(--navy);
+  overflow: hidden;
+}
+
+.hero-video-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(11,31,59,0.35) 0%,
+    rgba(11,31,59,0.55) 60%,
+    rgba(11,31,59,0.9) 100%
+  );
+  z-index: 1;
+}
+
+/* Cinematic noise texture */
+.hero-noise {
+  position: absolute; inset: 0; z-index: 2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Abstract industrial background pattern */
+.hero-pattern {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden;
+}
+.hero-pattern::before {
+  content: '';
+  position: absolute; right: -5vw; top: -5vh;
+  width: 65vw; height: 110vh;
+  background: linear-gradient(135deg, rgba(217,119,6,0.08) 0%, transparent 60%);
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.hero-line-1, .hero-line-2, .hero-line-3 {
+  position: absolute; background: rgba(255,255,255,0.04);
+}
+.hero-line-1 { width: 1px; height: 60vh; right: 30vw; top: 0; }
+.hero-line-2 { width: 1px; height: 40vh; right: 20vw; top: 20vh; }
+.hero-line-3 { height: 1px; width: 40vw; right: 0; top: 45vh; }
+
+/* Large background word */
+.hero-bg-word {
+  position: absolute; z-index: 0;
+  right: -4vw; top: 50%; transform: translateY(-50%);
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(140px, 22vw, 320px);
+  color: rgba(255,255,255,0.025);
+  pointer-events: none;
+  letter-spacing: -4px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.hero-content {
+  position: relative; z-index: 3;
+  padding: 0 6vw 10vh;
+  max-width: 900px;
+}
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px;
+  opacity: 0; animation: fadeSlideUp 1s 0.3s forwards;
+}
+.hero-eyebrow-line {
+  width: 48px; height: 1px; background: var(--amber);
+}
+.hero-eyebrow-text {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--amber);
+}
+
+.hero-headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 7.5vw, 108px);
+  color: var(--white);
+  line-height: 1.02;
+  letter-spacing: -1px;
+  opacity: 0; animation: fadeSlideUp 1s 0.5s forwards;
+}
+.hero-headline em {
+  font-style: italic;
+  color: rgba(255,255,255,0.45);
+}
+
+.hero-sub {
+  margin-top: 28px;
+  font-size: clamp(16px, 1.5vw, 20px);
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  max-width: 520px;
+  line-height: 1.75;
+  opacity: 0; animation: fadeSlideUp 1s 0.7s forwards;
+}
+
+.hero-actions {
+  margin-top: 48px;
+  display: flex; align-items: center; gap: 32px;
+  flex-wrap: wrap;
+  opacity: 0; animation: fadeSlideUp 1s 0.9s forwards;
+}
+
+.btn-hero-primary {
+  background: var(--white);
+  color: var(--navy);
+  padding: 16px 40px;
+  border-radius: 100px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-hero-primary:hover {
+  background: var(--amber-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(245,158,11,0.3);
+}
+
+.btn-hero-ghost {
+  font-size: 14px; font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: color 0.3s;
+  border: none; background: none; cursor: pointer;
+}
+.btn-hero-ghost:hover { color: var(--white); }
+.btn-hero-ghost .arrow { transition: transform 0.3s; }
+.btn-hero-ghost:hover .arrow { transform: translateX(4px); }
+
+.hero-scroll {
+  position: absolute; right: 6vw; bottom: 10vh; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeIn 1s 1.4s forwards;
+}
+.hero-scroll-label {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); writing-mode: vertical-rl;
+}
+.hero-scroll-bar {
+  width: 1px; height: 60px;
+  background: rgba(255,255,255,0.15);
+  position: relative; overflow: hidden;
+}
+.hero-scroll-bar::after {
+  content: '';
+  position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+  background: var(--amber);
+  animation: scrollBarAnim 2s ease-in-out 1.5s infinite;
+}
+@keyframes scrollBarAnim {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+.section-wrap { padding: 120px 6vw; }
+.section-wrap.tight { padding: 80px 6vw; }
+
+.label {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: 11px; font-weight: 500; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--amber);
+  margin-bottom: 24px;
+}
+.label::before { content: ''; width: 32px; height: 1px; background: var(--amber); }
+
+.display-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(38px, 5vw, 68px);
+  color: var(--navy);
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+}
+.display-title em { font-style: italic; color: var(--mid); }
+
+/* REVEAL */
+.reveal {
+  opacity: 0; transform: translateY(44px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.up { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
+.reveal-d4 { transition-delay: 0.4s; }
+.reveal-d5 { transition-delay: 0.5s; }
+
+/* ============================================================
+   INTRO / WHO WE ARE
+   ============================================================ */
+#intro { background: var(--off-white); }
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+}
+
+.intro-text .big-statement {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(26px, 3vw, 40px);
+  color: var(--navy);
+  line-height: 1.35;
+  margin-top: 16px;
+}
+
+.intro-text .body-text {
+  margin-top: 32px;
+  font-size: 17px; font-weight: 300;
+  color: #4B5563;
+  line-height: 1.85;
+  max-width: 420px;
+}
+
+.intro-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--stone);
+  border: 1px solid var(--stone);
+}
+.intro-stat {
+  background: var(--off-white);
+  padding: 40px 36px;
+  transition: background 0.3s;
+}
+.intro-stat:hover { background: var(--white); }
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px;
+  color: var(--navy);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 13px; color: var(--mid);
+  margin-top: 8px; line-height: 1.5;
+}
+
+/* ============================================================
+   COMPANIES
+   ============================================================ */
+#companies { background: var(--white); }
+
+.companies-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: end;
+  margin-bottom: 72px;
+}
+.companies-intro-right p {
+  font-size: 16px; font-weight: 300;
+  color: #6B7280; line-height: 1.8;
+}
+
+.companies-list { display: flex; flex-direction: column; gap: 1px; }
+
+.company-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 320px 120px;
+  align-items: center;
+  gap: 40px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  transition: padding-left 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  text-decoration: none; color: inherit;
+}
+.company-row::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0;
+  width: 0; height: 1px;
+  background: var(--navy);
+  transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.company-row:hover::after { width: 100%; }
+.company-row:hover { padding-left: 8px; }
+.company-row:first-child { border-top: 1px solid var(--border); }
+
+.company-num {
+  font-size: 12px; font-weight: 500;
+  color: var(--mid); letter-spacing: 1px;
+}
+.company-row:hover .company-num { color: var(--amber); }
+
+.company-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; color: var(--navy);
+  letter-spacing: -0.3px;
+}
+
+.company-desc {
+  font-size: 14px; font-weight: 300;
+  color: #6B7280; line-height: 1.6;
+}
+
+.company-tag {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--mid);
+  text-align: right;
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+}
+.company-tag .arrow-icon {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.company-row:hover .arrow-icon {
+  background: var(--navy); border-color: var(--navy); color: var(--white);
+  transform: rotate(-45deg);
+}
+.company-row:hover .company-tag { color: var(--navy); }
+
+/* ============================================================
+   INNOVATION STRIP
+   ============================================================ */
+#innovation {
+  background: var(--navy);
+  padding: 120px 6vw;
+  position: relative;
+  overflow: hidden;
+}
+#innovation::before {
+  content: '';
+  position: absolute; right: 0; top: 0; bottom: 0; width: 50%;
+  background: linear-gradient(90deg, transparent, rgba(217,119,6,0.05));
+  pointer-events: none;
+}
+
+.innovation-top {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: end; margin-bottom: 80px;
+}
+.innovation-top .display-title { color: var(--white); }
+.innovation-top .display-title em { color: rgba(255,255,255,0.3); }
+.innovation-blurb {
+  font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.5);
+  line-height: 1.8; max-width: 380px; align-self: end;
+}
+
+.innovation-pillars {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: rgba(255,255,255,0.06);
+}
+.pillar {
+  background: var(--navy);
+  padding: 56px 44px;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative; overflow: hidden;
+  transition: background 0.4s;
+}
+.pillar:hover { background: var(--navy-mid); }
+.pillar::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--amber);
+  transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.pillar:hover::before { width: 100%; }
+
+.pillar-icon {
+  width: 48px; height: 48px;
+  margin-bottom: 32px;
+  opacity: 0.6;
+  font-size: 32px;
+  transition: opacity 0.3s;
+}
+.pillar:hover .pillar-icon { opacity: 1; }
+
+.pillar-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px; color: var(--white);
+  margin-bottom: 16px; line-height: 1.2;
+}
+.pillar-text {
+  font-size: 14px; font-weight: 300;
+  color: rgba(255,255,255,0.45); line-height: 1.8;
+}
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+#projects { background: var(--off-white); }
+
+.projects-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 64px;
+}
+.view-all {
+  font-size: 13px; font-weight: 500; color: var(--navy);
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--navy);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.view-all:hover { color: var(--amber); border-color: var(--amber); }
+
+.projects-mosaic {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 360px 280px;
+  gap: 3px;
+}
+
+.proj {
+  position: relative; overflow: hidden;
+  background: var(--stone);
+  cursor: pointer;
+}
+.proj:nth-child(1) { grid-column: 1/8; grid-row: 1/2; }
+.proj:nth-child(2) { grid-column: 8/13; grid-row: 1/2; }
+.proj:nth-child(3) { grid-column: 1/5; grid-row: 2/3; }
+.proj:nth-child(4) { grid-column: 5/9; grid-row: 2/3; }
+.proj:nth-child(5) { grid-column: 9/13; grid-row: 2/3; }
+
+.proj-img {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 72px;
+  background: linear-gradient(135deg, #E8E5DF, #D4CFC6);
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.proj:nth-child(1) .proj-img { background: linear-gradient(135deg, #0B2A4A, #1A3F5C); font-size: 120px; }
+.proj:nth-child(2) .proj-img { background: linear-gradient(135deg, #1A3A1A, #2D5A2D); }
+.proj:nth-child(3) .proj-img { background: linear-gradient(135deg, #2A1A0B, #4A2D12); }
+.proj:nth-child(4) .proj-img { background: linear-gradient(135deg, #1A1A2E, #2D2D4A); }
+.proj:nth-child(5) .proj-img { background: linear-gradient(135deg, #2E1A1A, #4A2D2D); }
+
+.proj:hover .proj-img { transform: scale(1.04); }
+
+.proj-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(11,31,59,0.85) 0%, transparent 55%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.proj:hover .proj-overlay { opacity: 1; }
+
+.proj-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px;
+  transform: translateY(8px);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0;
+}
+.proj:hover .proj-info { transform: translateY(0); opacity: 1; }
+
+.proj-category {
+  font-size: 10px; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--amber);
+  margin-bottom: 6px;
+}
+.proj-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; color: var(--white); line-height: 1.25;
+}
+.proj-loc {
+  font-size: 12px; color: rgba(255,255,255,0.55);
+  margin-top: 6px; display: flex; align-items: center; gap: 5px;
+}
+
+/* Visible label for non-hover */
+.proj-label {
+  position: absolute; bottom: 24px; left: 24px;
+  font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  opacity: 1; transition: opacity 0.3s;
+}
+.proj:hover .proj-label { opacity: 0; }
+
+/* ============================================================
+   MARQUEE (between sections)
+   ============================================================ */
+.marquee-strip {
+  background: var(--navy);
+  padding: 20px 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.marquee-track {
+  display: flex; gap: 0;
+  animation: marqueeScroll 24s linear infinite;
+  width: max-content;
+}
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-item {
+  display: flex; align-items: center; gap: 32px;
+  padding: 0 32px;
+  font-size: 12px; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.25);
+  white-space: nowrap;
+}
+.marquee-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--amber); flex-shrink: 0;
+}
+
+/* ============================================================
+   CLIENTS
+   ============================================================ */
+#clients { background: var(--white); padding: 100px 6vw; }
+
+.clients-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 64px;
+}
+.clients-top { text-align: center; }
+.clients-top p {
+  font-size: 16px; font-weight: 300; color: var(--mid);
+  margin-top: 16px; max-width: 400px; line-height: 1.7;
+}
+
+.clients-logos {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+  width: 100%; background: var(--border);
+}
+.client-block {
+  background: var(--white);
+  padding: 36px 24px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s;
+}
+.client-block:hover { background: var(--off-white); }
+.client-block span {
+  font-size: 12px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: rgba(11,31,59,0.25);
+  text-align: center; transition: color 0.3s;
+}
+.client-block:hover span { color: rgba(11,31,59,0.6); }
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+#cta {
+  background: var(--navy);
+  padding: 160px 6vw;
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+#cta::before {
+  content: '';
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.cta-eyebrow { justify-content: center; }
+.cta-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(44px, 6vw, 88px);
+  color: var(--white);
+  line-height: 1.04; letter-spacing: -1px;
+  margin-top: 8px; position: relative;
+}
+.cta-title em { font-style: italic; color: rgba(255,255,255,0.35); }
+
+.cta-sub {
+  font-size: 18px; font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  max-width: 440px; margin: 28px auto 0;
+  line-height: 1.75;
+}
+
+.cta-buttons {
+  display: flex; gap: 16px;
+  justify-content: center; flex-wrap: wrap;
+  margin-top: 52px;
+}
+
+.btn-amber {
+  background: var(--amber);
+  color: var(--white);
+  padding: 18px 48px;
+  border-radius: 100px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-amber:hover {
+  background: var(--amber-light);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(245,158,11,0.35);
+}
+
+.btn-outline-white {
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  padding: 18px 48px;
+  border-radius: 100px;
+  font-size: 14px; font-weight: 400;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.btn-outline-white:hover {
+  border-color: rgba(255,255,255,0.6);
+  color: var(--white);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: #060F1D;
+  padding: 80px 6vw 40px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1.2fr;
+  gap: 60px;
+  padding-bottom: 64px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-brand {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.footer-brand-name {
+  font-size: 14px; font-weight: 500; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--white);
+}
+
+.footer-tagline {
+  font-size: 14px; font-weight: 300;
+  color: rgba(255,255,255,0.35); line-height: 1.7;
+  max-width: 260px; margin-bottom: 32px;
+}
+
+.footer-socials { display: flex; gap: 10px; }
+.footer-social {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: rgba(255,255,255,0.35);
+  text-decoration: none; font-weight: 600;
+  transition: all 0.3s;
+}
+.footer-social:hover { border-color: var(--amber); color: var(--amber); }
+
+.footer-col h6 {
+  font-size: 10px; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  margin-bottom: 24px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a {
+  font-size: 14px; font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none; transition: color 0.2s;
+}
+.footer-col ul a:hover { color: var(--white); }
+
+.footer-contact-line {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 14px;
+}
+.footer-contact-line span {
+  font-size: 13px; font-weight: 300;
+  color: rgba(255,255,255,0.4); line-height: 1.5;
+}
+
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 32px; flex-wrap: wrap; gap: 16px;
+}
+.footer-copy {
+  font-size: 12px; color: rgba(255,255,255,0.2); font-weight: 300;
+}
+.footer-links { display: flex; gap: 28px; }
+.footer-links a {
+  font-size: 12px; color: rgba(255,255,255,0.25);
+  text-decoration: none; transition: color 0.2s;
+}
+.footer-links a:hover { color: rgba(255,255,255,0.6); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .intro-grid { grid-template-columns: 1fr; gap: 56px; }
+  .companies-intro { grid-template-columns: 1fr; gap: 20px; }
+  .company-row { grid-template-columns: 48px 1fr 1fr; }
+  .company-desc { display: none; }
+  .innovation-top { grid-template-columns: 1fr; gap: 28px; }
+  .innovation-pillars { grid-template-columns: 1fr 1fr; }
+  .projects-mosaic {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .proj:nth-child(1),
+  .proj:nth-child(2),
+  .proj:nth-child(3),
+  .proj:nth-child(4),
+  .proj:nth-child(5) {
+    grid-column: auto; grid-row: auto;
+  }
+  .clients-logos { grid-template-columns: repeat(3, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .section-wrap { padding: 80px 24px; }
+  .hero-content { padding: 0 24px 80px; }
+  .company-row {
+    grid-template-columns: 36px 1fr auto;
+    gap: 16px; padding: 28px 0;
+  }
+  .company-desc, .company-tag span:not(.arrow-icon) { display: none; }
+  .company-tag { gap: 0; }
+  .innovation-pillars { grid-template-columns: 1fr; }
+  .projects-mosaic { grid-template-columns: 1fr; }
+  .proj { height: 240px; }
+  .proj-info { opacity: 1; transform: none; }
+  .proj-overlay { opacity: 1; }
+  .proj-label { display: none; }
+  .clients-logos { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr; gap: 36px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-headline { font-size: 44px; }
+  .intro-stats { grid-template-columns: 1fr; }
+  .cta-title { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-hex"></div>
+    <span class="logo-name">Elcardo</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#intro">About</a></li>
+    <li><a href="#companies">Companies</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#cta" class="nav-contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#intro" onclick="closeNav()">About</a>
+  <a href="#companies" onclick="closeNav()">Companies</a>
+  <a href="#projects" onclick="closeNav()">Projects</a>
+  <a href="#clients" onclick="closeNav()">Clients</a>
+  <a href="#cta" onclick="closeNav()">Contact</a>
+</div>
+
+<!-- ======================================================
+     HERO
+     ====================================================== -->
+<section id="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-line-1"></div>
+  <div class="hero-line-2"></div>
+  <div class="hero-line-3"></div>
+  <div class="hero-video-overlay"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-bg-word">ELCARDO</div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Sri Lanka's Industrial Group — Est. 2013</span>
+    </div>
+    <h1 class="hero-headline">
+      Engineering<br>
+      <em>Tomorrow's</em><br>
+      Industries.
+    </h1>
+    <p class="hero-sub">
+      A diversified group delivering engineering, renewable energy, automotive innovation, and hospitality solutions across Sri Lanka.
+    </p>
+    <div class="hero-actions">
+      <a href="#companies" class="btn-hero-primary">
+        Explore Our Companies
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#projects" class="btn-hero-ghost">
+        View Our Projects <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-bar"></div>
+    <span class="hero-scroll-label">Scroll</span>
+  </div>
+</section>
+
+<!-- ======================================================
+     INTRO
+     ====================================================== -->
+<section id="intro" class="section-wrap">
+  <div class="intro-grid">
+    <div class="reveal">
+      <div class="label">Who We Are</div>
+      <p class="big-statement">
+        We build companies that<br>
+        power industries — and the<br>
+        people behind them.
+      </p>
+      <p class="body-text">
+        Elcardo Industries is a Sri Lankan conglomerate operating across five distinct sectors: industrial engineering, renewable solar energy, advanced battery technology, luxury hospitality, and specialized automotive solutions. Each division is a market leader, unified under one strategic vision.
+      </p>
+    </div>
+    <div class="reveal reveal-d2">
+      <div class="intro-stats">
+        <div class="intro-stat">
+          <div class="stat-num">10<span style="font-size:28px;color:var(--amber)">+</span></div>
+          <div class="stat-label">Years of industry<br>experience</div>
+        </div>
+        <div class="intro-stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Distinct business<br>divisions</div>
+        </div>
+        <div class="intro-stat">
+          <div class="stat-num">200<span style="font-size:28px;color:var(--amber)">+</span></div>
+          <div class="stat-label">Projects<br>delivered</div>
+        </div>
+        <div class="intro-stat">
+          <div class="stat-num">500<span style="font-size:28px;color:var(--amber)">+</span></div>
+          <div class="stat-label">Satisfied<br>clients</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     COMPANIES
+     ====================================================== -->
+<section id="companies" class="section-wrap" style="background:var(--off-white);">
+  <div class="companies-intro reveal">
+    <div>
+      <div class="label">Our Portfolio</div>
+      <h2 class="display-title">Five companies.<br><em>One vision.</em></h2>
+    </div>
+    <div class="companies-intro-right">
+      <p>Each subsidiary operates independently as an industry leader while sharing the group's commitment to quality, innovation, and long-term value creation.</p>
+    </div>
+  </div>
+
+  <div class="companies-list reveal reveal-d1">
+    <a href="#" class="company-row" data-cursor="expand">
+      <span class="company-num">01</span>
+      <div class="company-title">Elcardo Roller Gates</div>
+      <div class="company-desc">Industrial-grade automated gate systems, roller shutters, and entry automation for commercial and industrial facilities across Sri Lanka.</div>
+      <div class="company-tag">
+        <span>Engineering</span>
+        <div class="arrow-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="company-row" data-cursor="expand">
+      <span class="company-num">02</span>
+      <div class="company-title">Elcardo Solar</div>
+      <div class="company-desc">End-to-end solar energy solutions — from residential rooftop systems to utility-scale commercial and industrial solar installations.</div>
+      <div class="company-tag">
+        <span>Renewable Energy</span>
+        <div class="arrow-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="company-row" data-cursor="expand">
+      <span class="company-num">03</span>
+      <div class="company-title">Elme Battery</div>
+      <div class="company-desc">Advanced energy storage systems engineered for reliability, longevity, and sustainable performance in industrial and residential applications.</div>
+      <div class="company-tag">
+        <span>Clean Technology</span>
+        <div class="arrow-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="company-row" data-cursor="expand">
+      <span class="company-num">04</span>
+      <div class="company-title">Anilad Hotels</div>
+      <div class="company-desc">A growing portfolio of luxury and boutique hotels delivering world-class hospitality experiences across Sri Lanka's premier destinations.</div>
+      <div class="company-tag">
+        <span>Hospitality</span>
+        <div class="arrow-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="company-row" data-cursor="expand">
+      <span class="company-num">05</span>
+      <div class="company-title">Vehicle Modification Center</div>
+      <div class="company-desc">Bespoke vehicle customization, performance engineering, and commercial fleet solutions designed with precision for discerning clients.</div>
+      <div class="company-tag">
+        <span>Automotive</span>
+        <div class="arrow-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <div class="marquee-item"><div class="marquee-dot"></div>Engineering Excellence</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Renewable Innovation</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Advanced Battery Technology</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Luxury Hospitality</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Automotive Precision</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Built in Sri Lanka</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Engineering Excellence</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Renewable Innovation</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Advanced Battery Technology</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Luxury Hospitality</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Automotive Precision</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Built in Sri Lanka</div>
+  </div>
+</div>
+
+<!-- ======================================================
+     INNOVATION
+     ====================================================== -->
+<section id="innovation">
+  <div class="innovation-top">
+    <div class="reveal">
+      <div class="label" style="color:var(--amber-light);">
+        <span style="background:var(--amber-light);width:32px;height:1px;display:block;flex-shrink:0;"></span>
+        What Drives Us
+      </div>
+      <h2 class="display-title" style="color:var(--white);">Innovation<br><em>at our core.</em></h2>
+    </div>
+    <p class="innovation-blurb reveal reveal-d2">
+      Every company in the Elcardo group is built around a core competency — deep technical expertise, continuous R&D, and an uncompromising standard of quality.
+    </p>
+  </div>
+
+  <div class="innovation-pillars">
+    <div class="pillar reveal reveal-d1">
+      <div class="pillar-icon">⚡</div>
+      <div class="pillar-title">Engineering Precision</div>
+      <p class="pillar-text">Every installation, gate system, and manufactured component is engineered to exact tolerances, built to last, and backed by a decade of technical mastery.</p>
+    </div>
+    <div class="pillar reveal reveal-d2">
+      <div class="pillar-icon">☀️</div>
+      <div class="pillar-title">Sustainable Energy</div>
+      <p class="pillar-text">We are leading Sri Lanka's energy transition — from rooftop solar to industrial storage systems — helping businesses and homes reduce costs and carbon.</p>
+    </div>
+    <div class="pillar reveal reveal-d3">
+      <div class="pillar-icon">🚗</div>
+      <div class="pillar-title">Automotive Innovation</div>
+      <p class="pillar-text">Custom vehicle engineering at a level rarely seen locally — combining craftsmanship, performance, and specialized commercial fleet solutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PROJECTS
+     ====================================================== -->
+<section id="projects" class="section-wrap">
+  <div class="projects-header reveal">
+    <div>
+      <div class="label">Featured Work</div>
+      <h2 class="display-title">Real projects.<br><em>Real impact.</em></h2>
+    </div>
+    <a href="#" class="view-all">All Projects →</a>
+  </div>
+
+  <div class="projects-mosaic reveal reveal-d1">
+    <div class="proj">
+      <div class="proj-img">☀️</div>
+      <div class="proj-overlay"></div>
+      <div class="proj-label">Solar Installation</div>
+      <div class="proj-info">
+        <div class="proj-category">Elcardo Solar • 2024</div>
+        <div class="proj-title">150kW Commercial Rooftop Solar System</div>
+        <div class="proj-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Colombo, Western Province
+        </div>
+      </div>
+    </div>
+    <div class="proj">
+      <div class="proj-img">⚙️</div>
+      <div class="proj-overlay"></div>
+      <div class="proj-label">Gate Automation</div>
+      <div class="proj-info">
+        <div class="proj-category">Roller Gates • 2024</div>
+        <div class="proj-title">High-Security Industrial Gate System</div>
+        <div class="proj-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Katunayake Free Trade Zone
+        </div>
+      </div>
+    </div>
+    <div class="proj">
+      <div class="proj-img">🚗</div>
+      <div class="proj-overlay"></div>
+      <div class="proj-label">Fleet Build</div>
+      <div class="proj-info">
+        <div class="proj-category">Automotive • 2023</div>
+        <div class="proj-title">Commercial Fleet — 20 Custom Builds</div>
+        <div class="proj-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Kandy, Central Province
+        </div>
+      </div>
+    </div>
+    <div class="proj">
+      <div class="proj-img">🏨</div>
+      <div class="proj-overlay"></div>
+      <div class="proj-label">Hospitality</div>
+      <div class="proj-info">
+        <div class="proj-category">Anilad Hotels • 2023</div>
+        <div class="proj-title">Beachfront Boutique Hotel</div>
+        <div class="proj-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Negombo, Western Province
+        </div>
+      </div>
+    </div>
+    <div class="proj">
+      <div class="proj-img">🔋</div>
+      <div class="proj-overlay"></div>
+      <div class="proj-label">Battery Storage</div>
+      <div class="proj-info">
+        <div class="proj-category">Elme Battery • 2023</div>
+        <div class="proj-title">500kWh Industrial Storage System</div>
+        <div class="proj-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Galle, Southern Province
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     CLIENTS
+     ====================================================== -->
+<section id="clients">
+  <div class="clients-inner">
+    <div class="clients-top reveal">
+      <div class="label" style="justify-content:center;">Trusted By</div>
+      <h2 class="display-title" style="text-align:center;">Partners &<br><em>Clients</em></h2>
+      <p>Proud to work alongside some of Sri Lanka's most respected organizations across every industry we serve.</p>
+    </div>
+    <div class="clients-logos reveal reveal-d1">
+      <div class="client-block"><span>Etisalat</span></div>
+      <div class="client-block"><span>Dialog</span></div>
+      <div class="client-block"><span>Cargills</span></div>
+      <div class="client-block"><span>Hemas Group</span></div>
+      <div class="client-block"><span>Aitken Spence</span></div>
+      <div class="client-block"><span>LOLC Group</span></div>
+      <div class="client-block"><span>John Keells</span></div>
+      <div class="client-block"><span>MAS Holdings</span></div>
+      <div class="client-block"><span>Bank of Ceylon</span></div>
+      <div class="client-block"><span>SLT-Mobitel</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     CTA
+     ====================================================== -->
+<section id="cta">
+  <div class="cta-eyebrow label reveal" style="justify-content:center;">Let's Work Together</div>
+  <h2 class="cta-title reveal reveal-d1">
+    Let's build<br>
+    <em>the future</em><br>
+    together.
+  </h2>
+  <p class="cta-sub reveal reveal-d2">
+    Whether you have a project in mind or want to explore how Elcardo can serve your business — we're ready to talk.
+  </p>
+  <div class="cta-buttons reveal reveal-d3">
+    <a href="#" class="btn-amber">
+      Contact Us
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#" class="btn-outline-white">Request a Consultation</a>
+  </div>
+</section>
+
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">
+        <div class="logo-hex"></div>
+        <span class="footer-brand-name">Elcardo Industries</span>
+      </div>
+      <p class="footer-tagline">A diversified industrial group powering growth across Sri Lanka — one sector at a time.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social">f</a>
+        <a href="#" class="footer-social">in</a>
+        <a href="#" class="footer-social">tw</a>
+        <a href="#" class="footer-social">yt</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h6>Companies</h6>
+      <ul>
+        <li><a href="#">Elcardo Roller Gates</a></li>
+        <li><a href="#">Elcardo Solar</a></li>
+        <li><a href="#">Elme Battery</a></li>
+        <li><a href="#">Anilad Hotels</a></li>
+        <li><a href="#">Vehicle Modification</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h6>Company</h6>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Innovation</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h6>Contact</h6>
+      <div class="footer-contact-line">
+        <span>No. 42, Industrial Zone,<br>Peliyagoda, Colombo,<br>Sri Lanka</span>
+      </div>
+      <div class="footer-contact-line">
+        <span>+94 11 234 5678</span>
+      </div>
+      <div class="footer-contact-line">
+        <span>info@elcardoindustries.lk</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 Elcardo Industries (Pvt) Ltd. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* CURSOR */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('[data-cursor="expand"], a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('expand'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+});
+
+/* NAV */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 48);
+});
+
+/* HAMBURGER */
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const mobileClose = document.getElementById('mobileClose');
+hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+mobileClose.addEventListener('click', () => mobileNav.classList.remove('open'));
+function closeNav() { mobileNav.classList.remove('open'); }
+
+/* SCROLL REVEAL */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('up'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
