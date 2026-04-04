@@ -1,0 +1,27 @@
+/* ============================================================
+   BRAND STATEMENT — Corporate Theme
+   ============================================================ */
+.cp-statement {
+  background: var(--bg-light);
+  padding: var(--section-padding) var(--container-padding);
+}
+
+.cp-statement__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.mt-4 {
+  margin-top: 24px;
+}
+
+@media (max-width: 1024px) {
+  .cp-statement__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}

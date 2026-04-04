@@ -1,0 +1,76 @@
+.products-impact-section {
+  position: relative;
+  padding: 180px var(--container-padding, 48px);
+  max-width: none;
+  overflow: hidden;
+  background: transparent;
+}
+
+.products-impact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(218, 18, 18, 0.08) 40%,
+    rgba(218, 18, 18, 0.12) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.products-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  text-align: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.products-impact-stat {
+  padding: 40px 0;
+}
+
+.products-impact-number {
+  display: block;
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(64px, 7vw, 110px);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -4px;
+  margin-bottom: 24px;
+  line-height: 1;
+}
+
+.products-impact-number.pulse {
+  animation: productsStatPulse 0.8s ease-out forwards;
+}
+
+@keyframes productsStatPulse {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.05); text-shadow: 0 0 50px rgba(218, 18, 18, 0.5); opacity: 1; }
+  100% { transform: scale(1); text-shadow: 0 0 20px rgba(218, 18, 18, 0.2); opacity: 1; }
+}
+
+.products-impact-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+@media (max-width: 1024px) {
+  .products-impact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .products-impact-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -13,6 +13,10 @@ import Clients from './components/Clients';
 import CTA from './components/CTA';
 import Footer from './components/Footer';const RollerGatesPage = lazy(() => import('./pages/RollerGatesPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage'));
+const CompaniesPage = lazy(() => import('./pages/CompaniesPage/CompaniesPage'));
+const ProductsPage = lazy(() => import('./pages/ProductsPage/ProductsPage'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage/ProjectsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage/ContactPage'));
 
 function HomePage() {
   const location = useLocation();
@@ -79,7 +83,11 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/companies" element={<CompaniesPage />} />
         <Route path="/roller-gates" element={<RollerGatesPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </Suspense>
   );

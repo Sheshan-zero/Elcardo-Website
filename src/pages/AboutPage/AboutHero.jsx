@@ -1,56 +1,101 @@
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import heroImg from '../../assets/rg_hero.png'; // Re-using for industrial vibe
+import { useRef } from 'react';
+import heroImg from '../../assets/hero_engineering.png';
+
+const ease = [0.16, 1, 0.3, 1];
 
 export default function AboutHero() {
+  const ref = useRef(null);
   const { scrollY } = useScroll();
-  
-  // Parallax effects
-  const yImage = useTransform(scrollY, [0, 1000], [0, 300]);
-  const scaleImage = useTransform(scrollY, [0, 1000], [1, 1.15]);
+  const yImage = useTransform(scrollY, [0, 800], [0, 200]);
+  const scaleImage = useTransform(scrollY, [0, 800], [1, 1.15]);
   const opacityText = useTransform(scrollY, [0, 400], [1, 0]);
-  const yText = useTransform(scrollY, [0, 400], [0, 100]);
+  const yText = useTransform(scrollY, [0, 400], [0, 80]);
 
   return (
-    <section className="about-hero">
+    <section className="about-hero" id="about-hero" ref={ref}>
+      {/* Background image */}
       <div className="about-hero-bg">
-        <motion.img 
-          src={heroImg} 
-          alt="Elcardo Industrial Operations" 
+        <motion.img
+          src={heroImg}
+          alt="Elcardo Industrial Operations"
           style={{ y: yImage, scale: scaleImage }}
         />
         <div className="about-hero-overlay" />
       </div>
 
-      <motion.div 
+      <motion.div
         className="about-hero-content"
         style={{ opacity: opacityText, y: yText }}
       >
-        <motion.p 
+        <motion.p
           className="about-hero-kicker"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+          transition={{ duration: 1, delay: 0.3, ease }}
         >
           Elcardo Industries
         </motion.p>
-        
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.5, ease: [0.25, 1, 0.5, 1] }}
-        >
-          Building the Future<br />of Industry.
-        </motion.h1>
 
-        <motion.p 
+        <h1 className="about-hero-headline">
+          <span className="hero-line">
+            <motion.span
+              className="hero-line-inner"
+              initial={{ y: '110%' }}
+              animate={{ y: '0%' }}
+              transition={{ duration: 1.2, delay: 0.5, ease }}
+            >
+              We Don't Build
+            </motion.span>
+          </span>
+          <span className="hero-line">
+            <motion.span
+              className="hero-line-inner"
+              initial={{ y: '110%' }}
+              animate={{ y: '0%' }}
+              transition={{ duration: 1.2, delay: 0.65, ease }}
+            >
+              Companies. We Build
+            </motion.span>
+          </span>
+          <span className="hero-line">
+            <motion.span
+              className="hero-line-inner"
+              initial={{ y: '110%' }}
+              animate={{ y: '0%' }}
+              transition={{ duration: 1.2, delay: 0.8, ease }}
+            >
+              <em>Industries.</em>
+            </motion.span>
+          </span>
+        </h1>
+
+        <motion.div
+          className="about-hero-divider"
+          initial={{ width: 0 }}
+          animate={{ width: 100 }}
+          transition={{ duration: 1.2, delay: 1.2, ease }}
+        />
+
+        <motion.p
           className="about-hero-sub"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 1.2, ease: 'easeOut' }}
+          initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 1, delay: 1.4, ease }}
         >
-          A diversified group delivering engineering, energy, automotive, and hospitality solutions.
+          Engineering, energy, automotive, and hospitality — from Sri Lanka to the world.
         </motion.p>
+      </motion.div>
+
+      <motion.div
+        className="about-hero-scroll"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.2, duration: 1 }}
+      >
+        <div className="about-hero-scroll-bar" />
+        <span className="about-hero-scroll-text">Scroll</span>
       </motion.div>
     </section>
   );

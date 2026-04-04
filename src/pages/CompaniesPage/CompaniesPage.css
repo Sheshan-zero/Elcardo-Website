@@ -1,0 +1,31 @@
+/* ============================================================
+   COMPANIES PAGE WRAPPER 
+   ============================================================ */
+.companies-page-main {
+  position: relative;
+  width: 100%;
+  background-color: var(--white);
+  transition: background-color 0.8s ease;
+}
+
+/* ─── Global Loading State ─── */
+.companies-section-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  width: 100%;
+}
+
+.companies-loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--border-light);
+  border-top-color: var(--accent-red);
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}

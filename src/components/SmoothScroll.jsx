@@ -26,11 +26,21 @@ export default function SmoothScroll({ children }) {
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
+        
+        // Ignore HashRouter path navigations
+        if (href && href.startsWith('#/')) {
+          return;
+        }
+
         if (href && href !== '#') {
           e.preventDefault();
-          const target = document.querySelector(href);
-          if (target) {
-            lenis.scrollTo(target, { offset: -68 });
+          try {
+            const target = document.querySelector(href);
+            if (target) {
+              lenis.scrollTo(target, { offset: -68 });
+            }
+          } catch (err) {
+            // Ignore invalid query selector errors
           }
         }
       });

@@ -1,0 +1,82 @@
+/* ============================================================
+   ECOSYSTEM SECTION — CSS (Corporate Diagram)
+   ============================================================ */
+.cp-ecosystem {
+  background: var(--off-white);
+  padding: var(--section-padding) var(--container-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.cp-ecosystem__header {
+  text-align: center;
+  max-width: 700px;
+  margin-bottom: 80px;
+}
+
+.cp-ecosystem__desc {
+  margin: 24px auto 0;
+}
+
+.cp-ecosystem__canvas {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  aspect-ratio: 1;
+  position: relative;
+}
+
+.cp-ecosystem__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ecosystem-node {
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ─── Tooltip ─── */
+.ecosystem-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-light);
+  transform: translateY(-5px);
+  animation: tooltipFade 0.3s var(--ease-out-expo) forwards;
+}
+
+.ecosystem-tooltip__name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-navy);
+  white-space: nowrap;
+}
+
+.ecosystem-tooltip__sector {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+@keyframes tooltipFade {
+  from { opacity: 0; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(-5px); }
+}
+
+@media (max-width: 768px) {
+  .cp-ecosystem__canvas {
+    max-width: 400px;
+  }
+}

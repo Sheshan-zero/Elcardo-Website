@@ -1,0 +1,278 @@
+/* ============================================================
+   MATERIALS 3D — True volumetric CSS 3D objects
+   ============================================================ */
+
+/* Shared scene */
+.mat3d-scene {
+  perspective: 800px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.mat3d-rotator {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ─── 01 / STEEL LATTICE CUBE ─── */
+.steel-cube {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.steel-face {
+  position: absolute;
+  border: 1.5px solid rgba(218, 18, 18, 0.4);
+  background: rgba(218, 18, 18, 0.03);
+  backdrop-filter: blur(1px);
+}
+
+/* Outer cube faces — 120×120, offset ±60 */
+.steel-front  { width: 120px; height: 120px; transform: translateZ(60px); }
+.steel-back   { width: 120px; height: 120px; transform: translateZ(-60px) rotateY(180deg); }
+.steel-left   { width: 120px; height: 120px; transform: translateX(-60px) rotateY(-90deg); }
+.steel-right  { width: 120px; height: 120px; transform: translateX(60px) rotateY(90deg); }
+.steel-top    { width: 120px; height: 120px; transform: translateY(-60px) rotateX(90deg); }
+.steel-bottom { width: 120px; height: 120px; transform: translateY(60px) rotateX(-90deg); }
+
+/* Inner cube — 70×70, offset ±35 */
+.steel-inner-cube {
+  position: absolute;
+  top: 25px; left: 25px;
+  width: 70px;
+  height: 70px;
+  transform-style: preserve-3d;
+}
+
+.steel-inner-front  { width: 70px; height: 70px; transform: translateZ(35px); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+.steel-inner-back   { width: 70px; height: 70px; transform: translateZ(-35px) rotateY(180deg); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+.steel-inner-left   { width: 70px; height: 70px; transform: translateX(-35px) rotateY(-90deg); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+.steel-inner-right  { width: 70px; height: 70px; transform: translateX(35px) rotateY(90deg); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+.steel-inner-top    { width: 70px; height: 70px; transform: translateY(-35px) rotateX(90deg); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+.steel-inner-bottom { width: 70px; height: 70px; transform: translateY(35px) rotateX(-90deg); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); }
+
+/* Atom nodes */
+.steel-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 40%, #888);
+  box-shadow: 0 0 12px rgba(218, 18, 18, 0.5), 0 0 4px rgba(255,255,255,0.6);
+}
+
+.steel-node-center {
+  width: 14px;
+  height: 14px;
+  margin: -7px;
+  background: radial-gradient(circle, #fff 30%, #DA1212 80%);
+  box-shadow: 0 0 20px rgba(218, 18, 18, 0.7), 0 0 6px rgba(255,255,255,0.8);
+}
+
+
+/* ─── 02 / CARBON FIBER PLATES ─── */
+.carbon-stack {
+  position: relative;
+  transform-style: preserve-3d;
+  width: 160px;
+  height: 160px;
+}
+
+.carbon-plate {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  transform-style: preserve-3d;
+}
+
+.carbon-plate-1 { transform: translateY(20px); }
+.carbon-plate-2 { transform: translateY(0px); }
+.carbon-plate-3 { transform: translateY(-20px); }
+
+.carbon-plate-face {
+  position: absolute;
+  backface-visibility: visible;
+}
+
+/* Plate faces — 160×160, 12px thick */
+.carbon-plate .carbon-plate-top    { width: 160px; height: 160px; transform: translateZ(6px); }
+.carbon-plate .carbon-plate-bottom { width: 160px; height: 160px; transform: translateZ(-6px) rotateY(180deg); background: #111; }
+.carbon-plate .carbon-plate-front  { width: 160px; height: 12px; transform: translateY(74px) translateZ(0px) rotateX(-90deg); background: linear-gradient(90deg, #1a1a1a, #333, #1a1a1a); }
+.carbon-plate .carbon-plate-back   { width: 160px; height: 12px; transform: translateY(-74px) translateZ(0px) rotateX(90deg); background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a); }
+.carbon-plate .carbon-plate-right  { width: 12px; height: 160px; transform: translateX(74px) rotateY(90deg); background: linear-gradient(180deg, #222, #333, #222); }
+.carbon-plate .carbon-plate-left   { width: 12px; height: 160px; transform: translateX(-74px) rotateY(-90deg); background: linear-gradient(180deg, #1a1a1a, #2a2a2a, #1a1a1a); }
+
+/* Woven carbon fiber texture */
+.carbon-weave-texture {
+  background:
+    repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 0 0 / 20px 20px,
+    #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.carbon-plate-1 .carbon-weave-texture { opacity: 0.7; }
+.carbon-plate-2 .carbon-weave-texture { opacity: 0.85; }
+.carbon-plate-3 .carbon-weave-texture { opacity: 1; border-color: rgba(218,18,18,0.2); }
+
+
+/* ─── 03 / SOLAR PV CELL LAYERS ─── */
+.solar-stack {
+  position: relative;
+  transform-style: preserve-3d;
+  width: 160px;
+  height: 20px;
+}
+
+.solar-layer {
+  position: absolute;
+  width: 160px;
+  transform-style: preserve-3d;
+}
+
+.solar-layer-face {
+  position: absolute;
+  backface-visibility: visible;
+}
+
+/* Glass — translucent blue */
+.solar-glass { height: 14px; }
+.solar-glass .solar-layer-top    { width: 160px; height: 160px; transform: translateZ(7px); background: rgba(100, 180, 255, 0.12); border: 1px solid rgba(255,255,255,0.25); }
+.solar-glass .solar-layer-front  { width: 160px; height: 14px; transform: translateY(73px) rotateX(-90deg); background: rgba(100, 180, 255, 0.08); border-bottom: 1px solid rgba(255,255,255,0.15); }
+.solar-glass .solar-layer-right  { width: 14px; height: 160px; transform: translateX(73px) rotateY(90deg); background: rgba(100, 180, 255, 0.06); }
+
+/* Grid — silver */
+.solar-grid { height: 8px; }
+.solar-grid .solar-layer-top     { width: 160px; height: 160px; transform: translateZ(4px); background: rgba(200, 200, 220, 0.15); border: 1px solid rgba(255,255,255,0.12); }
+.solar-grid .solar-layer-front   { width: 160px; height: 8px; transform: translateY(76px) rotateX(-90deg); background: rgba(200, 200, 220, 0.1); }
+.solar-grid .solar-layer-right   { width: 8px; height: 160px; transform: translateX(76px) rotateY(90deg); background: rgba(200, 200, 220, 0.08); }
+
+.solar-grid-lines {
+  position: absolute;
+  top: 0; left: 0;
+  width: 160px; height: 160px;
+  transform: translateZ(5px);
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(230,230,250,0.3) 19px, rgba(230,230,250,0.3) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(230,230,250,0.5) 39px, rgba(230,230,250,0.5) 41px);
+}
+
+/* PV Cell — deep blue */
+.solar-pv { height: 16px; }
+.solar-pv .solar-layer-top       { width: 160px; height: 160px; transform: translateZ(8px); background: linear-gradient(135deg, #041562, #2D63FF); border: 1px solid rgba(45,99,255,0.3); }
+.solar-pv .solar-layer-front     { width: 160px; height: 16px; transform: translateY(72px) rotateX(-90deg); background: linear-gradient(180deg, #2D63FF, #041562); }
+.solar-pv .solar-layer-right     { width: 16px; height: 160px; transform: translateX(72px) rotateY(90deg); background: linear-gradient(180deg, #1a3dbf, #041562); }
+
+/* Backsheet — dark */
+.solar-back { height: 10px; }
+.solar-back .solar-layer-top     { width: 160px; height: 160px; transform: translateZ(5px); background: #1a1a2e; border: 1px solid rgba(255,255,255,0.08); }
+.solar-back .solar-layer-front   { width: 160px; height: 10px; transform: translateY(75px) rotateX(-90deg); background: #151525; }
+.solar-back .solar-layer-right   { width: 10px; height: 160px; transform: translateX(75px) rotateY(90deg); background: #121222; }
+
+.solar-label {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%) translateZ(5px);
+  font-size: 9px;
+  font-family: monospace;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+}
+
+
+/* ─── 04 / POLYMER-WOOD COMPOSITE ─── */
+.poly-stack {
+  position: relative;
+  transform-style: preserve-3d;
+  width: 180px;
+  height: 30px;
+}
+
+.poly-layer {
+  position: absolute;
+  width: 180px;
+  transform-style: preserve-3d;
+}
+
+.poly-face {
+  position: absolute;
+  backface-visibility: visible;
+}
+
+/* Wood Surface — warm brown, 22px thick */
+.poly-wood { height: 22px; }
+.poly-wood .poly-face-top    { width: 180px; height: 180px; transform: translateZ(11px); background: linear-gradient(135deg, #8b5e3c, #cd9b6a, #8b5e3c); border: 1px solid rgba(205,155,106,0.3); }
+.poly-wood .poly-face-bottom { width: 180px; height: 180px; transform: translateZ(-11px) rotateY(180deg); background: #6b4226; }
+.poly-wood .poly-face-front  { width: 180px; height: 22px; transform: translateY(79px) rotateX(-90deg); background: linear-gradient(90deg, #7a4f30, #a07050, #7a4f30); }
+.poly-wood .poly-face-back   { width: 180px; height: 22px; transform: translateY(-79px) rotateX(90deg); background: linear-gradient(90deg, #6b4226, #8b5e3c, #6b4226); }
+.poly-wood .poly-face-right  { width: 22px; height: 180px; transform: translateX(79px) rotateY(90deg); background: linear-gradient(180deg, #8b5e3c, #6b4226); }
+.poly-wood .poly-face-left   { width: 22px; height: 180px; transform: translateX(-79px) rotateY(-90deg); background: linear-gradient(180deg, #7a4f30, #5c3d1e); }
+
+/* Adhesive — dark amber, 10px thick */
+.poly-adhesive { height: 10px; }
+.poly-adhesive .poly-face-top    { width: 180px; height: 180px; transform: translateZ(5px); background: #6b4226; opacity: 0.8; border: 1px solid rgba(107,66,38,0.4); }
+.poly-adhesive .poly-face-bottom { width: 180px; height: 180px; transform: translateZ(-5px) rotateY(180deg); background: #5c3d1e; }
+.poly-adhesive .poly-face-front  { width: 180px; height: 10px; transform: translateY(85px) rotateX(-90deg); background: #5c3418; }
+.poly-adhesive .poly-face-back   { width: 180px; height: 10px; transform: translateY(-85px) rotateX(90deg); background: #4d2c12; }
+.poly-adhesive .poly-face-right  { width: 10px; height: 180px; transform: translateX(85px) rotateY(90deg); background: #5c3d1e; }
+.poly-adhesive .poly-face-left   { width: 10px; height: 180px; transform: translateX(-85px) rotateY(-90deg); background: #4d2c12; }
+
+/* Polymer Core — dark brown with visible fiber strands, 26px thick */
+.poly-core { height: 26px; }
+.poly-core .poly-face-top    { width: 180px; height: 180px; transform: translateZ(13px); background: linear-gradient(180deg, #3a2510, #5c3d1e); border: 1px solid rgba(92,61,30,0.4); }
+.poly-core .poly-face-bottom { width: 180px; height: 180px; transform: translateZ(-13px) rotateY(180deg); background: #2a1a0a; }
+.poly-core .poly-face-front  { width: 180px; height: 26px; transform: translateY(77px) rotateX(-90deg); background: linear-gradient(90deg, #3a2510, #4d2c12, #3a2510); }
+.poly-core .poly-face-back   { width: 180px; height: 26px; transform: translateY(-77px) rotateX(90deg); background: #2a1a0a; }
+.poly-core .poly-face-right  { width: 26px; height: 180px; transform: translateX(77px) rotateY(90deg); background: linear-gradient(180deg, #3a2510, #2a1a0a); }
+.poly-core .poly-face-left   { width: 26px; height: 180px; transform: translateX(-77px) rotateY(-90deg); background: #2a1a0a; }
+
+/* Visible polymer fibers on the top face */
+.poly-fibers {
+  position: absolute;
+  top: 0; left: 0;
+  width: 180px; height: 180px;
+  transform: translateZ(14px);
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 11px, rgba(168, 120, 67, 0.2) 11px, rgba(168, 120, 67, 0.2) 13px);
+}
+
+.poly-label {
+  position: absolute;
+  right: -95px;
+  top: 50%;
+  transform: translateY(-50%) translateZ(5px);
+  font-size: 9px;
+  font-family: monospace;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+}
+
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .mat3d-scene { min-height: 250px; }
+  .steel-cube { transform: scale(0.8); }
+  .carbon-stack { transform: scale(0.75); }
+  .solar-stack { transform: scale(0.75); }
+  .poly-stack { transform: scale(0.75); }
+  .solar-label, .poly-label { display: none; }
+}
+
+@media (max-width: 640px) {
+  .mat3d-scene { min-height: 200px; }
+  .steel-cube { transform: scale(0.6); }
+  .carbon-stack { transform: scale(0.6); }
+  .solar-stack { transform: scale(0.6); }
+  .poly-stack { transform: scale(0.6); }
+}

@@ -1,0 +1,107 @@
+.products-gallery-premium {
+  padding: 160px var(--container-padding, 48px);
+  position: relative;
+  z-index: 2;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.products-gallery-header {
+  text-align: left;
+  margin-bottom: 80px;
+  max-width: 800px;
+}
+
+.products-gallery-header h2 em {
+  color: var(--accent-red, #DA1212);
+  font-style: italic;
+}
+
+.products-gallery-masonry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 400px;
+  gap: 24px;
+}
+
+.gallery-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  cursor: pointer;
+  background: #000;
+}
+
+.gallery-card.large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.gallery-card.small {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.gallery-card-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(80%) brightness(0.5);
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), filter 1s ease;
+  transform: scale(1.02);
+}
+
+.gallery-card:hover .gallery-card-bg {
+  transform: scale(1.08);
+  filter: grayscale(0%) brightness(0.8);
+}
+
+.gallery-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
+}
+
+.gallery-card-content h3 {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(24px, 3vw, 36px);
+  color: #fff;
+  margin-bottom: 8px;
+  transform: translateY(20px);
+  opacity: 0.8;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-card-content span {
+  font-size: 14px;
+  color: var(--accent-red, #DA1212);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transform: translateY(20px);
+  opacity: 0.6;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  display: block;
+}
+
+.gallery-card:hover .gallery-card-content h3,
+.gallery-card:hover .gallery-card-content span {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .products-gallery-masonry {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 350px;
+  }
+  .gallery-card.large, .gallery-card.small {
+    grid-column: 1 / -1;
+    grid-row: span 1;
+  }
+}

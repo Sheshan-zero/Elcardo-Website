@@ -1,0 +1,90 @@
+/* ============================================================
+   PROJECTS PREVIEW — Clean Asymmetric Grid
+   ============================================================ */
+.cp-projects {
+  background: var(--white);
+  padding: var(--section-padding) var(--container-padding);
+}
+
+.cp-projects__header {
+  margin-bottom: 80px;
+  max-width: 800px;
+}
+
+.cp-projects__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+/* ─── Cards ─── */
+.cp-project-card {
+  display: flex;
+  flex-direction: column;
+  group: hover;
+}
+
+.cp-project-card--large {
+  grid-column: span 2;
+}
+
+.cp-project-card__image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-light);
+  margin-bottom: 24px;
+}
+
+.cp-project-card--large .cp-project-card__image {
+  aspect-ratio: 21/9;
+}
+
+.cp-project-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cp-project-card:hover .cp-project-card__image img {
+  transform: scale(1.05); /* replace the intense scale with a tasteful one */
+}
+
+.cp-project-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.5vw, 36px);
+  font-weight: 500;
+  margin: 12px 0;
+  line-height: 1.2;
+}
+
+.cp-project-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.dot {
+  font-size: 10px;
+  color: var(--border-light);
+}
+
+@media (max-width: 1024px) {
+  .cp-projects__grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .cp-project-card--large {
+    grid-column: span 1;
+  }
+
+  .cp-project-card--large .cp-project-card__image {
+    aspect-ratio: 16/9;
+  }
+}

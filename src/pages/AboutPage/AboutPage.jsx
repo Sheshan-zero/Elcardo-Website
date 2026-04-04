@@ -1,5 +1,5 @@
-import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { useScroll, motion, useTransform } from 'framer-motion';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
+import { useScroll, motion, useSpring } from 'framer-motion';
 import SmoothScroll from '../../components/SmoothScroll';
 import CustomCursor from '../../components/CustomCursor';
 import Navbar from '../../components/Navbar';
@@ -7,15 +7,15 @@ import Footer from '../../components/Footer';
 
 import './AboutPage.css';
 
-/* ─── Lazy load sections ─── */
 const AboutHero = lazy(() => import('./AboutHero'));
-const AboutStory = lazy(() => import('./AboutStory'));
+const AboutIntro = lazy(() => import('./AboutIntro'));
 const AboutTimeline = lazy(() => import('./AboutTimeline'));
-const AboutBusinesses = lazy(() => import('./AboutBusinesses'));
-const AboutVisionMission = lazy(() => import('./AboutVisionMission'));
-const AboutValues = lazy(() => import('./AboutValues'));
-const AboutImpact = lazy(() => import('./AboutImpact'));
-const AboutTeam = lazy(() => import('./AboutTeam'));
+const AboutExpansion = lazy(() => import('./AboutExpansion'));
+const AboutFoundations = lazy(() => import('./AboutFoundations'));
+const AboutCinematic = lazy(() => import('./AboutCinematic'));
+const AboutLeadership = lazy(() => import('./AboutLeadership'));
+const AboutVision = lazy(() => import('./AboutVision'));
+const AboutToday = lazy(() => import('./AboutToday'));
 const AboutCTA = lazy(() => import('./AboutCTA'));
 
 function SectionLoader() {
@@ -28,23 +28,17 @@ function SectionLoader() {
 
 export default function AboutPage() {
   const containerRef = useRef(null);
-  
-  // Apple-style smooth background color transition based on scroll progress
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ['start start', 'end end'],
   });
 
-  // Interpolate between dark premium colors mapping to the timeline/industries
-  // 0% -> Industrial Black (#050505)
-  // 30% -> Deep Solar Blue (#020a14)
-  // 60% -> Automotive Graphite (#101115)
-  // 90% -> Hospitality Warm Dark (#110e08)
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [0, 0.3, 0.6, 0.9],
-    ['#050505', '#020a14', '#101115', '#110e08']
-  );
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -54,25 +48,27 @@ export default function AboutPage() {
     <SmoothScroll>
       <CustomCursor />
       <Navbar />
-      
-      <motion.main 
-        ref={containerRef} 
-        className="about-page-main"
-        style={{ backgroundColor }}
-      >
+
+      <motion.div
+        className="about-scroll-progress"
+        style={{ scaleX }}
+      />
+
+      <main ref={containerRef} className="about-page-main">
         <Suspense fallback={<SectionLoader />}>
           <AboutHero />
-          <AboutStory />
+          <AboutIntro />
           <AboutTimeline />
-          <AboutBusinesses />
-          <AboutVisionMission />
-          <AboutValues />
-          <AboutImpact />
-          <AboutTeam />
+          <AboutExpansion />
+          <AboutFoundations />
+          <AboutCinematic />
+          <AboutLeadership />
+          <AboutVision />
+          <AboutToday />
           <AboutCTA />
         </Suspense>
-      </motion.main>
-      
+      </main>
+
       <Footer />
     </SmoothScroll>
   );

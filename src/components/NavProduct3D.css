@@ -1,0 +1,334 @@
+/* ============================================================
+   NAVBAR MEGA DROPDOWN 3D MODELS (REALISTIC HIGH-FIDELITY)
+   ============================================================ */
+
+.np3d-scene {
+  perspective: 800px; /* Deeper perspective for realism */
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.np3d-scene * {
+  transform-style: preserve-3d;
+}
+
+/* ─── Base Rotators ─── */
+.np3d-gate-rotator,
+.np3d-solar-rotator,
+.np3d-battery-rotator,
+.np3d-steel-rotator,
+.np3d-roof-rotator,
+.np3d-wood-rotator {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Drop shadow for the entire object to float realistically */
+  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.4)) drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+}
+
+.mega-product-card:hover .np3d-scene > div {
+  transform: translateY(-5px) rotateX(25deg) rotateY(35deg) scale(1.15);
+  filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5)) drop-shadow(0 10px 10px rgba(0,0,0,0.6));
+}
+
+/* Common active faces */
+.np3d-plate-face,
+.np3d-roof-face,
+.np3d-plank-face,
+.np3d-solar-face,
+.np3d-bat-face {
+  position: absolute;
+  backface-visibility: hidden; /* Hide backfaces for cleaner render */
+  box-sizing: border-box;
+}
+
+/* ─── 01 / ROLLER GATE ─── */
+/* Realistic brushed aluminum shutter with overlapping slats */
+.np3d-gate-frame {
+  position: absolute;
+  top: -10px; left: 0;
+  width: 70px; height: 90px;
+}
+.np3d-gate-frame-left,
+.np3d-gate-frame-right {
+  position: absolute;
+  width: 6px; height: 100%;
+  background: linear-gradient(90deg, #333 0%, #555 20%, #888 50%, #444 80%, #222 100%);
+  transform: translateZ(6px);
+  border-radius: 1px;
+}
+.np3d-gate-frame-right { right: 0; background: linear-gradient(90deg, #222 0%, #444 20%, #888 50%, #555 80%, #333 100%); }
+.np3d-gate-frame-top {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 20px;
+  background: linear-gradient(180deg, #444 0%, #777 30%, #999 50%, #555 80%, #222 100%);
+  transform: translateZ(10px) rotateX(5deg);
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.8);
+  border-bottom: 1px solid #111;
+}
+
+.np3d-gate-slat {
+  position: absolute;
+  left: 6px;
+  width: 58px;
+  height: 12px;
+  /* Realistic curved slat reflection */
+  background: linear-gradient(180deg, 
+      #ccc 0%, 
+      #fefefe 15%, 
+      #a0a0a0 50%, 
+      #888 85%, 
+      #333 100%);
+  border-bottom: 2px solid #222;
+  transform-origin: top;
+  animation: slatRoll 5s infinite ease-in-out alternate;
+}
+
+@keyframes slatRoll {
+  0% { transform: translateZ(3px) rotateX(-5deg); }
+  100% { transform: translateZ(3px) rotateX(10deg); }
+}
+
+/* ─── 02 / SOLAR PANELS ─── */
+/* Realistic iridescent solar cells with silver frames */
+.np3d-solar-rotator {
+  transform: rotateX(45deg) rotateY(-20deg) rotateZ(-10deg);
+}
+.np3d-solar-panel {
+  position: absolute;
+  top: calc(var(--row) * 24px);
+  left: 5px;
+  width: 60px;
+  height: 22px;
+  transform: translateZ(calc(var(--row) * 8px));
+  box-shadow: -5px 10px 10px rgba(0,0,0,0.6);
+}
+.np3d-solar-face-top {
+  width: 100%; height: 100%;
+  /* Deep purple/blue solar cell gradient */
+  background: linear-gradient(135deg, #09133a 0%, #17387d 40%, #0c2057 70%, #1e4599 100%);
+  border: 1px solid #c0c0c0; /* Silver frame */
+  transform: translateZ(2px);
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.8); /* Inner shadow for depth */
+}
+/* White grid on top of the blue cells */
+.np3d-solar-grid {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  transform: translateZ(3px);
+  background: 
+    repeating-linear-gradient(90deg, transparent, transparent 13px, rgba(230,230,250,0.7) 13px, rgba(230,230,250,0.7) 14px),
+    repeating-linear-gradient(0deg, transparent, transparent 6px, rgba(230,230,250,0.4) 6px, rgba(230,230,250,0.4) 7px);
+  /* Glass reflection */
+  background-image: linear-gradient(115deg, rgba(255,255,255,0.4) 0%, transparent 30%, transparent 100%),
+                    repeating-linear-gradient(90deg, transparent, transparent 13px, rgba(230,230,250,0.7) 13px, rgba(230,230,250,0.7) 14px),
+                    repeating-linear-gradient(0deg, transparent, transparent 6px, rgba(230,230,250,0.4) 6px, rgba(230,230,250,0.4) 7px);
+}
+
+.np3d-solar-face-front {
+  width: 60px; height: 4px;
+  background: linear-gradient(90deg, #777, #ccc, #777); /* Silver edge */
+  transform: translateY(20px) rotateX(-90deg);
+  border-bottom: 1px solid #111;
+}
+.np3d-solar-face-right {
+  width: 4px; height: 22px;
+  background: linear-gradient(180deg, #ccc, #555);
+  transform: translateX(58px) rotateY(90deg);
+}
+.np3d-solar-mount {
+  position: absolute;
+  top: 15px; left: 15px;
+  width: 40px; height: 50px;
+  background: linear-gradient(135deg, #111, #333);
+  transform: translateZ(-10px);
+  border: 1px solid #444;
+  box-shadow: inset 0 0 10px #000;
+}
+
+
+/* ─── 03 / BATTERY ─── */
+/* Sleek matte black monolithic design (like Tesla Powerwall or industrial pack) */
+.np3d-battery-rotator {
+  transform: rotateX(-15deg) rotateY(20deg);
+}
+.np3d-battery-body {
+  position: absolute;
+  width: 44px; height: 75px;
+  top: 50%; left: 50%; margin: -37.5px 0 0 -22px;
+}
+.np3d-bat-front { 
+  width:44px; height:75px; transform:translateZ(14px); 
+  background: linear-gradient(135deg, #2a2a2e 0%, #121214 100%); 
+  border: 1px solid #3d3d42; 
+  border-radius: 3px; 
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+/* Side plates with ventilation lines */
+.np3d-bat-left  { 
+  width:28px; height:75px; transform:translateX(-14px) rotateY(-90deg); 
+  background: linear-gradient(180deg, #1f1f22, #0d0d0f); 
+  border: 1px solid #3d3d42; border-radius: 3px;
+  background-image: repeating-linear-gradient(180deg, transparent, transparent 4px, rgba(0,0,0,0.8) 4px, rgba(0,0,0,0.8) 6px);
+}
+.np3d-bat-right { 
+  width:28px; height:75px; transform:translateX(30px) rotateY(90deg); 
+  background: linear-gradient(180deg, #303035, #111114); 
+  border: 1px solid #48484e; border-radius: 3px;
+  background-image: repeating-linear-gradient(180deg, transparent, transparent 4px, rgba(0,0,0,0.8) 4px, rgba(0,0,0,0.8) 6px);
+}
+.np3d-bat-top   { 
+  width:44px; height:28px; transform:translateY(-14px) rotateX(90deg); 
+  background: #3d3d42; border-radius: 3px; border: 1px solid #555;
+}
+.np3d-bat-led {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #00ff41; 
+  box-shadow: 0 0 8px #00ff41, 0 0 15px #00ff41;
+  transform: translateZ(15px);
+}
+.np3d-bat-bars {
+  position: absolute;
+  top: 30px; left: 12px;
+  display: flex; gap: 4px;
+  transform: translateZ(15px);
+}
+.np3d-bar { 
+  width: 4px; height: 14px; 
+  background: #DA1212; 
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(218, 18, 18, 0.6);
+}
+.np3d-bat-terminal {
+  position: absolute;
+  top: -8px; left: 12px;
+  width: 20px; height: 8px;
+  background: linear-gradient(90deg, #999, #eee, #aaa);
+  border: 1px solid #555;
+  border-radius: 4px 4px 0 0;
+  transform: translateZ(0px);
+}
+
+/* ─── 04 / STEEL I-BEAM ─── */
+/* Heavy industrial steel with strong specular reflections */
+.np3d-steel-rotator {
+  transform: rotateX(25deg) rotateY(-35deg) rotateZ(-15deg);
+}
+.np3d-ibeam {
+  position: absolute;
+  width: 70px; height: 70px;
+}
+.np3d-flange { position: absolute; width: 70px; height: 10px; }
+.np3d-flange-top { top: 0; }
+.np3d-flange-bottom { bottom: 0; }
+
+/* Metallic gradients rendering realistic cast iron / milled steel */
+.np3d-flange .np3d-plate-top    { 
+  width:70px; height:36px; transform:translateZ(18px); 
+  background: linear-gradient(135deg, #8b9298 0%, #b8c0c8 30%, #575e65 70%, #2a2e33 100%); 
+  border: 1px solid #888;
+}
+.np3d-flange .np3d-plate-front  { 
+  width:70px; height:10px; transform:translateY(13px) rotateX(-90deg); 
+  background: linear-gradient(90deg, #444, #999, #777, #333); 
+  border-bottom: 2px solid #222;
+}
+.np3d-flange .np3d-plate-right  { 
+  width:36px; height:10px; transform:translateX(52px) rotateY(90deg); 
+  background: linear-gradient(180deg, #aaa, #333); 
+}
+
+.np3d-web {
+  position: absolute;
+  top: 10px; left: 30px; /* (70 - 10) / 2 */
+  width: 10px; height: 50px; 
+}
+.np3d-web-front { 
+  width:10px; height:50px; transform:translateZ(18px); 
+  background: linear-gradient(90deg, #1a1c20 0%, #4a4f56 50%, #1a1c20 100%); 
+}
+.np3d-web-right { 
+  width:36px; height:50px; transform:translateX(5px) rotateY(90deg); 
+  background: linear-gradient(180deg, #333 0%, #555 20%, #222 80%, #111 100%); 
+  /* Faint vertical milling lines */
+  background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+}
+
+/* ─── 05 / ROOFING ─── */
+/* Angular standing seam industrial roof with metallic dark grey paint */
+.np3d-roof-rotator {
+  transform: rotateX(45deg) rotateZ(15deg);
+}
+.np3d-roof-panel {
+  position: absolute;
+  top: 0; left: calc(var(--idx) * 16px);
+  width: 16px; height: 70px;
+}
+.np3d-roof-top { 
+  width:16px; height:70px; transform:translateZ(4px); 
+  background: linear-gradient(100deg, #2b3036 0%, #5c646c 40%, #1f2327 100%); 
+  border-left: 1px solid rgba(255,255,255,0.15); 
+}
+.np3d-roof-front { 
+  width:16px; height:6px; transform:translateY(67px) rotateX(-90deg); 
+  background: #111; 
+  border-top: 1px solid #444;
+}
+.np3d-roof-right { 
+  width:6px; height:70px; transform:translateX(13px) rotateY(90deg); 
+  background: linear-gradient(180deg, #444, #111); 
+}
+.np3d-roof-seam {
+  position: absolute; top:0; left: -2px;
+  width: 4px; height: 70px;
+  background: linear-gradient(90deg, #5c646c 0%, #8ca0ad 40%, #1f2327 100%);
+  transform: translateZ(8px);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.8);
+}
+
+/* ─── 06 / WOOD DECKING ─── */
+/* Rich mahogany/teak composite decking with wood grain simulation */
+.np3d-wood-rotator {
+  transform: rotateX(45deg) rotateZ(-20deg);
+}
+.np3d-wood-plank {
+  position: absolute;
+  top: 0; left: calc(var(--idx) * 14px); /* Larger gap */
+  width: 12px; height: 70px;
+}
+.np3d-plank-top { 
+  width:12px; height:70px; transform:translateZ(6px); 
+  background-color: #63361e;
+  /* Complex gradients to simulate realistic dark wood grain */
+  background-image: 
+    repeating-linear-gradient(170deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 6px),
+    linear-gradient(135deg, #502812 0%, #824b2f 40%, #45210e 80%, #63361e 100%);
+  border: 1px solid #2a1408; 
+  border-radius: 1px;
+}
+.np3d-plank-front { 
+  width:12px; height:8px; transform:translateY(66px) rotateX(-90deg); 
+  background: #2a1408; 
+}
+.np3d-plank-right { 
+  width:8px; height:70px; transform:translateX(8px) rotateY(90deg); 
+  background: #45210e; 
+}
+
+.np3d-wood-support {
+  position: absolute;
+  width: 70px; height: 12px; left: 0;
+  background: #1f0f06;
+  transform: translateZ(-2px);
+  box-shadow: inset 0 2px 5px #000;
+}
+.np3d-wood-support-1 { top: 10px; }
+.np3d-wood-support-2 { top: 50px; }
