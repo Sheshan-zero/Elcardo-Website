@@ -1,117 +1,71 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { fadeUp, defaultViewport } from '../../utils/motionVariantsNew';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { companies } from '../../data/companiesData';
 import './CompanySelector.css';
 
-/* ─── Buttery smooth panel crossfade ─── */
-const smoothPanel = {
-  hidden: { opacity: 0, scale: 0.98 },
-  visible: { 
-    opacity: 1, 
-    scale: 1, 
-    transition: { 
-      duration: 0.8, 
-      ease: [0.25, 1, 0.5, 1] 
-    } 
-  },
-  exit: { 
-    opacity: 0, 
-    scale: 1.02, 
-    transition: { 
-      duration: 0.4, 
-      ease: [0.25, 1, 0.5, 1] 
-    } 
-  }
-};
+const statements = [
+  { company: 'Elcardo Industries', word: 'Precision' },
+  { company: 'Elme Battery', word: 'Power' },
+  { company: 'Anilad Hotels', word: 'Hospitality' },
+  { company: 'Pantry Cupboards', word: 'Function' },
+  { company: 'Vehicle Modification', word: 'Motion' },
+];
 
-export default function CompanySelector() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const active = companies[activeIdx];
+function StatementSlide({ item, index, total, scrollYProgress }) {
+  const step = 1 / total;
+  const start = index * step;
+  const end = (index + 1) * step;
+
+  const opacity = useTransform(scrollYProgress, [
+    start, start + step * 0.15,
+    start + step * 0.5,
+    end - step * 0.15, end,
+  ], [0, 1, 1, 1, 0]);
+
+  const y = useTransform(scrollYProgress, [start, start + step * 0.2], [40, 0]);
+  const blurVal = useTransform(scrollYProgress, [start, start + step * 0.15], [6, 0]);
+  const filterStr = useTransform(blurVal, (v) => `blur(${v}px)`);
 
   return (
-    <section className="cp-selector">
-      <div className="cp-selector__header">
-        <motion.h2 
-          className="display-lg text-on-dark text-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={defaultViewport}
-          variants={fadeUp}
-        >
-          Explore by Sector
-        </motion.h2>
-      </div>
+    <motion.div className="cpds-slide" style={{ opacity, y, filter: filterStr }}>
+      <p className="cpds-company">{item.company}</p>
+      <h2 className="cpds-word">{item.word}</h2>
+      <div className="cpds-line" />
+    </motion.div>
+  );
+}
 
-      <div className="cp-selector__container">
-        {/* Tab List */}
-        <div className="cp-selector__tabs">
-          {companies.map((company, i) => {
-            const isActive = i === activeIdx;
-            return (
-              <button
-                key={company.id}
-                className={`cp-tab ${isActive ? 'is-active' : ''}`}
-                onClick={() => setActiveIdx(i)}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="selector-highlight"
-                    className="cp-tab__bg"
-                    initial={false}
-                    transition={{ 
-                      type: "tween", 
-                      duration: 0.5, 
-                      ease: [0.25, 1, 0.5, 1] 
-                    }}
-                    style={{ borderLeftColor: company.theme.accent }}
-                  />
-                )}
-                <span className="cp-tab__name">{company.name}</span>
-                <span className="cp-tab__sector">{company.sector}</span>
-              </button>
-            );
-          })}
+export default function CompanySelector() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end end'],
+  });
+
+  return (
+    <section className="cpds" ref={ref} style={{ height: `${(statements.length + 1) * 100}vh` }}>
+      <div className="cpds-sticky">
+        {/* Subtle animated background lines */}
+        <div className="cpds-bg-lines" aria-hidden="true">
+          {[...Array(5)].map((_, i) => (
+            <motion.div key={i} className="cpds-bg-line"
+              style={{
+                top: `${20 + i * 15}%`,
+                opacity: useTransform(scrollYProgress, [0, 1], [0.02, 0.05]),
+              }}
+            />
+          ))}
         </div>
 
-        {/* Tab Content */}
-        <div className="cp-selector__content">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active.id}
-              className="cp-selector__panel"
-              variants={smoothPanel}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <div 
-                className="cp-selector__accent-bar" 
-                style={{ backgroundColor: active.theme.accent }} 
-              />
-              
-              <div className="cp-selector__panel-text">
-                <h3 className="display-md text-on-dark">
-                  {active.name}
-                </h3>
-                <p className="body-md text-muted">
-                  {active.description}
-                </p>
-                <a 
-                  href={active.ctaLink} 
-                  className="cp-selector__link" 
-                  style={{ color: active.theme.accent }}
-                >
-                  Learn More <span>&rarr;</span>
-                </a>
-              </div>
-              
-              <div className="cp-selector__panel-image">
-                <img src={active.image} alt={active.name} />
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        {statements.map((item, i) => (
+          <StatementSlide
+            key={item.word}
+            item={item}
+            index={i}
+            total={statements.length}
+            scrollYProgress={scrollYProgress}
+          />
+        ))}
       </div>
     </section>
   );

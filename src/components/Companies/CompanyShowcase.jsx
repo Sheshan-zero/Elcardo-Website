@@ -1,79 +1,142 @@
-import { motion } from 'framer-motion';
-import { fadeUp, defaultViewport } from '../../utils/motionVariantsNew';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { companies } from '../../data/companiesData';
 import { Link } from 'react-router-dom';
 import './CompanyShowcase.css';
 
+const ease = [0.16, 1, 0.3, 1];
+
 export default function CompanyShowcase() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  /* Determine which company is active (0–4) based on scroll */
+  const totalCompanies = companies.length;
+
   return (
-    <section className="cp-showcase" id="divisions">
-      {companies.map((company, index) => {
-        const isReversed = index % 2 !== 0;
+    <section
+      className="cps"
+      ref={sectionRef}
+      id="divisions"
+      style={{ height: `${(totalCompanies + 1) * 100}vh` }}
+    >
+      <div className="cps-sticky">
+        {/* LEFT: Sticky text that updates per company */}
+        <div className="cps-left">
+          {companies.map((company, i) => (
+            <CompanyText
+              key={company.id}
+              company={company}
+              index={i}
+              total={totalCompanies}
+              scrollYProgress={scrollYProgress}
+            />
+          ))}
+        </div>
 
-        return (
-          <div 
-            key={company.id} 
-            className={`showcase-row ${isReversed ? 'showcase-row--reversed' : ''}`}
-            data-section={company.index} /* Keep old anchor IDs mapped to roman chapters */
-          >
-            {/* Image Side */}
-            <motion.div 
-              className="showcase-row__visual"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
-            >
-              <div className="showcase-row__image-wrapper">
-                <img src={company.image} alt={company.name} loading="lazy" />
-                <div 
-                  className="showcase-row__accent" 
-                  style={{ backgroundColor: company.theme.accent }}
-                />
-              </div>
-            </motion.div>
+        {/* RIGHT: Images that crossfade */}
+        <div className="cps-right">
+          {companies.map((company, i) => (
+            <CompanyImage
+              key={company.id}
+              company={company}
+              index={i}
+              total={totalCompanies}
+              scrollYProgress={scrollYProgress}
+            />
+          ))}
 
-            {/* Content Side */}
-            <motion.div 
-              className="showcase-row__content"
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              variants={fadeUp}
-            >
-              <div className="showcase-row__header">
-                <span className="label-text" style={{ color: company.theme.accent }}>
-                  {company.sector}
-                </span>
-                <span className="showcase-row__number">{company.index}</span>
-              </div>
-              
-              <h2 className="display-md showcase-row__title">{company.name}</h2>
-              <p className="body-md text-muted showcase-row__desc">
-                {company.description}
-              </p>
-
-              <div className="showcase-row__stats">
-                <div className="stat-box">
-                  <span className="stat-box__val" style={{ color: company.theme.accent }}>{company.stats.metric1}</span>
-                  <span className="stat-box__lbl">{company.stats.label1}</span>
-                </div>
-                <div className="stat-box">
-                  <span className="stat-box__val" style={{ color: company.theme.accent }}>{company.stats.metric2}</span>
-                  <span className="stat-box__lbl">{company.stats.label2}</span>
-                </div>
-              </div>
-
-              <Link to={company.ctaLink} className="cp-link">
-                Explore Solutions
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </Link>
-            </motion.div>
+          {/* Scroll progress bar */}
+          <div className="cps-progress">
+            <motion.div
+              className="cps-progress-fill"
+              style={{ scaleY: scrollYProgress }}
+            />
           </div>
-        );
-      })}
+        </div>
+      </div>
     </section>
+  );
+}
+
+/* ─── Text block for each company ─── */
+function CompanyText({ company, index, total, scrollYProgress }) {
+  const step = 1 / total;
+  const start = index * step;
+  const end = (index + 1) * step;
+  const mid = start + step * 0.5;
+
+  const opacity = useTransform(scrollYProgress, [
+    start, start + step * 0.15,
+    mid,
+    end - step * 0.15, end,
+  ], [0, 1, 1, 1, 0]);
+
+  const y = useTransform(scrollYProgress, [start, start + step * 0.2], [30, 0]);
+
+  return (
+    <motion.div className="cps-text-block" style={{ opacity, y }}>
+      <div className="cps-meta">
+        <span className="cps-index">{company.index}</span>
+        <span className="cps-sector" style={{ color: company.theme.accent }}>
+          {company.sector}
+        </span>
+      </div>
+      <h2 className="cps-name">{company.name}</h2>
+      <p className="cps-desc">{company.description}</p>
+      <div className="cps-stats">
+        <div className="cps-stat">
+          <span className="cps-stat-val" style={{ color: company.theme.accent }}>{company.stats.metric1}</span>
+          <span className="cps-stat-lbl">{company.stats.label1}</span>
+        </div>
+        <div className="cps-stat-div" />
+        <div className="cps-stat">
+          <span className="cps-stat-val" style={{ color: company.theme.accent }}>{company.stats.metric2}</span>
+          <span className="cps-stat-lbl">{company.stats.label2}</span>
+        </div>
+      </div>
+      <Link to={company.ctaLink} className="cps-link">
+        Explore Solutions
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </Link>
+    </motion.div>
+  );
+}
+
+/* ─── Image block for each company ─── */
+function CompanyImage({ company, index, total, scrollYProgress }) {
+  const step = 1 / total;
+  const start = index * step;
+  const end = (index + 1) * step;
+
+  const opacity = useTransform(scrollYProgress, [
+    start, start + step * 0.15,
+    start + step * 0.5,
+    end - step * 0.15, end,
+  ], [0, 1, 1, 1, 0]);
+
+  const scale = useTransform(scrollYProgress, [start, start + step * 0.3], [1.08, 1]);
+
+  return (
+    <motion.div className="cps-img-layer" style={{ opacity }}>
+      <motion.img
+        src={company.image}
+        alt={company.name}
+        loading="lazy"
+        style={{ scale }}
+      />
+      {/* Cinematic line sweep */}
+      <motion.div
+        className="cps-sweep"
+        style={{
+          scaleX: useTransform(scrollYProgress, [start, start + step * 0.2, start + step * 0.5], [0, 1, 0]),
+        }}
+      />
+    </motion.div>
   );
 }

@@ -6,17 +6,16 @@ import Footer from '../../components/Footer';
 
 import './CompaniesPage.css';
 
-/* ─── Lazy load sections ─── */
+/* ─── Lazy load cinematic sections ─── */
 const CompaniesHero = lazy(() => import('../../components/Companies/CompaniesHero'));
 const BrandStatement = lazy(() => import('../../components/Companies/BrandStatement'));
 const CompanyShowcase = lazy(() => import('../../components/Companies/CompanyShowcase'));
-const CompanySelector = lazy(() => import('../../components/Companies/CompanySelector'));
 const EcosystemSection = lazy(() => import('../../components/Companies/EcosystemSection'));
-const ProjectsPreview = lazy(() => import('../../components/Companies/ProjectsPreview'));
+const CompanySelector = lazy(() => import('../../components/Companies/CompanySelector'));
 const SignatureStatement = lazy(() => import('../../components/Companies/SignatureStatement'));
 const CompaniesCTA = lazy(() => import('../../components/Companies/CompaniesCTA'));
 
-/* ─── Loader ─── */
+/* ─── Premium Loader ─── */
 function SectionLoader() {
   return (
     <div className="companies-section-loader">
@@ -37,13 +36,25 @@ export default function CompaniesPage() {
 
       <main className="companies-page-main">
         <Suspense fallback={<SectionLoader />}>
+          {/* 1. Hero — "The Elcardo Group" */}
           <CompaniesHero />
+
+          {/* 2. Origin → Expansion (Scroll-driven node expansion) */}
           <BrandStatement />
+
+          {/* 3. Sticky Storytelling (Left sticky text + Right scrolling images) */}
           <CompanyShowcase />
-          <CompanySelector />
+
+          {/* 4. Interactive Ecosystem Diagram */}
           <EcosystemSection />
-          <ProjectsPreview />
+
+          {/* 5. Full‑Screen Dark Statement Reveals */}
+          <CompanySelector />
+
+          {/* 6. Mini Company Grid */}
           <SignatureStatement />
+
+          {/* 7. Final CTA */}
           <CompaniesCTA />
         </Suspense>
       </main>

@@ -10,11 +10,7 @@ import './ContactPage.css';
 const ContactHero = lazy(() => import('./ContactHero'));
 const ContactMap = lazy(() => import('./ContactMap'));
 const ContactBranches = lazy(() => import('./ContactBranches'));
-const ContactHeadOffice = lazy(() => import('./ContactHeadOffice'));
 const ContactForm = lazy(() => import('./ContactForm'));
-const ContactQuickStrip = lazy(() => import('./ContactQuickStrip'));
-const ContactHotlines = lazy(() => import('./ContactHotlines'));
-const ContactSupportCTA = lazy(() => import('./ContactSupportCTA'));
 
 function SectionLoader() {
   return (
@@ -55,13 +51,9 @@ export default function ContactPage() {
       <main ref={containerRef} className="contact-page-main">
         <Suspense fallback={<SectionLoader />}>
           <ContactHero />
-          <ContactQuickStrip />
           <ContactMap />
           <ContactBranches />
-          <ContactHeadOffice />
-          <ContactHotlines />
           <ContactForm />
-          <ContactSupportCTA />
         </Suspense>
       </main>
 

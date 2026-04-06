@@ -1,0 +1,99 @@
+﻿
+> temp-init@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 4 modules transformed.
+node.exe : 
+[31mΓ£ù[39m Build 
+failed in 53ms
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: ([31mΓ£ù[39m   
+  Build failed in 5    
+3ms:String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+[31merror during 
+build:
+[31m[vite:esbuild] 
+Transform failed with 
+1 error:
+C:/Users/itof/Desktop/E
+lcardo-Website-main/src
+/App.jsx:1:0: ERROR: 
+Unexpected "<<"[31m
+file: [36mC:/Users/ito
+f/Desktop/Elcardo-Websi
+te-main/src/App.jsx:1:0
+[31m
+[33m
+[33mUnexpected 
+"<<"[33m
+1  |  <<<<<<< HEAD
+   |  ^
+2  |  import { lazy, 
+Suspense } from 
+'react';
+3  |  import { Routes, 
+Route } from 
+'react-router-dom';
+[31m
+    at 
+failureErrorWithLog (C:
+\Users\itof\Desktop\Elc
+ardo-Website-main\node_
+modules\esbuild\lib\mai
+n.js:1467:15)
+    at C:\Users\itof\De
+sktop\Elcardo-Website-m
+ain\node_modules\esbuil
+d\lib\main.js:736:50
+    at responseCallback
+s.<computed> (C:\Users\
+itof\Desktop\Elcardo-We
+bsite-main\node_modules
+\esbuild\lib\main.js:60
+3:9)
+    at 
+handleIncomingPacket (C
+:\Users\itof\Desktop\El
+cardo-Website-main\node
+_modules\esbuild\lib\ma
+in.js:658:12)
+    at 
+Socket.readFromStdout (
+C:\Users\itof\Desktop\E
+lcardo-Website-main\nod
+e_modules\esbuild\lib\m
+ain.js:581:7)
+    at Socket.emit 
+(node:events:508:28)
+    at addChunk (node:i
+nternal/streams/readabl
+e:559:12)
+    at readableAddChunk
+PushByteMode (node:inte
+rnal/streams/readable:5
+10:3)
+    at Readable.push (n
+ode:internal/streams/re
+adable:390:5)
+    at 
+Pipe.onStreamRead (node
+:internal/stream_base_c
+ommons:189:23)[39m

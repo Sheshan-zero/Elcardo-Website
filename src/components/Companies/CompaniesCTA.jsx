@@ -5,27 +5,21 @@ import './CompaniesCTA.css';
 
 export default function CompaniesCTA() {
   return (
-    <section className="cp-cta">
-      <motion.div 
-        className="cp-cta__inner"
-        initial="hidden"
-        whileInView="visible"
-        viewport={defaultViewport}
-        variants={fadeUp}
+    <section className="cpc">
+      <motion.div className="cpc-inner"
+        initial="hidden" whileInView="visible" viewport={defaultViewport} variants={fadeUp}
       >
-        <h2 className="display-md cp-cta__title">
-          Ready to Build the Future?
+        <span className="cpc-kicker">The Elcardo Group</span>
+        <h2 className="cpc-title">
+          Built Beyond<br /><em>One Industry.</em>
         </h2>
-        <p className="body-lg cp-cta__desc">
-          Partner with Elcardo Industries for advanced engineering, renewable energy, and enterprise-scale solutions.
+        <p className="cpc-desc">
+          Explore our portfolio, discover partnership opportunities,
+          or connect with our divisions.
         </p>
-        <div className="cp-cta__actions">
-          <Link to="/contact" className="cp-btn cp-btn--primary">
-            Contact Our Team
-          </Link>
-          <Link to="/about" className="cp-btn cp-btn--secondary">
-            Discover Our Story
-          </Link>
+        <div className="cpc-actions">
+          <Link to="/products" className="cpc-btn cpc-btn--primary">Explore Products</Link>
+          <Link to="/contact" className="cpc-btn cpc-btn--secondary">Contact Elcardo</Link>
         </div>
       </motion.div>
     </section>

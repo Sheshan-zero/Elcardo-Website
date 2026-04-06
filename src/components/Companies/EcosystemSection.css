@@ -1,82 +1,109 @@
 /* ============================================================
-   ECOSYSTEM SECTION — CSS (Corporate Diagram)
+   ECOSYSTEM — Dark Interactive Network + Preview Panel
    ============================================================ */
-.cp-ecosystem {
-  background: var(--off-white);
-  padding: var(--section-padding) var(--container-padding);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.cpe {
+  background: #0a0a0a;
+  padding: 140px var(--container-padding, 6vw);
   overflow: hidden;
 }
 
-.cp-ecosystem__header {
+.cpe-header {
   text-align: center;
-  max-width: 700px;
-  margin-bottom: 80px;
+  max-width: 550px;
+  margin: 0 auto 60px;
 }
 
-.cp-ecosystem__desc {
-  margin: 24px auto 0;
-}
-
-.cp-ecosystem__canvas {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  aspect-ratio: 1;
-  position: relative;
-}
-
-.cp-ecosystem__svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.ecosystem-node {
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* ─── Tooltip ─── */
-.ecosystem-tooltip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--white);
-  padding: 8px 16px;
-  border-radius: 4px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-light);
-  transform: translateY(-5px);
-  animation: tooltipFade 0.3s var(--ease-out-expo) forwards;
-}
-
-.ecosystem-tooltip__name {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--primary-navy);
-  white-space: nowrap;
-}
-
-.ecosystem-tooltip__sector {
-  font-family: var(--font-body);
+.cpe-kicker {
+  display: inline-block;
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: var(--accent-red, #DA1212);
+  margin-bottom: 14px;
+}
+
+.cpe-title {
+  font-family: var(--font-display, serif);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.cpe-title em { font-style: italic; color: rgba(255,255,255,0.3); }
+
+.cpe-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+
+/* Body: SVG + Preview side by side */
+.cpe-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.cpe-canvas { display: flex; align-items: center; justify-content: center; }
+.cpe-svg { width: 100%; max-width: 540px; height: auto; }
+
+/* Preview panel */
+.cpe-preview {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+}
+
+.cpe-preview-inner { max-width: 360px; }
+
+.cpe-preview-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.cpe-preview-name {
+  font-family: var(--font-display, serif);
+  font-size: 24px;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.cpe-preview-sector {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+  margin-bottom: 12px;
+}
+
+.cpe-preview-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+}
+
+.cpe-preview-empty p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.2);
   letter-spacing: 1px;
+  font-style: italic;
 }
 
-@keyframes tooltipFade {
-  from { opacity: 0; transform: translateY(0); }
-  to { opacity: 1; transform: translateY(-5px); }
-}
-
-@media (max-width: 768px) {
-  .cp-ecosystem__canvas {
-    max-width: 400px;
-  }
+@media (max-width: 900px) {
+  .cpe-body { grid-template-columns: 1fr; gap: 40px; }
+  .cpe-svg { max-width: 360px; }
+  .cpe { padding: 80px 6vw; }
 }

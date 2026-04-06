@@ -1,8 +1,9 @@
 /* ============================================================
    Sri Lanka SVG outline path + Branch data
+   Coordinates calibrated for districtPaths.js SVG viewBox: 0 -50 1500 2800
    ============================================================ */
 
-// Simplified Sri Lanka island outline for SVG viewBox 0 0 200 400
+// Simple outline for decorative watermark usage (ContactHero)
 export const SRI_LANKA_PATH = `
   M 88,8
   C 85,10 80,14 78,18
@@ -42,32 +43,21 @@ export const SRI_LANKA_PATH = `
   Z
 `;
 
-// Jaffna peninsula detail (small appendage at top)
-export const JAFFNA_PATH = `
-  M 88,8
-  C 86,4 84,2 80,2
-  C 76,2 72,4 70,6
-  C 68,8 68,12 70,14
-  C 72,16 76,18 78,18
-  L 88,8
-  Z
-`;
-
-// Branch locations data
+// Branch locations data — coords now match the detailed district SVG
 export const branches = [
   {
     id: 'peliyagoda',
     name: 'Head Office — Peliyagoda',
-    shortName: 'Head Office',
+    shortName: 'Peliyagoda',
     city: 'Peliyagoda',
     region: 'Western Province',
+    district: 'gampaha',
     address: 'No. 42, Industrial Zone, Peliyagoda',
     phone: '+94 11 234 5678',
     email: 'info@elcardoindustries.lk',
     mapUrl: 'https://maps.google.com/?q=6.9614,79.8796',
     isHQ: true,
-    // Position as percentage of SVG viewBox (200×400)
-    coords: { x: 37, y: 38 },
+    coords: { x: 175, y: 1230 },
   },
   {
     id: 'negombo',
@@ -75,12 +65,27 @@ export const branches = [
     shortName: 'Negombo',
     city: 'Negombo',
     region: 'Western Province',
+    district: 'gampaha',
     address: '15 Main Street, Negombo',
     phone: '+94 31 222 3456',
     email: 'negombo@elcardoindustries.lk',
     mapUrl: 'https://maps.google.com/?q=7.2094,79.8358',
     isHQ: false,
-    coords: { x: 32, y: 32 },
+    coords: { x: 115, y: 1155 },
+  },
+  {
+    id: 'colombo',
+    name: 'Colombo Showroom',
+    shortName: 'Colombo',
+    city: 'Colombo',
+    region: 'Western Province',
+    district: 'colombo',
+    address: '120 Galle Road, Colombo 03',
+    phone: '+94 11 245 6789',
+    email: 'colombo@elcardoindustries.lk',
+    mapUrl: 'https://maps.google.com/?q=6.9271,79.8612',
+    isHQ: false,
+    coords: { x: 155, y: 1280 },
   },
   {
     id: 'kandy',
@@ -88,12 +93,13 @@ export const branches = [
     shortName: 'Kandy',
     city: 'Kandy',
     region: 'Central Province',
+    district: 'kandy',
     address: '88 Peradeniya Road, Kandy',
     phone: '+94 81 234 5678',
     email: 'kandy@elcardoindustries.lk',
     mapUrl: 'https://maps.google.com/?q=7.2906,80.6337',
     isHQ: false,
-    coords: { x: 52, y: 34 },
+    coords: { x: 470, y: 1100 },
   },
   {
     id: 'galle',
@@ -101,12 +107,13 @@ export const branches = [
     shortName: 'Galle',
     city: 'Galle',
     region: 'Southern Province',
+    district: 'galle',
     address: '22 Lighthouse Street, Galle Fort',
     phone: '+94 91 223 4567',
     email: 'galle@elcardoindustries.lk',
     mapUrl: 'https://maps.google.com/?q=6.0329,80.2168',
     isHQ: false,
-    coords: { x: 43, y: 72 },
+    coords: { x: 310, y: 1660 },
   },
   {
     id: 'jaffna',
@@ -114,12 +121,13 @@ export const branches = [
     shortName: 'Jaffna',
     city: 'Jaffna',
     region: 'Northern Province',
+    district: 'jaffna',
     address: '5 Hospital Road, Jaffna',
     phone: '+94 21 222 1234',
     email: 'jaffna@elcardoindustries.lk',
     mapUrl: 'https://maps.google.com/?q=9.6615,80.0255',
     isHQ: false,
-    coords: { x: 42, y: 4 },
+    coords: { x: 260, y: 70 },
   },
   {
     id: 'kurunegala',
@@ -127,11 +135,82 @@ export const branches = [
     shortName: 'Kurunegala',
     city: 'Kurunegala',
     region: 'North Western Province',
+    district: 'kurunagala',
     address: '10 Colombo Road, Kurunegala',
     phone: '+94 37 222 5678',
     email: 'kurunegala@elcardoindustries.lk',
     mapUrl: 'https://maps.google.com/?q=7.4863,80.3623',
     isHQ: false,
-    coords: { x: 43, y: 28 },
+    coords: { x: 310, y: 950 },
+  },
+  {
+    id: 'matara',
+    name: 'Matara Branch',
+    shortName: 'Matara',
+    city: 'Matara',
+    region: 'Southern Province',
+    district: 'matara',
+    address: '45 Beach Road, Matara',
+    phone: '+94 41 222 8765',
+    email: 'matara@elcardoindustries.lk',
+    mapUrl: 'https://maps.google.com/?q=5.9549,80.5550',
+    isHQ: false,
+    coords: { x: 410, y: 1720 },
+  },
+  {
+    id: 'batticaloa',
+    name: 'Batticaloa Branch',
+    shortName: 'Batticaloa',
+    city: 'Batticaloa',
+    region: 'Eastern Province',
+    district: 'batticaloa',
+    address: '12 Main Street, Batticaloa',
+    phone: '+94 65 222 3344',
+    email: 'batticaloa@elcardoindustries.lk',
+    mapUrl: 'https://maps.google.com/?q=7.7310,81.6747',
+    isHQ: false,
+    coords: { x: 720, y: 930 },
+  },
+  {
+    id: 'anuradhapura',
+    name: 'Anuradhapura Branch',
+    shortName: 'Anuradhapura',
+    city: 'Anuradhapura',
+    region: 'North Central Province',
+    district: 'anuradhapura',
+    address: '8 Sacred City Road, Anuradhapura',
+    phone: '+94 25 222 9876',
+    email: 'anuradhapura@elcardoindustries.lk',
+    mapUrl: 'https://maps.google.com/?q=8.3114,80.4037',
+    isHQ: false,
+    coords: { x: 350, y: 620 },
+  },
+  {
+    id: 'ratnapura',
+    name: 'Ratnapura Branch',
+    shortName: 'Ratnapura',
+    city: 'Ratnapura',
+    region: 'Sabaragamuwa Province',
+    district: 'ratnapura',
+    address: '30 Gem Street, Ratnapura',
+    phone: '+94 45 222 5432',
+    email: 'ratnapura@elcardoindustries.lk',
+    mapUrl: 'https://maps.google.com/?q=6.6828,80.3992',
+    isHQ: false,
+    coords: { x: 330, y: 1420 },
+  },
+  {
+    id: 'trincomalee',
+    name: 'Trincomalee Branch',
+    shortName: 'Trincomalee',
+    city: 'Trincomalee',
+    region: 'Eastern Province',
+    district: 'trincomalee',
+    address: '7 Harbor Road, Trincomalee',
+    phone: '+94 26 222 6543',
+    email: 'trincomalee@elcardoindustries.lk',
+    mapUrl: 'https://maps.google.com/?q=8.5874,81.2152',
+    isHQ: false,
+    coords: { x: 620, y: 560 },
   },
 ];
