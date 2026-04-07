@@ -1,0 +1,85 @@
+/* ============================================================
+   SECTION 5 — GROUP IDENTITY (Emotional Close)
+   Minimal, centered typography with lots of whitespace
+   ============================================================ */
+
+.cpg-identity {
+  background: #f5f5f7;
+  padding: 180px var(--container-padding) 160px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+}
+
+.cpg-identity__content {
+  max-width: 700px;
+  text-align: center;
+}
+
+.cpg-identity__divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(4, 21, 98, 0.12);
+  margin: 0 auto 32px;
+}
+
+.cpg-identity__headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--primary-navy);
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.cpg-identity__headline em {
+  font-style: italic;
+  color: var(--mid-gray);
+}
+
+.cpg-identity__subtext {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--dark-gray);
+  font-weight: 300;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* ─── Decorative brand mark ─── */
+.cpg-identity__mark {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cpg-identity__mark-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary-navy);
+  opacity: 0.12;
+}
+
+.cpg-identity__mark-dot--accent {
+  background: var(--accent-red);
+  opacity: 0.4;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .cpg-identity {
+    padding: 120px var(--container-padding) 100px;
+    min-height: 50vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .cpg-identity {
+    padding: 80px var(--container-padding) 64px;
+  }
+}

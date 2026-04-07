@@ -1,4 +1,6 @@
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import heroBgImage from '../../assets/companies_hero_bg.png';
 import './CompaniesHero.css';
 
 const ease = [0.16, 1, 0.3, 1];
@@ -24,41 +26,77 @@ const connections = [
 ];
 
 const stats = [
-  { num: '5', label: 'Companies' },
+  { num: '6', label: 'Divisions' },
   { num: '35+', label: 'Years' },
   { num: '9', label: 'Provinces' },
   { num: '1000+', label: 'Projects' },
 ];
 
 export default function CompaniesHero() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const scrollY = window.scrollY;
+      
+      const content = sectionRef.current.querySelector('.cph-content');
+      if (content) {
+        content.style.transform = `translateY(${scrollY * 0.25}px)`;
+        content.style.opacity = Math.max(0, 1 - scrollY / 600);
+      }
+      
+      const scrollInd = sectionRef.current.querySelector('.cph-scroll');
+      if (scrollInd) {
+        scrollInd.style.opacity = Math.max(0, 1 - scrollY / 600);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section className="cph">
-      {/* Animated network background */}
-      <div className="cph-network" aria-hidden="true">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-          {connections.map(([a, b], i) => (
+    <section className="cph" ref={sectionRef}>
+      {/* Hero Background Image */}
+      <div className="cph-bg-image-wrap">
+        <motion.img 
+          src={heroBgImage} 
+          alt="Elcardo Group Campus" 
+          className="cph-bg-image"
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 8, ease: 'easeOut' }}
+        />
+        <div className="cph-bg-overlay" />
+        <div className="cph-noise" />
+
+        {/* Network lines overlay */}
+        <svg className="cph-network" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }}>
+          {connections.map(([n1, n2], i) => (
             <motion.line
-              key={`ln-${i}`}
-              x1={nodes[a].x} y1={nodes[a].y}
-              x2={nodes[b].x} y2={nodes[b].y}
-              stroke="rgba(4,21,98,0.04)"
-              strokeWidth="0.15"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ delay: 0.5 + i * 0.08, duration: 2.5, ease }}
+              key={i}
+              x1={nodes[n1].x} y1={nodes[n1].y}
+              x2={nodes[n2].x} y2={nodes[n2].y}
+              stroke="rgba(255,255,255,0.15)" strokeWidth="0.1"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 3, ease, delay: 1 + i * 0.1 }}
             />
           ))}
           {nodes.map((n, i) => (
             <motion.circle
-              key={`nd-${i}`}
-              cx={n.x} cy={n.y} r="0.6"
-              fill="rgba(4,21,98,0.06)"
+              key={`c-${i}`}
+              cx={n.x} cy={n.y} r="0.3" fill="rgba(255,255,255,0.4)"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 1 + i * 0.06, duration: 0.8, ease }}
+              transition={{ duration: 1, delay: 1 + i * 0.1 }}
             />
           ))}
         </svg>
+      </div>
+
+      <div className="cph-bg-text">
+        DIVISIONS
       </div>
 
       <div className="cph-content">
@@ -74,10 +112,10 @@ export default function CompaniesHero() {
         {/* Headline — line by line */}
         <h1 className="cph-title">
           <motion.span className="cph-title-line" custom={0} variants={lineReveal} initial="hidden" animate="visible">
-            The Elcardo
+            More Than
           </motion.span>
           <motion.span className="cph-title-line cph-title-accent" custom={1} variants={lineReveal} initial="hidden" animate="visible">
-            Group
+            One Company
           </motion.span>
         </h1>
 
@@ -86,7 +124,7 @@ export default function CompaniesHero() {
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1, ease }}
         >
-          Built across industries. Connected by precision.
+          Built across industries. Connected by purpose.
         </motion.p>
 
         {/* Expanding divider */}

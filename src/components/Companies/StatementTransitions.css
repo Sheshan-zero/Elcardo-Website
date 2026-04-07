@@ -1,0 +1,149 @@
+/* ============================================================
+   SECTION 5 — FULL-SCREEN STATEMENT TRANSITIONS
+   Dramatic, elegant, cinematic typography
+   ============================================================ */
+
+.stt {
+  position: relative;
+  width: 100%;
+}
+
+.stt__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.stt__sticky--dark {
+  background: #0a0a0f;
+}
+
+/* ─── Decorative Lines ─── */
+.stt__deco-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stt__deco-line {
+  position: absolute;
+  height: 1px;
+  left: 10%;
+  right: 10%;
+}
+
+.stt__deco-line--top {
+  top: 30%;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.06), transparent);
+}
+
+.stt__deco-line--bottom {
+  bottom: 30%;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.06), transparent);
+}
+
+.stt__sticky--dark .stt__deco-line--top {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+}
+
+.stt__sticky--dark .stt__deco-line--bottom {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+}
+
+/* ─── Content ─── */
+.stt__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  z-index: 2;
+}
+
+.stt__text-wrap {
+  text-align: center;
+}
+
+.stt__statement {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 88px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--near-black);
+  max-width: 900px;
+}
+
+.stt__sticky--dark .stt__statement {
+  color: #ffffff;
+}
+
+/* ─── Dots ─── */
+.stt__dots {
+  display: flex;
+  gap: 12px;
+}
+
+.stt__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stt__dot--active {
+  background: var(--accent-red);
+  width: 24px;
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(218, 18, 18, 0.25);
+}
+
+.stt__sticky--dark .stt__dot {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.stt__sticky--dark .stt__dot--active {
+  background: var(--accent-red);
+}
+
+/* ─── Accent Mark ─── */
+.stt__accent-mark {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-red) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .stt__statement {
+    font-size: clamp(28px, 8vw, 48px);
+    letter-spacing: -1px;
+  }
+
+  .stt__deco-line {
+    left: 5%;
+    right: 5%;
+  }
+}
+
+@media (max-width: 480px) {
+  .stt__statement {
+    font-size: 28px;
+  }
+
+  .stt__content {
+    gap: 40px;
+  }
+}

@@ -7,7 +7,7 @@ import Footer from '../../components/Footer';
 
 import './ContactPage.css';
 
-const ContactHero = lazy(() => import('./ContactHero'));
+import ContactHero from './ContactHero';
 const ContactMap = lazy(() => import('./ContactMap'));
 const ContactBranches = lazy(() => import('./ContactBranches'));
 const ContactForm = lazy(() => import('./ContactForm'));
@@ -43,14 +43,11 @@ export default function ContactPage() {
       <CustomCursor />
       <Navbar />
 
-      <motion.div
-        className="contact-scroll-progress"
-        style={{ scaleX }}
-      />
+
 
       <main ref={containerRef} className="contact-page-main">
+        <ContactHero />
         <Suspense fallback={<SectionLoader />}>
-          <ContactHero />
           <ContactMap />
           <ContactBranches />
           <ContactForm />

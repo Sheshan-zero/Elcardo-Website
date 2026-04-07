@@ -1,0 +1,403 @@
+/* ============================================================
+   ECOSYSTEM STORYTELLING — Scroll-Driven Premium Experience
+   ============================================================ */
+
+/* ─── Outer wrapper: tall enough for all scroll phases ─── */
+.eco-story {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+}
+
+/* ─── Sticky viewport ─── */
+.eco-story__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* ─── Canvas container ─── */
+.eco-story__canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ─── SVG layer for connection lines ─── */
+.eco-story__svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Node base ─── */
+.eco-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  cursor: default;
+  will-change: transform, left, top;
+}
+
+.eco-node--dimmed {
+  filter: grayscale(0.2);
+  opacity: 0.3 !important;
+}
+
+/* ─── Node circle ─── */
+.eco-node__circle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid rgba(4, 21, 98, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(4, 21, 98, 0.03);
+  transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.eco-node--active .eco-node__circle {
+  width: 88px;
+  height: 88px;
+  border-color: #041562;
+  border-width: 2px;
+  box-shadow:
+    0 4px 28px rgba(4, 21, 98, 0.1),
+    0 0 0 1px rgba(4, 21, 98, 0.06);
+}
+
+.eco-node--center .eco-node__circle {
+  width: 104px;
+  height: 104px;
+  border-width: 2px;
+  border-color: #041562;
+  box-shadow:
+    0 4px 32px rgba(4, 21, 98, 0.08),
+    0 0 0 1px rgba(4, 21, 98, 0.04);
+}
+
+/* ─── Node icon (index number inside circle) ─── */
+.eco-node__icon {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #041562;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── Node label ─── */
+.eco-node__label {
+  margin-top: 10px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(4, 21, 98, 0.6);
+  text-align: center;
+  white-space: nowrap;
+  transition: color 0.9s ease;
+}
+
+.eco-node--active .eco-node__label {
+  color: #041562;
+  font-weight: 700;
+}
+
+.eco-node--center .eco-node__label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(4, 21, 98, 0.5);
+}
+
+/* ─── Progress ring ─── */
+.eco-node__progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.eco-node__progress-ring circle {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.eco-node__progress-track {
+  stroke: rgba(218, 18, 18, 0.06);
+  stroke-width: 2;
+}
+
+.eco-node__progress-fill {
+  stroke: #DA1212;
+  stroke-width: 2.5;
+  transition: stroke-dashoffset 0.05s linear;
+  filter: drop-shadow(0 0 4px rgba(218, 18, 18, 0.25));
+}
+
+/* ─── Story cards ─── */
+.eco-story__cards-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.eco-story-card {
+  position: absolute;
+  width: 200px;
+  pointer-events: auto;
+  z-index: 4;
+}
+
+.eco-story-card__inner {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.eco-story-card__inner:hover {
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+  transform: translateY(-3px);
+}
+
+.eco-story-card__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.eco-story-card__caption {
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #3a3a3c;
+  line-height: 1.4;
+}
+
+/* ─── Neon Pulse Connection Lines ─── */
+@keyframes pulseTravel {
+  0% {
+    stroke-dashoffset: 300;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: -300;
+    opacity: 0;
+  }
+}
+
+.eco-pulse-line {
+  stroke: rgba(4, 21, 98, 0.07);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.eco-pulse-glow {
+  stroke: rgba(218, 18, 18, 0.35);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 24 276;
+  animation: pulseTravel 7s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(218, 18, 18, 0.25));
+}
+
+.eco-pulse-glow--delay-0 { animation-delay: 0s; }
+.eco-pulse-glow--delay-1 { animation-delay: 1.0s; }
+.eco-pulse-glow--delay-2 { animation-delay: 2.0s; }
+.eco-pulse-glow--delay-3 { animation-delay: 3.0s; }
+
+/* ─── Phase indicator ─── */
+.eco-story__phase-indicator {
+  position: absolute;
+  right: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+}
+
+.eco-story__phase-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(4, 21, 98, 0.1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.eco-story__phase-dot--active {
+  background: #041562;
+  transform: scale(1.5);
+  box-shadow: 0 0 10px rgba(4, 21, 98, 0.2);
+}
+
+/* ─── Section header ─── */
+.eco-story__header {
+  position: absolute;
+  top: 7vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.eco-story__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+  margin-bottom: 14px;
+}
+
+.eco-story__kicker-line {
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--accent-red, #DA1212);
+  border-radius: 1px;
+}
+
+.eco-story__title {
+  font-family: var(--font-display, serif);
+  font-size: clamp(26px, 2.8vw, 42px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--near-black, #0A0A0F);
+  margin-bottom: 10px;
+}
+
+.eco-story__title em {
+  font-style: italic;
+  color: var(--mid-gray, #8A8F98);
+}
+
+.eco-story__subtitle {
+  font-size: clamp(14px, 1.2vw, 16px);
+  color: rgba(4, 21, 98, 0.6);
+  line-height: 1.6;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* ─── Dynamic Narrative (Active Phases) ─── */
+.eco-story__narrative {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* ─── Active company info overlay ─── */
+.eco-story__company-info {
+  position: absolute;
+  bottom: 7vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.eco-story__company-name {
+  font-family: var(--font-display, serif);
+  font-size: clamp(20px, 2.2vw, 32px);
+  font-weight: 400;
+  color: #041562;
+  margin-bottom: 4px;
+}
+
+.eco-story__company-sector {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1200px) {
+  .eco-story-card { width: 170px; }
+  .eco-node__circle { width: 68px; height: 68px; }
+  .eco-node--active .eco-node__circle { width: 78px; height: 78px; }
+  .eco-node--center .eco-node__circle { width: 88px; height: 88px; }
+}
+
+@media (max-width: 900px) {
+  .eco-story-card { width: 140px; }
+  .eco-node__circle { width: 56px; height: 56px; }
+  .eco-node--active .eco-node__circle { width: 66px; height: 66px; }
+  .eco-node--center .eco-node__circle { width: 74px; height: 74px; }
+  .eco-node__label { font-size: 8px; letter-spacing: 2px; }
+  .eco-node__icon { font-size: 10px; }
+  .eco-story__phase-indicator { right: 16px; }
+  .eco-story__header { top: 4vh; }
+  .eco-story__company-info { bottom: 4vh; }
+}
+
+@media (max-width: 600px) {
+  .eco-story-card { width: 110px; }
+  .eco-story-card__caption { font-size: 8px; padding: 6px 8px; }
+  .eco-node__circle { width: 46px; height: 46px; }
+  .eco-node--active .eco-node__circle { width: 54px; height: 54px; }
+  .eco-node--center .eco-node__circle { width: 60px; height: 60px; }
+  .eco-node__label { font-size: 7px; letter-spacing: 1.5px; margin-top: 6px; }
+  .eco-node__icon { font-size: 9px; }
+  .eco-story__phase-indicator { right: 10px; gap: 8px; }
+  .eco-story__phase-dot { width: 5px; height: 5px; }
+}

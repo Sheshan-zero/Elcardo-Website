@@ -2,6 +2,7 @@ import imgRollerGates from '../assets/company_roller_gates.png';
 import imgSolar from '../assets/company_solar.png';
 import imgBattery from '../assets/company_battery.png';
 import imgHotel from '../assets/company_hotel.png';
+import imgPantry from '../assets/company_pantry.png';
 import imgAutomotive from '../assets/company_automotive.png';
 
 /* ============================================================
@@ -86,8 +87,27 @@ export const companies = [
     },
   },
   {
-    id: 'automotive',
+    id: 'pantry',
     index: '05',
+    name: 'Elcardo Pantry',
+    sector: 'Interiors & Functional Spaces',
+    description:
+      'Designing and manufacturing premium functional interior solutions, specializing in modern pantry systems crafted for sophisticated residential and commercial environments.',
+    image: imgPantry,
+    ctaLink: '#',
+    stats: {
+      metric1: 'Premium',
+      label1: 'Finishes',
+      metric2: 'Custom',
+      label2: 'Design',
+    },
+    theme: {
+      accent: 'var(--mid-gray)',
+    },
+  },
+  {
+    id: 'automotive',
+    index: '06',
     name: 'Vehicle Modification',
     sector: 'Automotive Performance',
     description:

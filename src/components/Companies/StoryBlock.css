@@ -1,0 +1,220 @@
+/* ============================================================
+   SECTION 3 — STORY BLOCK
+   Sticky split layout with image/text scroll narration
+   ============================================================ */
+
+.stb {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+}
+
+.stb__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  overflow: hidden;
+}
+
+/* ─── Image Side ─── */
+.stb__image-side {
+  position: relative;
+  overflow: hidden;
+}
+
+.stb__image-container {
+  position: absolute;
+  inset: 0;
+}
+
+.stb__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.stb__image-border {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset -40px 0 60px -20px rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Text Side ─── */
+.stb__text-side {
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(40px, 5vw, 80px);
+  position: relative;
+}
+
+/* ─── Vertical Progress ─── */
+.stb__progress {
+  position: absolute;
+  left: clamp(16px, 2vw, 32px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  z-index: 3;
+}
+
+.stb__progress-track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 1px;
+  z-index: 0;
+}
+
+.stb__progress-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--accent-red);
+  transform-origin: top;
+  border-radius: 1px;
+  will-change: transform;
+}
+
+.stb__progress-step {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stb__progress-step--active {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 16px rgba(218, 18, 18, 0.15);
+}
+
+.stb__progress-step--done {
+  border-color: var(--primary-navy);
+  background: var(--primary-navy);
+}
+
+.stb__progress-num {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--mid-gray);
+  transition: color 0.4s ease;
+}
+
+.stb__progress-step--active .stb__progress-num {
+  color: var(--accent-red);
+}
+
+.stb__progress-step--done .stb__progress-num {
+  color: #ffffff;
+}
+
+/* ─── Text Content ─── */
+.stb__text-content {
+  max-width: 420px;
+  margin-left: clamp(40px, 4vw, 72px);
+}
+
+.stb__text-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.stb__chapter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+  margin-bottom: 24px;
+}
+
+.stb__chapter-line {
+  display: inline-block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--accent-red);
+  border-radius: 1px;
+}
+
+.stb__headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--near-black);
+  margin-bottom: 18px;
+}
+
+.stb__text {
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.75;
+  color: var(--dark-gray);
+  font-weight: 300;
+  margin-bottom: 28px;
+}
+
+.stb__chapter-divider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-navy), rgba(4, 21, 98, 0.1));
+  border-radius: 1px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .stb__sticky {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .stb__image-side {
+    min-height: 40vh;
+  }
+
+  .stb__image-border {
+    box-shadow: inset 0 -40px 60px -20px rgba(255, 255, 255, 0.9);
+  }
+
+  .stb__text-side {
+    padding: 32px var(--container-padding);
+    align-items: flex-start;
+  }
+
+  .stb__progress {
+    display: none;
+  }
+
+  .stb__text-content {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .stb__headline {
+    font-size: 28px;
+  }
+
+  .stb__text {
+    font-size: 14px;
+  }
+}

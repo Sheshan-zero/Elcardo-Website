@@ -8,12 +8,17 @@ import './CompaniesPage.css';
 
 /* ─── Lazy load cinematic sections ─── */
 const CompaniesHero = lazy(() => import('../../components/Companies/CompaniesHero'));
-const BrandStatement = lazy(() => import('../../components/Companies/BrandStatement'));
-const CompanyShowcase = lazy(() => import('../../components/Companies/CompanyShowcase'));
-const EcosystemSection = lazy(() => import('../../components/Companies/EcosystemSection'));
-const CompanySelector = lazy(() => import('../../components/Companies/CompanySelector'));
-const SignatureStatement = lazy(() => import('../../components/Companies/SignatureStatement'));
-const CompaniesCTA = lazy(() => import('../../components/Companies/CompaniesCTA'));
+const OriginSection = lazy(() => import('../../components/Companies/OriginSection'));
+const ExpansionTransition = lazy(() => import('../../components/Companies/ExpansionTransition'));
+const EcosystemStorytelling = lazy(() => import('../../components/Companies/EcosystemStorytelling'));
+
+/* ─── Post-Ecosystem Cinematic Editorial Sections ─── */
+const StickyCompanyStory = lazy(() => import('../../components/Companies/StickyCompanyStory'));
+const HorizontalCompanyStrip = lazy(() => import('../../components/Companies/HorizontalCompanyStrip'));
+const UnitySection = lazy(() => import('../../components/Companies/UnitySection'));
+
+const VisualProofRail = lazy(() => import('../../components/Companies/VisualProofRail'));
+const FinalCTA = lazy(() => import('../../components/Companies/FinalCTA'));
 
 /* ─── Premium Loader ─── */
 function SectionLoader() {
@@ -36,26 +41,32 @@ export default function CompaniesPage() {
 
       <main className="companies-page-main">
         <Suspense fallback={<SectionLoader />}>
-          {/* 1. Hero — "The Elcardo Group" */}
+          {/* 1. HERO — Set expectation immediately */}
           <CompaniesHero />
 
-          {/* 2. Origin → Expansion (Scroll-driven node expansion) */}
-          <BrandStatement />
+          {/* 2. ORIGIN — Ground the story */}
+          <OriginSection />
 
-          {/* 3. Sticky Storytelling (Left sticky text + Right scrolling images) */}
-          <CompanyShowcase />
+          {/* 3. EXPANSION — Bridge before ecosystem */}
+          <ExpansionTransition />
 
-          {/* 4. Interactive Ecosystem Diagram */}
-          <EcosystemSection />
+          {/* 4. NODE ECOSYSTEM — Contextual company intro */}
+          <EcosystemStorytelling />
 
-          {/* 5. Full‑Screen Dark Statement Reveals */}
-          <CompanySelector />
+          {/* 5. STICKY STORY — Specific company identities */}
+          <StickyCompanyStory />
 
-          {/* 6. Mini Company Grid */}
-          <SignatureStatement />
+          {/* 6. HORIZONTAL STRIP — "What we do across industries" */}
+          <HorizontalCompanyStrip />
 
-          {/* 7. Final CTA */}
-          <CompaniesCTA />
+          {/* 7. UNITY SECTION — "One Group. Multiple Disciplines." */}
+          <UnitySection />
+
+          {/* 8. VISUAL PROOF — Build credibility */}
+          <VisualProofRail />
+
+          {/* 9. FINAL CTA */}
+          <FinalCTA />
         </Suspense>
       </main>
 
