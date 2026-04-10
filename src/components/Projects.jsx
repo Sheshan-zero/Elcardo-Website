@@ -92,7 +92,7 @@ export default function Projects() {
             data-cursor="expand"
           >
             <div className="proj-bg">
-              <img src={proj.img} alt={proj.title} className="proj-bg-img" />
+              <img src={proj.img} alt={proj.title} className="proj-bg-img" loading="lazy" decoding="async" />
             </div>
             <div className="proj-overlay" />
             <span className="proj-static-label">{proj.label}</span>

@@ -33,8 +33,8 @@ export default function AboutVision() {
 
         <motion.blockquote
           className="about-vision-quote"
-          initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, delay: 0.3, ease }}
         >

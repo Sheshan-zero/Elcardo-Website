@@ -21,6 +21,7 @@ export default function AboutHero() {
           src={heroImg}
           alt="Elcardo Industrial Operations"
           style={{ y: yImage, scale: scaleImage }}
+          decoding="async"
         />
         <div className="about-hero-overlay" />
       </div>
@@ -80,8 +81,8 @@ export default function AboutHero() {
 
         <motion.p
           className="about-hero-sub"
-          initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.4, ease }}
         >
           Engineering, energy, automotive, and hospitality — from Sri Lanka to the world.

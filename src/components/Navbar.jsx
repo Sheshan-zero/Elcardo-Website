@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -31,7 +31,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -46,13 +46,13 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  const navLinks = [
+  const navLinks = useMemo(() => [
     { label: 'Home', href: '/' },
     { label: 'Products', href: '/products', hasMega: true },
     { label: 'About', href: '/about' },
     { label: 'Companies', href: '/companies' },
     { label: 'Projects', href: '/projects' },
-  ];
+  ], []);
 
   const handleNavClick = (e, href) => {
     setMobileOpen(false);

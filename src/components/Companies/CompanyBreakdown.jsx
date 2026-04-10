@@ -44,7 +44,7 @@ export default function CompanyBreakdown() {
           Our Companies
         </motion.span>
         <motion.h2 className="cpb__title"
-          variants={{ hidden: { opacity: 0, y: 30, filter: 'blur(6px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)' } }}
+          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 1, ease: EASE }}
         >
           Five Divisions,<br /><em>One Standard.</em>
@@ -92,8 +92,8 @@ function CompanyBlock({ company, index, desc, stat }) {
       <motion.div
         className="cpb__image-wrap"
         variants={{
-          hidden: { opacity: 0, scale: 0.94, rotateY: isEven ? -6 : 6, filter: 'blur(8px)' },
-          visible: { opacity: 1, scale: 1, rotateY: 0, filter: 'blur(0px)' },
+          hidden: { opacity: 0, scale: 0.94, rotateY: isEven ? -6 : 6 },
+          visible: { opacity: 1, scale: 1, rotateY: 0 },
         }}
         transition={{ duration: 1.1, ease: EASE }}
         whileHover={{ scale: 1.02, rotateY: isEven ? 2 : -2 }}

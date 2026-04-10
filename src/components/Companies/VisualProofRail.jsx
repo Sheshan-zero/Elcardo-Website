@@ -76,8 +76,8 @@ export default function VisualProofRail() {
         <motion.h2
           className="vpr__title"
           variants={{
-            hidden: { opacity: 0, y: 28, filter: 'blur(6px)' },
-            visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+            hidden: { opacity: 0, y: 28 },
+            visible: { opacity: 1, y: 0 },
           }}
           transition={{ duration: 1, ease: EASE }}
         >
@@ -91,7 +91,7 @@ export default function VisualProofRail() {
           {[...RAIL_IMAGES, ...RAIL_IMAGES].map((item, i) => (
             <div className="vpr__rail-card" key={`rail-${i}`}>
               <div className="vpr__rail-image-wrap">
-                <img src={item.img} alt={item.label} className="vpr__rail-image" loading="lazy" />
+                <img src={item.img} alt={item.label} className="vpr__rail-image" loading="lazy" decoding="async" />
                 <div className="vpr__rail-overlay" />
                 <span className="vpr__rail-label">{item.label}</span>
               </div>
@@ -117,12 +117,12 @@ function GridCard({ item, index }) {
     <motion.div
       className="vpr__grid-card"
       ref={ref}
-      initial={{ opacity: 0, y: 32, scale: 0.97, filter: 'blur(3px)' }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' } : {}}
+      initial={{ opacity: 0, y: 32, scale: 0.97 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.9, ease: EASE, delay: index * 0.08 }}
     >
       <div className="vpr__grid-image-wrap">
-        <img src={item.img} alt={item.label} className="vpr__grid-image" loading="lazy" />
+        <img src={item.img} alt={item.label} className="vpr__grid-image" loading="lazy" decoding="async" />
         <div className="vpr__grid-overlay" />
       </div>
       <div className="vpr__grid-content">

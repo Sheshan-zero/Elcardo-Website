@@ -30,16 +30,22 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const scrollY = window.scrollY;
-      const content = sectionRef.current.querySelector('.hero-content-inner');
-      if (content) {
-        content.style.transform = `translateY(${scrollY * 0.25}px)`;
-        content.style.opacity = Math.max(0, 1 - scrollY / 600);
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (!sectionRef.current) { ticking = false; return; }
+        const scrollY = window.scrollY;
+        const content = sectionRef.current.querySelector('.hero-content-inner');
+        if (content) {
+          content.style.transform = `translateY(${scrollY * 0.25}px)`;
+          content.style.opacity = Math.max(0, 1 - scrollY / 600);
+        }
+        ticking = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -68,6 +74,7 @@ export default function Hero() {
               src={heroSlides[current].img}
               alt={heroSlides[current].subtitle}
               className="hero-slide-img"
+              decoding="async"
             />
           </motion.div>
         </AnimatePresence>

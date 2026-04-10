@@ -22,31 +22,33 @@ export default function SmoothScroll({ children }) {
 
     gsap.ticker.lagSmoothing(0);
 
-    // Handle anchor links
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener('click', (e) => {
-        const href = anchor.getAttribute('href');
-        
-        // Ignore HashRouter path navigations
-        if (href && href.startsWith('#/')) {
-          return;
-        }
+    // Use event delegation for anchor clicks instead of querySelectorAll loop
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest('a[href^="#"]');
+      if (!anchor) return;
 
-        if (href && href !== '#') {
-          e.preventDefault();
-          try {
-            const target = document.querySelector(href);
-            if (target) {
-              lenis.scrollTo(target, { offset: -68 });
-            }
-          } catch (err) {
-            // Ignore invalid query selector errors
+      const href = anchor.getAttribute('href');
+
+      // Ignore HashRouter path navigations
+      if (href && href.startsWith('#/')) return;
+
+      if (href && href !== '#') {
+        e.preventDefault();
+        try {
+          const target = document.querySelector(href);
+          if (target) {
+            lenis.scrollTo(target, { offset: -68 });
           }
+        } catch (err) {
+          // Ignore invalid query selector errors
         }
-      });
-    });
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
 
     return () => {
+      document.removeEventListener('click', handleAnchorClick);
       lenis.destroy();
     };
   }, []);

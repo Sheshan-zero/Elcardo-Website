@@ -73,8 +73,8 @@ export default function ProjectsHero() {
 
         <motion.p
           className="projects-hero-sub"
-          initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.4, ease }}
         >
           Precision engineering across residential, commercial, and industrial landscapes.

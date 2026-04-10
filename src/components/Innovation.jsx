@@ -41,7 +41,7 @@ export default function Innovation() {
             <p className="bento__label">Engineering Precision</p>
             <p className="bento__caption">unibody design</p>
             <div className="bento__img-wrap bento__img-wrap--bottom">
-              <img src={imgEngineering} alt="Engineering" />
+              <img src={imgEngineering} alt="Engineering" loading="lazy" decoding="async" />
             </div>
           </motion.div>
 
@@ -62,7 +62,7 @@ export default function Innovation() {
             <p className="bento__label">Sustainable Energy</p>
             <p className="bento__caption">solar & storage systems</p>
             <div className="bento__img-wrap bento__img-wrap--fill">
-              <img src={imgSolar} alt="Solar Energy" />
+              <img src={imgSolar} alt="Solar Energy" loading="lazy" decoding="async" />
             </div>
           </motion.div>
 
@@ -83,7 +83,7 @@ export default function Innovation() {
             <p className="bento__label">Automotive Innovation</p>
             <p className="bento__caption">custom fleet solutions</p>
             <div className="bento__img-wrap bento__img-wrap--fill">
-              <img src={imgAutomotive} alt="Automotive" />
+              <img src={imgAutomotive} alt="Automotive" loading="lazy" decoding="async" />
             </div>
           </motion.div>
 

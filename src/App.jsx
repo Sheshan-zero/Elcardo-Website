@@ -4,19 +4,31 @@ import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
-import Companies from './components/Companies';
-import Marquee from './components/Marquee';
-import Innovation from './components/Innovation';
-import Projects from './components/Projects';
-import Clients from './components/Clients';
-import CTA from './components/CTA';
-import Footer from './components/Footer';const RollerGatesPage = lazy(() => import('./pages/RollerGatesPage'));
+import './App.css';
+
+/* ─── Lazy load ALL below-fold homepage sections ─── */
+const About = lazy(() => import('./components/About'));
+const Companies = lazy(() => import('./components/Companies'));
+const Marquee = lazy(() => import('./components/Marquee'));
+const Innovation = lazy(() => import('./components/Innovation'));
+const FeaturedProducts = lazy(() => import('./components/FeaturedProducts'));
+const Projects = lazy(() => import('./components/Projects'));
+const Clients = lazy(() => import('./components/Clients'));
+const CTA = lazy(() => import('./components/CTA'));
+const Footer = lazy(() => import('./components/Footer'));
+
+/* ─── Lazy load sub-pages ─── */
+const RollerGatesPage = lazy(() => import('./pages/RollerGatesPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage'));
 const CompaniesPage = lazy(() => import('./pages/CompaniesPage/CompaniesPage'));
 const ProductsPage = lazy(() => import('./pages/ProductsPage/ProductsPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage/ProjectsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage/ContactPage'));
+
+/* ─── Minimal loading fallback for below-fold sections ─── */
+function SectionFallback() {
+  return <div style={{ minHeight: '200px' }} />;
+}
 
 function HomePage() {
   const location = useLocation();
@@ -38,15 +50,20 @@ function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <About />
-        <Companies />
-        <Marquee />
-        <Innovation />
-        <Projects />
-        <Clients />
-        <CTA />
+        <Suspense fallback={<SectionFallback />}>
+          <About />
+          <FeaturedProducts />
+          <Companies />
+          <Marquee />
+          <Innovation />
+          <Projects />
+          <Clients />
+          <CTA />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={<SectionFallback />}>
+        <Footer />
+      </Suspense>
     </SmoothScroll>
   );
 }

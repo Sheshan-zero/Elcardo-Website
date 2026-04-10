@@ -39,7 +39,7 @@ function ParallaxCard({ item, index }) {
     >
       {/* Background layer */}
       <motion.div className="rg-parallax-bg" style={{ y: bgY }}>
-        <img src={item.bg} alt="" />
+        <img src={item.bg} alt="" loading="lazy" decoding="async" />
       </motion.div>
 
       {/* Foreground layer */}
@@ -52,7 +52,7 @@ function ParallaxCard({ item, index }) {
         }}
         transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <img src={item.img} alt={item.label} />
+        <img src={item.img} alt={item.label} loading="lazy" decoding="async" />
       </motion.div>
 
       {/* Caption */}

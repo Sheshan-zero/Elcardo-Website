@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, Suspense } from 'react';
+import React, { useRef, useState, useMemo, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, PerspectiveCamera, OrbitControls, Html } from '@react-three/drei';
 import { useSpring, animated } from '@react-spring/three';
@@ -206,10 +206,35 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } },
 };
 
+/* ─── Render-on-demand controller ─── */
+function RenderController({ isVisible }) {
+  useFrame(({ gl, scene, camera, invalidate }) => {
+    if (isVisible) {
+      gl.render(scene, camera);
+      invalidate();
+    }
+  }, 1);
+  return null;
+}
+
 export default function InteractiveModel() {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0, rootMargin: '100px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="rg-interactive">
+    <section className="rg-interactive" ref={containerRef}>
       <motion.div
         className="rg-interactive-header"
         initial="hidden"
@@ -226,7 +251,9 @@ export default function InteractiveModel() {
           style={{ position: 'absolute', inset: 0 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           dpr={[1, 1.5]}
+          frameloop="demand"
         >
+          <RenderController isVisible={isVisible} />
           <Suspense fallback={null}><ModelScene isOpen={isOpen} /></Suspense>
         </Canvas>
         <button className="rg-lift-toggle" onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close Gate' : 'Lift Gate'}</button>

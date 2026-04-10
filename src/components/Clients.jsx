@@ -103,6 +103,8 @@ export default function Clients() {
                   src={client.logo}
                   alt={client.name}
                   className="ticker-logo-img"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'block';
@@ -123,6 +125,8 @@ export default function Clients() {
                   src={client.logo}
                   alt={client.name}
                   className="ticker-logo-img"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'block';

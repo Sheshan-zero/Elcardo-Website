@@ -82,7 +82,7 @@ export default function ContactMap() {
                 transition={{ duration: 0.3, ease }}
               >
                 <div className="cm-dc-img">
-                  <img src={`${basePath}images/branch-building.png`} alt={activeBranch.city} />
+                  <img src={`${basePath}images/branch-building.png`} alt={activeBranch.city} loading="lazy" decoding="async" />
                   <div className="cm-dc-img-fade" />
                 </div>
                 <div className="cm-dc-body">

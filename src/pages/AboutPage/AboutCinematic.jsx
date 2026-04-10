@@ -28,8 +28,8 @@ export default function AboutCinematic() {
 
       <motion.div
         className="about-cinematic-text"
-        initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
-        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 1.2, ease }}
       >

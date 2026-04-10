@@ -9,6 +9,7 @@
   padding-bottom: 100px;
   background: #000000;
   overflow: hidden;
+  contain: layout style;
 }
 
 /* ===== SLIDESHOW ===== */
@@ -30,6 +31,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  will-change: transform, opacity;
 }
 
 /* ===== OVERLAYS ===== */

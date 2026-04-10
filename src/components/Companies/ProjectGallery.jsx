@@ -22,13 +22,13 @@ const PROJECTS = [
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(3px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const scaleIn = {
-  hidden: { opacity: 0, scale: 0.97, filter: 'blur(4px)' },
-  visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+  hidden: { opacity: 0, scale: 0.97 },
+  visible: { opacity: 1, scale: 1 },
 };
 
 export default function ProjectGallery() {

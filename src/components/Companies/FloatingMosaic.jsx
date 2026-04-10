@@ -61,8 +61,8 @@ export default function FloatingMosaic() {
         <motion.h2
           className="fmo__title"
           variants={{
-            hidden: { opacity: 0, y: 28, filter: 'blur(6px)' },
-            visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+            hidden: { opacity: 0, y: 28 },
+            visible: { opacity: 1, y: 0 },
           }}
           transition={{ duration: 1, ease: EASE }}
         >
@@ -97,8 +97,8 @@ function MosaicCard({ item, index, scrollYProgress }) {
     <motion.div
       className={`fmo__card fmo__card--${item.size} fmo__card--pos${index}`}
       ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.96, filter: 'blur(4px)' }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' } : {}}
+      initial={{ opacity: 0, y: 40, scale: 0.96 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 1.0, ease: EASE, delay: index * 0.08 }}
       style={{ y: yOffset }}
     >

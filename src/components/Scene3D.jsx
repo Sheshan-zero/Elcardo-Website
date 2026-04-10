@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -7,6 +7,12 @@ import * as THREE from 'three';
 function HeroTorusKnot() {
   const meshRef = useRef();
   const wireRef = useRef();
+
+  // Cache the wireframe geometry so it's not re-created every render
+  const wireGeo = useMemo(
+    () => new THREE.EdgesGeometry(new THREE.TorusKnotGeometry(1.8, 0.5, 48, 6, 2, 3)),
+    []
+  );
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
@@ -32,8 +38,7 @@ function HeroTorusKnot() {
           roughness={0.8}
         />
       </mesh>
-      <lineSegments ref={wireRef}>
-        <edgesGeometry args={[new THREE.TorusKnotGeometry(1.8, 0.5, 48, 6, 2, 3)]} />
+      <lineSegments ref={wireRef} geometry={wireGeo}>
         <lineBasicMaterial color="#DA1212" transparent opacity={0.3} />
       </lineSegments>
     </group>
@@ -118,6 +123,11 @@ function FloatingShapes() {
   const tetRef = useRef();
   const icoRef = useRef();
 
+  // Cache edge geometries so they're not re-created on every render
+  const octGeo = useMemo(() => new THREE.EdgesGeometry(new THREE.OctahedronGeometry(0.7, 0)), []);
+  const tetGeo = useMemo(() => new THREE.EdgesGeometry(new THREE.TetrahedronGeometry(0.5, 0)), []);
+  const icoGeo = useMemo(() => new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(0.5, 0)), []);
+
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (octRef.current) {
@@ -137,20 +147,17 @@ function FloatingShapes() {
   return (
     <>
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.6}>
-        <lineSegments ref={octRef} position={[-3, 2, -2]}>
-          <edgesGeometry args={[new THREE.OctahedronGeometry(0.7, 0)]} />
+        <lineSegments ref={octRef} position={[-3, 2, -2]} geometry={octGeo}>
           <lineBasicMaterial color="#0A3D7A" transparent opacity={0.28} />
         </lineSegments>
       </Float>
       <Float speed={2} rotationIntensity={0.3} floatIntensity={0.4}>
-        <lineSegments ref={tetRef} position={[5, -2, -1]}>
-          <edgesGeometry args={[new THREE.TetrahedronGeometry(0.5, 0)]} />
+        <lineSegments ref={tetRef} position={[5, -2, -1]} geometry={tetGeo}>
           <lineBasicMaterial color="#DA1212" transparent opacity={0.24} />
         </lineSegments>
       </Float>
       <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.5}>
-        <lineSegments ref={icoRef} position={[-4.5, -1.5, -3]}>
-          <edgesGeometry args={[new THREE.IcosahedronGeometry(0.5, 0)]} />
+        <lineSegments ref={icoRef} position={[-4.5, -1.5, -3]} geometry={icoGeo}>
           <lineBasicMaterial color="#FFFFFF" transparent opacity={0.04} />
         </lineSegments>
       </Float>
@@ -158,21 +165,52 @@ function FloatingShapes() {
   );
 }
 
+/* ===== Render-on-demand controller ===== */
+function RenderController({ isVisible }) {
+  useFrame(({ gl, scene, camera, invalidate }) => {
+    if (isVisible) {
+      gl.render(scene, camera);
+      invalidate(); // keep requesting frames while visible
+    }
+  }, 1);
+  return null;
+}
+
 /* ===== Main Scene Export ===== */
 export default function Scene3D() {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div style={{
-      position: 'absolute',
-      inset: 0,
-      zIndex: 1,
-      pointerEvents: 'none',
-    }}>
+    <div
+      ref={containerRef}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        pointerEvents: 'none',
+      }}
+    >
       <Canvas
         camera={{ position: [0, 0, 8], fov: 50 }}
-        dpr={[1, 1.2]}
+        dpr={[1, 1]}
+        frameloop="demand"
         style={{ background: 'transparent' }}
-        gl={{ alpha: true, antialias: true }}
+        gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
       >
+        <RenderController isVisible={isVisible} />
         <ambientLight intensity={0.45} />
         <pointLight position={[10, 8, 10]} intensity={0.8} color="#0A3D7A" />
         <pointLight position={[-8, -5, 5]} intensity={0.45} color="#DA1212" />

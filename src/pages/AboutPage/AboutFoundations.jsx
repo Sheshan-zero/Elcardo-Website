@@ -38,7 +38,7 @@ export default function AboutFoundations() {
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 2, ease }}
       >
-        <img src={sketchBg} alt="" aria-hidden="true" />
+        <img src={sketchBg} alt="" aria-hidden="true" loading="lazy" decoding="async" />
       </motion.div>
 
       <div className="about-foundations-inner">

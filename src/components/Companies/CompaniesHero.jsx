@@ -6,9 +6,9 @@ import './CompaniesHero.css';
 const ease = [0.16, 1, 0.3, 1];
 
 const lineReveal = {
-  hidden: { opacity: 0, y: 50, filter: 'blur(4px)' },
+  hidden: { opacity: 0, y: 50 },
   visible: (i) => ({
-    opacity: 1, y: 0, filter: 'blur(0px)',
+    opacity: 1, y: 0,
     transition: { delay: 0.2 + i * 0.12, duration: 1, ease },
   }),
 };
@@ -36,22 +36,28 @@ export default function CompaniesHero() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const scrollY = window.scrollY;
-      
-      const content = sectionRef.current.querySelector('.cph-content');
-      if (content) {
-        content.style.transform = `translateY(${scrollY * 0.25}px)`;
-        content.style.opacity = Math.max(0, 1 - scrollY / 600);
-      }
-      
-      const scrollInd = sectionRef.current.querySelector('.cph-scroll');
-      if (scrollInd) {
-        scrollInd.style.opacity = Math.max(0, 1 - scrollY / 600);
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (!sectionRef.current) { ticking = false; return; }
+        const scrollY = window.scrollY;
+        
+        const content = sectionRef.current.querySelector('.cph-content');
+        if (content) {
+          content.style.transform = `translateY(${scrollY * 0.25}px)`;
+          content.style.opacity = Math.max(0, 1 - scrollY / 600);
+        }
+        
+        const scrollInd = sectionRef.current.querySelector('.cph-scroll');
+        if (scrollInd) {
+          scrollInd.style.opacity = Math.max(0, 1 - scrollY / 600);
+        }
+        ticking = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

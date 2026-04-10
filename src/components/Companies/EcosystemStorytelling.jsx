@@ -126,8 +126,17 @@ export default function EcosystemStorytelling() {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const [dims, setDims] = useState({ w: 1400, h: 900 });
-  const [scrollProgress, setScrollProgress] = useState(0);
   const hasAutoScrolledRef = useRef(false);
+
+  // Store scroll-derived values in refs to avoid 60fps re-renders
+  const scrollProgressRef = useRef(0);
+  const [currentPhase, setCurrentPhase] = useState(-1);
+  const [phaseProgress, setPhaseProgress] = useState(0);
+
+  const OVERVIEW_END = 0.12;
+  const OUTRO_BUFFER = 0.04;
+  const NODE_WIDTH = (1.0 - OVERVIEW_END - OUTRO_BUFFER) / COMPANIES_COUNT;
+  const NODES_START = OVERVIEW_END;
 
   useEffect(() => {
     const update = () => {
@@ -153,7 +162,38 @@ export default function EcosystemStorytelling() {
             const scrolled = -rect.top;
             const totalScrollable = sectionHeight - viewportH;
             const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
-            setScrollProgress(progress);
+            scrollProgressRef.current = progress;
+
+            // Only derive phase & phaseProgress — setState only when they change
+            let newPhase = -1;
+            let newPhaseProgress = 0;
+
+            if (progress < OVERVIEW_END) {
+              newPhase = -1;
+              newPhaseProgress = progress / OVERVIEW_END;
+            } else {
+              const v = progress - NODES_START;
+              newPhase = Math.min(Math.floor(v / NODE_WIDTH), COMPANIES_COUNT - 1);
+              newPhaseProgress = (v - newPhase * NODE_WIDTH) / NODE_WIDTH;
+            }
+
+            // Always update phaseProgress for smooth animation
+            setPhaseProgress(newPhaseProgress);
+            setCurrentPhase((prev) => prev !== newPhase ? newPhase : prev);
+
+            // Auto-scroll logic
+            if (progress >= 0.97 && !hasAutoScrolledRef.current && containerRef.current) {
+              hasAutoScrolledRef.current = true;
+              setTimeout(() => {
+                if (containerRef.current) {
+                  const sectionBottom = containerRef.current.getBoundingClientRect().bottom + window.scrollY;
+                  smoothScrollTo(sectionBottom + 10, AUTO_SCROLL_DURATION);
+                }
+              }, AUTO_SCROLL_DELAY);
+            }
+            if (progress < 0.5) {
+              hasAutoScrolledRef.current = false;
+            }
           }
           ticking = false;
         });
@@ -163,39 +203,7 @@ export default function EcosystemStorytelling() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (scrollProgress >= 0.97 && !hasAutoScrolledRef.current && containerRef.current) {
-      hasAutoScrolledRef.current = true;
-      const timer = setTimeout(() => {
-        const sectionBottom = containerRef.current.getBoundingClientRect().bottom + window.scrollY;
-        const targetScroll = sectionBottom + 10;
-        smoothScrollTo(targetScroll, AUTO_SCROLL_DURATION);
-      }, AUTO_SCROLL_DELAY);
-      return () => clearTimeout(timer);
-    }
-    if (scrollProgress < 0.5) {
-      hasAutoScrolledRef.current = false;
-    }
-  }, [scrollProgress]);
-
-  const OVERVIEW_END = 0.12;
-  const OUTRO_BUFFER = 0.04;
-  const NODE_WIDTH = (1.0 - OVERVIEW_END - OUTRO_BUFFER) / COMPANIES_COUNT;
-  const NODES_START = OVERVIEW_END;
-
-  let currentPhase = -1;
-  let phaseProgress = 0;
-
-  if (scrollProgress < OVERVIEW_END) {
-    currentPhase = -1;
-    phaseProgress = scrollProgress / OVERVIEW_END;
-  } else {
-    const v = scrollProgress - NODES_START;
-    currentPhase = Math.min(Math.floor(v / NODE_WIDTH), COMPANIES_COUNT - 1);
-    phaseProgress = (v - currentPhase * NODE_WIDTH) / NODE_WIDTH;
-  }
+  }, [OVERVIEW_END, NODES_START, NODE_WIDTH]);
 
   const getNodePosition = useCallback((nodeIndex) => {
     if (currentPhase === -1) {
@@ -426,25 +434,22 @@ export default function EcosystemStorytelling() {
                       scale: 0.92,
                       y: 24,
                       rotate: wb.rot,
-                      filter: 'blur(4px)',
                     }}
                     animate={{
                       opacity: op,
                       scale: op > 0.5 ? 1 : 0.96,
                       y: 0,
                       rotate: 0,
-                      filter: 'blur(0px)',
                     }}
                     exit={{
                       opacity: 0,
                       scale: 0.94,
                       y: -12,
-                      filter: 'blur(3px)',
                     }}
                     transition={{
-                      duration: 1.8,
+                      duration: 1.4,
                       ease: EASE,
-                      delay: ci * 0.15,
+                      delay: ci * 0.12,
                     }}
                   >
                     <div className="eco-story-card__inner">

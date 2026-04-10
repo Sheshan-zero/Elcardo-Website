@@ -54,6 +54,7 @@ function FeaturedProject({ project, index }) {
           alt={project.name}
           style={{ y, scale }}
           loading="lazy"
+          decoding="async"
         />
       </div>
       <div className="projects-featured-overlay" />
@@ -71,8 +72,8 @@ function FeaturedProject({ project, index }) {
 
         <motion.p
           className="projects-featured-category"
-          initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8, delay: 0.12, ease }}
         >
@@ -81,8 +82,8 @@ function FeaturedProject({ project, index }) {
 
         <motion.h2
           className="projects-featured-name"
-          initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 1, delay: 0.24, ease }}
         >

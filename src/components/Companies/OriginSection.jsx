@@ -37,8 +37,8 @@ export default function OriginSection() {
 
           <motion.h2
             className="cpo__headline"
-            initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
-            animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1.0, ease: EASE, delay: 0.1 }}
           >
             It Started with <br /><em>Precision.</em>

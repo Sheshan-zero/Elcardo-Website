@@ -83,6 +83,7 @@ export default function AboutLeadership() {
                 alt={leader.name}
                 className="about-leader-img"
                 loading="lazy"
+                decoding="async"
               />
             </div>
             <h3 className="about-leader-name">{leader.name}</h3>

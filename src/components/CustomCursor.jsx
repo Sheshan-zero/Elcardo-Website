@@ -16,34 +16,35 @@ export default function CustomCursor() {
       mouse.current.y = e.clientY;
     };
 
-    const onEnter = () => ringRef.current?.classList.add('expand');
-    const onLeave = () => ringRef.current?.classList.remove('expand');
+    document.addEventListener('mousemove', onMove, { passive: true });
 
-    document.addEventListener('mousemove', onMove);
-
-    const addHoverListeners = () => {
-      document.querySelectorAll('a, button, [data-cursor="expand"]').forEach((el) => {
-        el.addEventListener('mouseenter', onEnter);
-        el.addEventListener('mouseleave', onLeave);
-      });
+    // Use event delegation instead of MutationObserver — one listener, zero DOM queries
+    const onOver = (e) => {
+      const target = e.target.closest('a, button, [data-cursor="expand"]');
+      if (target) ringRef.current?.classList.add('expand');
+    };
+    const onOut = (e) => {
+      const target = e.target.closest('a, button, [data-cursor="expand"]');
+      if (target) {
+        const related = e.relatedTarget?.closest?.('a, button, [data-cursor="expand"]');
+        if (!related || related !== target) {
+          ringRef.current?.classList.remove('expand');
+        }
+      }
     };
 
-    // Re-attach on DOM changes
-    const observer = new MutationObserver(addHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
-    addHoverListeners();
+    document.addEventListener('mouseover', onOver, { passive: true });
+    document.addEventListener('mouseout', onOut, { passive: true });
 
     let raf;
     const animate = () => {
       if (dotRef.current) {
-        dotRef.current.style.left = mouse.current.x + 'px';
-        dotRef.current.style.top = mouse.current.y + 'px';
+        dotRef.current.style.transform = `translate3d(${mouse.current.x - 3}px, ${mouse.current.y - 3}px, 0)`;
       }
       ring.current.x += (mouse.current.x - ring.current.x) * 0.1;
       ring.current.y += (mouse.current.y - ring.current.y) * 0.1;
       if (ringRef.current) {
-        ringRef.current.style.left = ring.current.x + 'px';
-        ringRef.current.style.top = ring.current.y + 'px';
+        ringRef.current.style.transform = `translate3d(${ring.current.x - 20}px, ${ring.current.y - 20}px, 0)`;
       }
       raf = requestAnimationFrame(animate);
     };
@@ -51,8 +52,9 @@ export default function CustomCursor() {
 
     return () => {
       document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('mouseout', onOut);
       cancelAnimationFrame(raf);
-      observer.disconnect();
     };
   }, []);
 
@@ -69,9 +71,11 @@ export default function CustomCursor() {
           background: var(--accent-red);
           border-radius: 50%;
           position: fixed;
+          top: 0;
+          left: 0;
           z-index: 99999;
           pointer-events: none;
-          transform: translate(-50%, -50%);
+          will-change: transform;
           mix-blend-mode: difference;
         }
         .custom-cursor-ring {
@@ -80,9 +84,11 @@ export default function CustomCursor() {
           border: 1.5px solid rgba(218, 18, 18, 0.35);
           border-radius: 50%;
           position: fixed;
+          top: 0;
+          left: 0;
           z-index: 99998;
           pointer-events: none;
-          transform: translate(-50%, -50%);
+          will-change: transform;
           transition: width 0.4s var(--ease-out-expo),
                       height 0.4s var(--ease-out-expo),
                       border-color 0.3s,

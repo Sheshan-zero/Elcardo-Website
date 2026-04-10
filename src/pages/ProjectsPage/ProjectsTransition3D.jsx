@@ -1,10 +1,21 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
 const ease = [0.16, 1, 0.3, 1];
+
+/* ===== Render-on-demand controller ===== */
+function RenderController({ isVisible }) {
+  useFrame(({ gl, scene, camera, invalidate }) => {
+    if (isVisible) {
+      gl.render(scene, camera);
+      invalidate();
+    }
+  }, 1);
+  return null;
+}
 
 /* ===== Wireframe Grid Plane ===== */
 function WireframeGrid() {
@@ -35,6 +46,11 @@ function WireframeBeams() {
   const beam2 = useRef();
   const beam3 = useRef();
 
+  // Cache edge geometries
+  const geo1 = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(3, 0.3, 0.3)), []);
+  const geo2 = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(2, 0.5, 0.2)), []);
+  const geo3 = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(1.5, 0.2, 0.4)), []);
+
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (beam1.current) {
@@ -54,22 +70,19 @@ function WireframeBeams() {
   return (
     <>
       <Float speed={1.2} rotationIntensity={0.1} floatIntensity={0.4}>
-        <lineSegments ref={beam1} position={[-3, 0.5, -1]}>
-          <edgesGeometry args={[new THREE.BoxGeometry(3, 0.3, 0.3)]} />
+        <lineSegments ref={beam1} position={[-3, 0.5, -1]} geometry={geo1}>
           <lineBasicMaterial color="#DA1212" transparent opacity={0.2} />
         </lineSegments>
       </Float>
 
       <Float speed={0.8} rotationIntensity={0.15} floatIntensity={0.3}>
-        <lineSegments ref={beam2} position={[2.5, -0.5, -2]}>
-          <edgesGeometry args={[new THREE.BoxGeometry(2, 0.5, 0.2)]} />
+        <lineSegments ref={beam2} position={[2.5, -0.5, -2]} geometry={geo2}>
           <lineBasicMaterial color="#0A3D7A" transparent opacity={0.18} />
         </lineSegments>
       </Float>
 
       <Float speed={1.5} rotationIntensity={0.08} floatIntensity={0.5}>
-        <lineSegments ref={beam3} position={[0, 1, -1.5]}>
-          <edgesGeometry args={[new THREE.BoxGeometry(1.5, 0.2, 0.4)]} />
+        <lineSegments ref={beam3} position={[0, 1, -1.5]} geometry={geo3}>
           <lineBasicMaterial color="#FFFFFF" transparent opacity={0.06} />
         </lineSegments>
       </Float>
@@ -127,15 +140,31 @@ function TransitionParticles() {
 
 /* ===== Main Export ===== */
 export default function ProjectsTransition3D() {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0, rootMargin: '100px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="projects-transition-3d" id="projects-transition">
+    <section className="projects-transition-3d" id="projects-transition" ref={containerRef}>
       <div className="projects-transition-canvas">
         <Canvas
           camera={{ position: [0, 0, 7], fov: 45 }}
-          dpr={[1, 1.2]}
+          dpr={[1, 1]}
+          frameloop="demand"
           style={{ background: 'transparent' }}
-          gl={{ alpha: true, antialias: true }}
+          gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
         >
+          <RenderController isVisible={isVisible} />
           <ambientLight intensity={0.3} />
           <pointLight position={[5, 5, 5]} intensity={0.4} color="#0A3D7A" />
           <pointLight position={[-5, -3, 3]} intensity={0.25} color="#DA1212" />
@@ -148,8 +177,8 @@ export default function ProjectsTransition3D() {
 
       <motion.div
         className="projects-transition-text"
-        initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
-        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 1.2, ease }}
       >

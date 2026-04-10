@@ -121,6 +121,7 @@ export default function ProjectsGrid() {
                 alt={project.name}
                 className="projects-grid-card-img"
                 loading="lazy"
+                decoding="async"
               />
               <div className="projects-grid-card-overlay" />
               <div className="projects-grid-card-name">{project.name}</div>

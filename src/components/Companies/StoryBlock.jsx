@@ -92,9 +92,9 @@ export default function StoryBlock() {
             <motion.div
               key={`stb-img-${activeChapter}`}
               className="stb__image-container"
-              initial={{ opacity: 0, scale: 1.05, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, scale: 0.97, filter: 'blur(4px)' }}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 1.0, ease: EASE }}
             >
               <img
@@ -135,9 +135,9 @@ export default function StoryBlock() {
               <motion.div
                 key={`stb-text-${activeChapter}`}
                 className="stb__text-inner"
-                initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -16, filter: 'blur(3px)' }}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.85, ease: EASE }}
               >
                 <span className="stb__chapter-label">

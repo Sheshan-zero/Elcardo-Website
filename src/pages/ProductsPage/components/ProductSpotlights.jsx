@@ -145,8 +145,8 @@ const SpotlightSection = ({ item, index }) => {
         {/* Image Side */}
         <motion.div
           className="ps-image-wrap"
-          initial={{ opacity: 0, scale: 0.97, filter: 'blur(4px)' }}
-          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 1.2, ease }}
         >

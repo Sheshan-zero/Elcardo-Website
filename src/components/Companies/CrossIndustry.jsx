@@ -28,8 +28,8 @@ const PILLARS = [
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const lineExpand = {

@@ -64,7 +64,7 @@ export default function Companies() {
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <img src={companies[hoveredIdx].img} alt={companies[hoveredIdx].name} />
+            <img src={companies[hoveredIdx].img} alt={companies[hoveredIdx].name} loading="lazy" decoding="async" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -122,7 +122,7 @@ export default function Companies() {
             <div className="company-name">{company.name}</div>
             <div className="company-img-cell">
               <div className="company-img-wrapper">
-                <img src={company.img} alt={company.name} />
+                <img src={company.img} alt={company.name} loading="lazy" decoding="async" />
               </div>
             </div>
             <div className="company-description">{company.desc}</div>

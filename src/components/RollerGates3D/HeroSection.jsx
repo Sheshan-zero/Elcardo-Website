@@ -144,7 +144,7 @@ export default function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ duration: 2, delay: 0.2 }}
       >
-        <img src={heroImg} alt="Elcardo Roller Gates Factory" />
+        <img src={heroImg} alt="Elcardo Roller Gates Factory" decoding="async" />
       </motion.div>
       <div className="rg-hero-bg-gradient" />
 

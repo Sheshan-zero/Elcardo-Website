@@ -125,7 +125,7 @@ function Milestone({ milestone, index }) {
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 1, delay: 0.25, ease }}
       >
-        <img src={milestone.img} alt={milestone.name} loading="lazy" />
+        <img src={milestone.img} alt={milestone.name} loading="lazy" decoding="async" />
       </motion.div>
     </>
   );

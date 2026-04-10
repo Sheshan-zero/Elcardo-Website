@@ -36,7 +36,7 @@ export default function CapabilitiesGrid() {
           What We Do
         </motion.span>
         <motion.h2 className="cpg-cap__title"
-          variants={{ hidden: { opacity: 0, y: 28, filter: 'blur(6px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)' } }}
+          variants={{ hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0 } }}
           transition={{ duration: 1, ease: EASE }}
         >
           Core <em>Capabilities</em>
@@ -74,8 +74,8 @@ function CapCard({ company, caps, index }) {
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       variants={{
-        hidden: { opacity: 0, y: 40, scale: 0.95, filter: 'blur(6px)' },
-        visible: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
+        hidden: { opacity: 0, y: 40, scale: 0.95 },
+        visible: { opacity: 1, y: 0, scale: 1 },
       }}
       transition={{ duration: 0.9, ease: EASE, delay: index * 0.1 }}
       onMouseMove={handleMouseMove}
