@@ -1,4 +1,4 @@
-import{j as s,A as p,m as l}from"./vendor-motion-BZ8LpI5V.js";import{r as c}from"./vendor-react-DAZhNTZd.js";import{c as r}from"./companiesData-SXs_RmZp.js";import"./company_roller_gates-Cw8qM_rm.js";import"./company_solar-BrllIFqd.js";import"./index-BHadE8GQ.js";import"./vendor-three-CJrACZGt.js";import"./vendor-scroll-PQjhuG3t.js";import"./company_hotel-DSh0LPoa.js";const f=[{headline:`Elcardo
+import{j as s,A as p,m as l}from"./vendor-motion-BZ8LpI5V.js";import{r as c}from"./vendor-react-DAZhNTZd.js";import{c as r}from"./companiesData-DNdfroVl.js";import"./company_roller_gates-Cw8qM_rm.js";import"./company_solar-BrllIFqd.js";import"./index-BGWQp5Db.js";import"./vendor-three-CJrACZGt.js";import"./vendor-scroll-PQjhuG3t.js";import"./company_hotel-DSh0LPoa.js";const f=[{headline:`Elcardo
 Industries.`,descriptor:"Precision access solutions.",kicker:"Engineering"},{headline:`Elme
 Solar.`,descriptor:"Sustainable energy solutions.",kicker:"Renewable Energy"},{headline:`Elme
 Battery.`,descriptor:"Reliable automotive power.",kicker:"Clean Technology"},{headline:`Anilad
