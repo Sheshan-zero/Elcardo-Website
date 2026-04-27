@@ -1,49 +1,6 @@
-import React, { useRef, useMemo, useState, useEffect, Suspense } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, Points, PointMaterial, View } from '@react-three/drei';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-
-/* ─── Floating Particles ─── */
-function Particles() {
-  const pointsRef = useRef();
-  const count = 200;
-
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 20;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 10;
-    }
-    return arr;
-  }, [count]);
-
-  useFrame(({ clock }) => {
-    if (!pointsRef.current) return;
-    const t = clock.getElapsedTime();
-    const posArray = pointsRef.current.geometry.attributes.position.array;
-    for (let i = 0; i < count; i++) {
-      posArray[i * 3 + 1] += Math.sin(t * 0.3 + i * 0.1) * 0.002;
-    }
-    pointsRef.current.geometry.attributes.position.needsUpdate = true;
-  });
-
-  return (
-    <Points ref={pointsRef} positions={positions} stride={3}>
-      <PointMaterial transparent color="#ffffff" size={0.03} sizeAttenuation depthWrite={false} opacity={0.4} />
-    </Points>
-  );
-}
-
-function ParticleScene() {
-  return (
-    <>
-      <PerspectiveCamera makeDefault position={[0, 0, 8]} fov={50} />
-      <Particles />
-    </>
-  );
-}
 
 /* ─── Animated Counter ─── */
 function useAnimatedCounter(target, inView) {
@@ -88,19 +45,57 @@ function StatCard({ target, suffix, prefix, label, delay }) {
   );
 }
 
+/* ─── Spec Row ─── */
+function SpecRow({ label, value, delay }) {
+  return (
+    <motion.tr
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <td style={{ padding: '16px 20px', fontWeight: 500, color: 'var(--near-black, #0a0a0f)', borderBottom: '1px solid var(--border-light, rgba(0,0,0,0.06))' }}>{label}</td>
+      <td style={{ padding: '16px 20px', color: 'var(--mid-gray, #8A8F98)', borderBottom: '1px solid var(--border-light, rgba(0,0,0,0.06))' }}>{value}</td>
+    </motion.tr>
+  );
+}
+
 export default function StatsSection() {
   return (
     <section className="rg-stats-3d">
-      <View className="rg-stats-canvas-bg">
-        <Suspense fallback={null}><ParticleScene /></Suspense>
-      </View>
       <div className="rg-stats-content">
+        {/* Animated counters */}
         <div className="rg-stats-grid">
           <StatCard target={100000} suffix="+" prefix="" label="Open / close cycles" delay={0} />
           <StatCard target={120} suffix=" km/h" prefix="" label="Wind resistance" delay={0.15} />
           <StatCard target={99} suffix=".9%" prefix="" label="Uptime reliability" delay={0.3} />
           <StatCard target={24} suffix="/7" prefix="" label="Remote monitoring" delay={0.45} />
         </div>
+
+        {/* Technical Specifications Table */}
+        <motion.div
+          style={{ maxWidth: 800, margin: '80px auto 0', background: '#fff', borderRadius: 20, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid var(--border-light, rgba(0,0,0,0.06))' }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div style={{ padding: '28px 24px 16px', borderBottom: '1px solid var(--border-light, rgba(0,0,0,0.06))' }}>
+            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 4, textTransform: 'uppercase', color: 'var(--accent-red, #DA1212)' }}>Technical Specifications</span>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 15 }}>
+            <tbody>
+              <SpecRow label="Operation Type" value="Manual / Motorized" delay={0.1} />
+              <SpecRow label="Material Options" value="Steel / Aluminum / Color-bond" delay={0.15} />
+              <SpecRow label="Applications" value="Residential / Commercial / Industrial" delay={0.2} />
+              <SpecRow label="Finish Options" value="Custom colors, wood-look, metallic" delay={0.25} />
+              <SpecRow label="Opening Style" value="Vertical rolling (space-saving)" delay={0.3} />
+              <SpecRow label="Maintenance" value="Low maintenance — annual service" delay={0.35} />
+              <SpecRow label="Safety" value="Infrared sensors, manual override" delay={0.4} />
+              <SpecRow label="Warranty" value="Up to 10 years structural warranty" delay={0.45} />
+            </tbody>
+          </table>
+        </motion.div>
       </div>
     </section>
   );

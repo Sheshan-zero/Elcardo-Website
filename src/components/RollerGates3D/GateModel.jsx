@@ -147,8 +147,8 @@ export function MotorHousing({ gateWidth = 3, gateHeight = 4 }) {
   const ledMat = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: '#ff6b00',
-        emissive: '#ff6b00',
+        color: '#DA1212',
+        emissive: '#DA1212',
         emissiveIntensity: 0.8,
         roughness: 0.4,
         metalness: 0.6,

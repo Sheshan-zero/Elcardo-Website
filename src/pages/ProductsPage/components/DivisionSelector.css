@@ -1,0 +1,255 @@
+/* ============================================================
+   DIVISION SELECTOR — Horizontal Editorial Strip (Dark)
+   ============================================================ */
+.ds-section {
+  padding: var(--section-padding, 140px) var(--container-padding, 6vw);
+  background: var(--near-black, #0A0A0F);
+  overflow: hidden;
+}
+
+/* ─── Header ─── */
+.ds-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.ds-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.ds-label-line {
+  width: 32px;
+  height: 1px;
+  background: var(--accent-red, #DA1212);
+}
+
+.ds-label-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+}
+
+.ds-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: var(--white, #fff);
+  margin: 0;
+}
+
+.ds-title-em {
+  font-style: italic;
+  opacity: 0.25;
+}
+
+/* ─── Strip layout: 5 columns ─── */
+.ds-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ─── Individual division item ─── */
+.ds-item {
+  position: relative;
+  cursor: pointer;
+  padding: 0 clamp(16px, 2vw, 32px);
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.5s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Dim siblings on parent hover */
+.ds-strip:hover .ds-item {
+  opacity: 0.4;
+}
+
+.ds-strip:hover .ds-item:hover {
+  opacity: 1;
+}
+
+/* ─── Vertical divider ─── */
+.ds-item-divider {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-dark, rgba(255, 255, 255, 0.08));
+}
+
+/* ─── Visual ─── */
+.ds-item-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.ds-item-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  filter: grayscale(30%);
+}
+
+.ds-item:hover .ds-item-visual img {
+  transform: scale(1.06);
+  filter: grayscale(0%);
+}
+
+.ds-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(10, 10, 15, 0.6) 100%
+  );
+}
+
+/* ─── Content ─── */
+.ds-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-item-index {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--accent-red, #DA1212);
+  margin-bottom: 8px;
+}
+
+.ds-item-name {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(16px, 1.4vw, 22px);
+  font-weight: 500;
+  color: var(--white, #fff);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.ds-item-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mid-gray, #8A8F98);
+  font-weight: 300;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.6s var(--ease-out-expo),
+              opacity 0.5s var(--ease-out-expo),
+              margin 0.5s var(--ease-out-expo);
+}
+
+.ds-item:hover .ds-item-desc {
+  max-height: 100px;
+  opacity: 1;
+  margin-bottom: 12px;
+}
+
+.ds-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-dark, rgba(255, 255, 255, 0.08));
+}
+
+.ds-item-count {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mid-gray, #8A8F98);
+}
+
+.ds-item-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mid-gray, #8A8F98);
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+.ds-item:hover .ds-item-arrow {
+  background: var(--accent-red, #DA1212);
+  color: var(--white, #fff);
+  transform: translateX(4px);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .ds-strip {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 0;
+  }
+  .ds-item:nth-child(3) .ds-item-divider { display: none; }
+  .ds-item:nth-child(n+4) {
+    border-top: 1px solid var(--border-dark, rgba(255, 255, 255, 0.08));
+    padding-top: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ds-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 0;
+  }
+  .ds-item-divider { display: none; }
+  .ds-item {
+    border-right: 1px solid var(--border-dark, rgba(255, 255, 255, 0.08));
+  }
+  .ds-item:nth-child(2n) { border-right: none; }
+  .ds-item:nth-child(n+3) {
+    border-top: 1px solid var(--border-dark, rgba(255, 255, 255, 0.08));
+    padding-top: 24px;
+  }
+  .ds-item-desc {
+    max-height: none;
+    opacity: 1;
+    margin-bottom: 8px;
+  }
+  .ds-strip:hover .ds-item { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .ds-strip {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .ds-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border-dark, rgba(255, 255, 255, 0.08));
+    padding: 24px 0;
+  }
+  .ds-item:last-child { border-bottom: none; }
+  .ds-item:nth-child(n+3) {
+    border-top: none;
+    padding-top: 24px;
+  }
+  .ds-item-visual {
+    aspect-ratio: 16 / 9;
+  }
+}

@@ -27,26 +27,26 @@
 .rg-feat-circuit {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle at 50% 50%, rgba(255,107,0,0.05) 0%, transparent 60%);
+  background-image: radial-gradient(circle at 50% 50%, rgba(218,18,18,0.05) 0%, transparent 60%);
 }
 
 .rg-feat-circuit-line {
   position: absolute;
   top: 50%; left: 0; width: 50%; height: 2px;
-  background: linear-gradient(90deg, transparent, #ff6b00);
+  background: linear-gradient(90deg, transparent, var(--accent-red, #DA1212));
   opacity: 0.3;
 }
 
 .rg-feat-circuit-line--2 {
   top: 30%; left: 50%; width: 2px; height: 40%;
-  background: linear-gradient(180deg, transparent, #ff6b00);
+  background: linear-gradient(180deg, transparent, var(--accent-red, #DA1212));
 }
 
 .rg-feat-circuit-dot {
   position: absolute;
   top: calc(50% - 4px); left: calc(50% - 4px);
-  width: 8px; height: 8px; border-radius: 50%; background: #ff6b00;
-  box-shadow: 0 0 15px #ff6b00;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent-red, #DA1212);
+  box-shadow: 0 0 15px var(--accent-red, #DA1212);
   animation: rgPulse 2s infinite;
 }
 
@@ -88,7 +88,7 @@
 
 .rg-feat-phone-btn {
   width: 100%;
-  background: #ff6b00;
+  background: var(--accent-red, #DA1212);
   color: #fff;
   padding: 16px;
   border-radius: 12px;
@@ -99,7 +99,7 @@
 }
 
 .rg-feat-phone-btn:hover {
-  background: #ff8533;
+  background: var(--accent-red-light, #E83A3A);
 }
 
 .rg-feat-lock {

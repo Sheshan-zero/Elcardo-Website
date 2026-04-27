@@ -91,18 +91,19 @@ export default function CtaSection() {
       </View>
       <div className="rg-cta-3d-content">
         <h2 className="rg-cta-headline">
-          <CharReveal text="Built for Performance." /><br />
-          <span className="rg-hero-italic"><CharReveal text="Designed for Security." /></span>
+          <CharReveal text="Ready to Build" /><br />
+          <span className="rg-hero-italic"><CharReveal text="Your Roller Gate?" /></span>
         </h2>
         <motion.p className="rg-cta-sub" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.5 }}>
-          Let's discuss how Elcardo Roller Gates can protect your business.
+          Contact our team to discuss the right roller gate solution for your project.
         </motion.p>
         <motion.div className="rg-cta-buttons" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.8 }}>
-          <a href="#" className="rg-btn-primary rg-btn-primary--white" data-cursor="expand">
-            Get a Quote
+          <a href="#" className="rg-btn-primary" data-cursor="expand">
+            Request a Quote
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </a>
-          <a href="#" className="rg-btn-outline rg-btn-outline--glow" data-cursor="expand">Contact Us</a>
+          <a href="#" className="rg-btn-primary rg-btn-primary--white" data-cursor="expand">Download Brochure</a>
+          <a href="#" className="rg-btn-outline rg-btn-outline--glow" data-cursor="expand">Contact Sales</a>
         </motion.div>
       </div>
     </section>

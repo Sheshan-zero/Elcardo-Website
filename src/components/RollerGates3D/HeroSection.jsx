@@ -162,7 +162,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 0.5, ease: [0.25, 1, 0.5, 1] }}
         >
-          Elcardo Roller Gates
+          Elcardo Industries
         </motion.p>
 
         <motion.h1
@@ -171,10 +171,19 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.8, delay: 0.8, ease: [0.25, 1, 0.5, 1] }}
         >
-          Absolute security.
+          Roller Gates.
           <br />
-          <span className="rg-hero-headline-dim-apple">Beautifully engineered.</span>
+          <span className="rg-hero-headline-dim-apple">Secure. Space-saving. Engineered.</span>
         </motion.h1>
+
+        <motion.p
+          className="rg-hero-body"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 1.2, ease: 'easeInOut' }}
+        >
+          Secure, space-saving access systems built for homes, businesses, and industrial spaces.
+        </motion.p>
 
         <motion.div
           className="rg-hero-actions-apple"
@@ -185,8 +194,8 @@ export default function HeroSection() {
           <a href="#rg-cta" className="rg-btn-apple-primary">
             Get a Quote
           </a>
-          <a href="#rg-interactive" className="rg-btn-apple-link">
-            Learn more
+          <a href="#rg-interactive" className="rg-btn-apple-link" style={{ color: 'var(--accent-red, #DA1212)' }}>
+            Explore Product
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
           </a>
         </motion.div>

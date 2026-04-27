@@ -1,11 +1,10 @@
 import React, { lazy, Suspense, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { View } from '@react-three/drei';
 import SmoothScroll from '../components/SmoothScroll';
 import CustomCursor from '../components/CustomCursor';
+import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import useMediaQuery from '../hooks/useMediaQuery';
 
 import './RollerGatesPage.css';
 import './RollerGatesPageExtras.css';
@@ -34,7 +33,6 @@ function SectionLoader() {
 
 /* ─── Main Page Component ─── */
 export default function RollerGatesPage() {
-  const isMobile = useMediaQuery('(max-width: 768px)');
   const containerRef = useRef();
 
   useEffect(() => {
@@ -43,7 +41,7 @@ export default function RollerGatesPage() {
 
   return (
     <div ref={containerRef}>
-      {/* 
+      {/*
         GLOBAL CANVAS
         Only one WebGL Context is created for the entire page.
         Drei's <View> in the children will project into this canvas via <View.Port />
@@ -68,20 +66,10 @@ export default function RollerGatesPage() {
 
       <SmoothScroll>
         <CustomCursor />
+        {/* Global Navbar — replaces isolated rg-nav */}
+        <Navbar />
+
         <div className="rg-page">
-
-          {/* ===== STICKY NAV BAR ===== */}
-          <nav className="rg-nav">
-            <Link to="/" className="rg-nav-back" data-cursor="expand">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              <span>Elcardo</span>
-            </Link>
-            <span className="rg-nav-title">Roller Gates</span>
-            <a href="#rg-cta" className="rg-nav-cta" data-cursor="expand">Get a Quote</a>
-          </nav>
-
           {/* ===== 1. HERO ===== */}
           <Suspense fallback={<SectionLoader />}><HeroSection /></Suspense>
 

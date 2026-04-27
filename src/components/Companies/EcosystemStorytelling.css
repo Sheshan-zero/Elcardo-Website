@@ -170,7 +170,7 @@
 }
 
 .eco-story-card {
-  position: absolute;
+  position: relative;
   width: 200px;
   pointer-events: auto;
   z-index: 4;

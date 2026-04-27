@@ -1,0 +1,74 @@
+/* ============================================================ 3D STUDIO */
+.rdv { padding: 120px 0; background: #f0f0f2; }
+.rdv-header { text-align: center; padding: 0 var(--container-padding); margin-bottom: 48px; }
+.rdv-body {
+  display: grid; grid-template-columns: 1fr 320px;
+  gap: 0; max-width: 1400px; margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+.rdv-canvas-wrap {
+  position: relative; min-height: 65vh; border-radius: 24px;
+  background: linear-gradient(180deg, #f8f8fa 0%, #eeeef0 100%);
+  overflow: hidden;
+}
+.rdv-canvas-lazy { width: 100%; height: 100%; }
+.rdv-hint {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: var(--mid-gray); letter-spacing: .5px;
+  background: rgba(255,255,255,.7); backdrop-filter: blur(8px);
+  padding: 6px 16px; border-radius: 100px;
+}
+/* Controls */
+.rdv-controls {
+  padding: 32px 28px; background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 0 24px 24px 0; border-left: none;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.rdv-ctrl-group {}
+.rdv-ctrl-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--mid-gray);
+  margin-bottom: 14px; display: block;
+}
+.rdv-color-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.rdv-swatch {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: var(--off-white);
+  border: 2px solid transparent; border-radius: 10px;
+  cursor: pointer; transition: all .3s ease;
+  font-family: var(--font-body);
+}
+.rdv-swatch:hover { border-color: var(--border-light); }
+.rdv-swatch.active { border-color: var(--primary-navy); background: #fff; }
+.rdv-swatch-dot {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 1px solid rgba(0,0,0,.1); flex-shrink: 0;
+}
+.rdv-swatch-name { font-size: 12px; color: var(--text-primary); font-weight: 500; }
+/* Open button */
+.rdv-open-btn {
+  width: 100%; padding: 14px 20px;
+  background: var(--accent-red); color: #fff;
+  border: none; border-radius: 12px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .3s ease;
+}
+.rdv-open-btn:hover { background: var(--accent-red-dark); }
+.rdv-open-btn--close { background: var(--primary-navy); }
+.rdv-open-btn--close:hover { background: var(--mid-blue); }
+.rdv-open-btn:disabled { opacity: .6; cursor: not-allowed; }
+/* Active */
+.rdv-active-finish {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: var(--off-white);
+  border-radius: 10px; font-size: 13px; color: var(--mid-gray);
+}
+.rdv-active-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.1); flex-shrink: 0;
+}
+@media(max-width:1024px){
+  .rdv-body{grid-template-columns:1fr; gap:0}
+  .rdv-controls{border-radius:0 0 24px 24px; border-left:1px solid var(--border-light); border-top:none}
+}

@@ -15,26 +15,26 @@ const ProductsHero = () => {
 
   return (
     <section className="ph-hero" ref={ref}>
-      
-      {/* Cinematic Background Image */}
       <div className="ph-hero-bg">
-        <motion.img 
-          src={heroImg} 
-          alt="Elcardo Engineering Architecture" 
+        <motion.img
+          src={heroImg}
+          alt="Elcardo Industries — Multi-Industry Solutions"
           style={{ y: yImage, scale: scaleImage }}
         />
-        <div className="ph-hero-overlay"></div>
+        <div className="ph-hero-overlay" />
       </div>
 
       <motion.div className="ph-hero-content" style={{ opacity: opacityText, y: yText }}>
-        <motion.p
-          className="ph-hero-kicker"
+        <motion.div
+          className="ph-hero-label"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease }}
         >
-          Advanced Manufacturing
-        </motion.p>
+          <span className="ph-hero-label-line" />
+          <span className="ph-hero-label-text">Product Divisions</span>
+          <span className="ph-hero-label-line" />
+        </motion.div>
 
         <h1 className="ph-hero-headline">
           <span className="hero-line">
@@ -44,7 +44,7 @@ const ProductsHero = () => {
               animate={{ y: '0%' }}
               transition={{ duration: 1.2, delay: 0.5, ease }}
             >
-              Engineered
+              Built Across
             </motion.span>
           </span>
           <span className="hero-line">
@@ -54,25 +54,18 @@ const ProductsHero = () => {
               animate={{ y: '0%' }}
               transition={{ duration: 1.2, delay: 0.65, ease }}
             >
-              <em style={{ color: 'var(--accent-red, #DA1212)' }}>Products.</em>
+              <em className="ph-hero-em">Industries.</em>
             </motion.span>
           </span>
         </h1>
-
-        <motion.div
-          className="ph-hero-divider"
-          initial={{ width: 0 }}
-          animate={{ width: 100 }}
-          transition={{ duration: 1.2, delay: 1.2, ease }}
-        />
 
         <motion.p
           className="ph-hero-sub"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.4, ease }}
+          transition={{ duration: 1, delay: 1.2, ease }}
         >
-          Precision solutions for modern spaces. Engineered for absolute architectural integrity.
+          From access systems to energy and construction — 5&nbsp;divisions, 13+&nbsp;products, engineered for scale.
         </motion.p>
       </motion.div>
 
@@ -80,12 +73,11 @@ const ProductsHero = () => {
         className="ph-hero-scroll"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 1 }}
+        transition={{ delay: 2, duration: 1 }}
       >
         <div className="ph-hero-scroll-bar" />
         <span className="ph-hero-scroll-text">Scroll</span>
       </motion.div>
-
     </section>
   );
 };

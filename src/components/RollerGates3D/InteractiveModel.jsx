@@ -16,7 +16,7 @@ function DetailedGate({ isOpen }) {
   const slatGeo = useMemo(() => new THREE.BoxGeometry(gateWidth - 0.2, slatHeight, 0.08), [gateWidth, slatHeight]);
   const slatMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#2b2b36', roughness: 0.15, metalness: 0.8, envMapIntensity: 1.5 }), []);
   const frameMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#16161e', roughness: 0.2, metalness: 0.9, envMapIntensity: 1.2 }), []);
-  const ledMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ff6b00', emissive: '#ff6b00', emissiveIntensity: 2.0 }), []);
+  const ledMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#DA1212', emissive: '#DA1212', emissiveIntensity: 2.0 }), []);
   const screenMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#00d4ff', transparent: true, opacity: 0.9 }), []);
 
   const rt = 0.12;
@@ -67,7 +67,7 @@ function SceneParticles() {
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
-    const orange = new THREE.Color('#ff6b00');
+    const orange = new THREE.Color('#DA1212');
     const white = new THREE.Color('#ffffff');
 
     for (let i = 0; i < count; i++) {
@@ -123,7 +123,7 @@ function GroundPlane() {
 function GlowRing() {
   const ref = useRef();
   const mat = useMemo(() => new THREE.MeshBasicMaterial({
-    color: '#ff6b00',
+    color: '#DA1212',
     transparent: true,
     opacity: 0.12,
     side: THREE.DoubleSide,
@@ -180,7 +180,7 @@ function ModelScene({ isOpen }) {
       <ambientLight intensity={0.4} />
       <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow shadow-mapSize={512} />
       <directionalLight position={[0, 2, 8]} intensity={1.0} />
-      <pointLight position={[0, -3, 2]} intensity={2.0} color="#ff6b00" distance={15} decay={2} />
+      <pointLight position={[0, -3, 2]} intensity={2.0} color="#DA1212" distance={15} decay={2} />
       <pointLight position={[-4, 3, 3]} intensity={1.5} color="#4488ff" distance={12} decay={2} />
       <spotLight position={[0, 6, 4]} angle={0.6} penumbra={0.8} intensity={2.5} color="#fff" />
       <Environment preset="city" />

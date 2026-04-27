@@ -1,0 +1,92 @@
+/* ============================================================
+   PRODUCT FILTER — Light Sticky Filter Bar
+   ============================================================ */
+.pf-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 var(--container-padding, 6vw);
+  background: rgba(245, 245, 247, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border-light, rgba(0, 0, 0, 0.08));
+}
+
+.pf-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 18px 0;
+}
+
+.pf-prefix {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid-gray, #8A8F98);
+  flex-shrink: 0;
+}
+
+.pf-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.pf-tab {
+  position: relative;
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--mid-gray, #8A8F98);
+  transition: color 0.4s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  white-space: nowrap;
+}
+
+.pf-tab:hover {
+  color: var(--near-black, #0A0A0F);
+}
+
+.pf-tab--active {
+  color: var(--near-black, #0A0A0F);
+  font-weight: 600;
+}
+
+/* Animated underline */
+.pf-tab-underline {
+  position: absolute;
+  bottom: 0;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  background: var(--accent-red, #DA1212);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .pf-inner {
+    padding: 14px 0;
+    gap: 16px;
+  }
+  .pf-prefix { display: none; }
+  .pf-tabs {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    width: 100%;
+  }
+  .pf-tabs::-webkit-scrollbar { display: none; }
+  .pf-tab {
+    padding: 10px 16px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}

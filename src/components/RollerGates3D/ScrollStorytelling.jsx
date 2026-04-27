@@ -122,10 +122,10 @@ function StoryScene({ progress }) {
 }
 
 const textStates = [
-  { threshold: 0, title: 'Industrial Precision', sub: 'Crafted from heavy-gauge galvanized steel.' },
-  { threshold: 0.3, title: 'Built to Endure', sub: 'Tested beyond 100,000 cycles of daily use.' },
-  { threshold: 0.6, title: 'Smart by Design', sub: 'Integrated IoT sensors and remote control.' },
-  { threshold: 0.9, title: 'Open to Anything', sub: 'From warehouses to smart homes.' },
+  { threshold: 0, title: 'Vertical Space-Saving', sub: 'Rolls upward instead of swinging out — ideal for tight spaces.' },
+  { threshold: 0.3, title: 'Built to Endure', sub: 'Tested beyond 100,000 cycles of daily commercial use.' },
+  { threshold: 0.6, title: 'Smooth Guided Operation', sub: 'Precision guide rails ensure silent, reliable movement.' },
+  { threshold: 0.9, title: 'Motor-Ready Mechanism', sub: 'Designed for seamless motorized or manual operation.' },
 ];
 
 function getActiveText(progress) {
@@ -144,7 +144,7 @@ export default function ScrollStorytelling() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
-        trigger: sectionRef.current, start: 'top top', end: '+=500%',
+        trigger: sectionRef.current, start: 'top top', end: '+=400%',
         pin: true, scrub: 2.5, onUpdate: (self) => setProgress(self.progress),
       });
     });

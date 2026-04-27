@@ -1,69 +1,69 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
+import { PRODUCTS, DIVISIONS } from '../../../data/productsData';
+import ProductCard from './ProductCard';
 import './ProductGrid.css';
-
-import imgRollerGate from '../../../assets/product_roller_gate.png';
-import imgSolar from '../../../assets/product_solar.png';
-import imgBattery from '../../../assets/product_battery.png';
-import imgSteel from '../../../assets/product_steel.png';
-import imgRoofing from '../../../assets/product_roofing.png';
-import imgWood from '../../../assets/product_wood.png';
 
 const ease = [0.16, 1, 0.3, 1];
 
-const PRODUCTS = [
-  { id: 1, name: 'Roller Gates', image: imgRollerGate },
-  { id: 2, name: 'Solar Panels', image: imgSolar },
-  { id: 3, name: 'Battery Systems', image: imgBattery },
-  { id: 4, name: 'Steel Fabrication', image: imgSteel },
-  { id: 5, name: 'Metal Roofing', image: imgRoofing },
-  { id: 6, name: 'Wood Decking', image: imgWood },
-];
+const ProductGrid = React.forwardRef(({ activeFilter }, ref) => {
+  const filteredProducts = activeFilter === 'all'
+    ? PRODUCTS
+    : PRODUCTS.filter((p) => p.division === activeFilter);
 
-const ProductGrid = () => {
+  const activeDivision = DIVISIONS.find((d) => d.id === activeFilter);
+
   return (
-    <section className="pg-section">
+    <section className="pg-section" id="product-grid" ref={ref}>
       <div className="pg-header">
-        <motion.p
-          className="products-kicker"
+        <motion.div
+          className="pg-label"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease }}
         >
-          Quick Overview
-        </motion.p>
+          <span className="pg-label-line" />
+          <span className="pg-label-text">
+            {activeFilter === 'all' ? 'All Products' : activeDivision?.name}
+          </span>
+          <span className="pg-label-line" />
+        </motion.div>
         <motion.h2
-          className="products-title-md"
+          className="pg-title"
+          key={activeFilter}
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.1, ease }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease }}
         >
-          All Products
+          {activeFilter === 'all'
+            ? <>Product <em className="pg-title-em">Catalog</em></>
+            : <>{activeDivision?.name} <em className="pg-title-em">Products</em></>}
         </motion.h2>
+        <motion.span
+          className="pg-count"
+          key={`count-${activeFilter}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found
+        </motion.span>
       </div>
 
-      <div className="pg-grid">
-        {PRODUCTS.map((p, i) => (
-          <motion.div
-            key={p.id}
-            className="pg-card"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.8, delay: i * 0.1, ease }}
-            whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
-          >
-            <div className="pg-card-img-wrap">
-              <img src={p.image} alt={p.name} loading="lazy" />
-            </div>
-            <h3 className="pg-card-name">{p.name}</h3>
-          </motion.div>
-        ))}
-      </div>
+      <LayoutGroup>
+        <motion.div className="pg-grid" layout>
+          <AnimatePresence mode="popLayout">
+            {filteredProducts.map((product, i) => (
+              <ProductCard key={product.id} product={product} index={i} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </LayoutGroup>
     </section>
   );
-};
+});
+
+ProductGrid.displayName = 'ProductGrid';
 
 export default ProductGrid;

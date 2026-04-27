@@ -69,9 +69,11 @@ export default function VariantsSection() {
           <h2 className="rg-variants-title">Choose your solution.</h2>
         </motion.div>
         <div className="rg-variants-3d-grid">
-          <VariantCard name="Industrial" desc="Heavy-duty doors for factories, warehouses, and large-scale facilities." specs="Up to 12m wide • Insulated • Wind-rated" color="#333" delay={0} />
-          <VariantCard name="Commercial" desc="Professional-grade doors for retail, offices, and commercial properties." specs="Up to 8m wide • Quick-open • Low noise" color="#888" delay={0.12} />
-          <VariantCard name="Residential" desc="Sleek automated doors for homes, garages, and private properties." specs="Up to 5m wide • Ultra-quiet • Smart home" color="#bbb" delay={0.24} />
+          <VariantCard name="Solid Roller Gate" desc="Maximum privacy and security with fully enclosed panels." specs="Best for garages and secure residential entrances" color="#555" delay={0} />
+          <VariantCard name="Slatted Roller Gate" desc="Ventilation-friendly with visible slat gaps for airflow." specs="Best for warehouses and loading docks" color="#888" delay={0.08} />
+          <VariantCard name="Perforated Roller Gate" desc="Balanced visibility with micro-perforated steel panels." specs="Best for retail storefronts and commercial spaces" color="#aaa" delay={0.16} />
+          <VariantCard name="Manual Roller Gate" desc="Cost-effective, hand-operated for low-frequency use." specs="Best for small shops and storage rooms" color="#666" delay={0.24} />
+          <VariantCard name="Motorized Roller Gate" desc="Remote-controlled with smart automation and safety sensors." specs="Best for daily-use commercial and residential" color="#444" delay={0.32} />
         </div>
       </div>
     </section>

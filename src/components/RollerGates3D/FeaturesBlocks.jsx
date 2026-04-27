@@ -22,7 +22,7 @@ function StressTestScene() {
   const arrowsRef = useRef([]);
 
   const gateMat = React.useMemo(() => new THREE.MeshStandardMaterial({ color: '#2a2a2a', roughness: 0.3, metalness: 0.85 }), []);
-  const arrowMat = React.useMemo(() => new THREE.MeshStandardMaterial({ color: '#ff6b00', emissive: '#ff6b00', emissiveIntensity: 0.3 }), []);
+  const arrowMat = React.useMemo(() => new THREE.MeshStandardMaterial({ color: '#DA1212', emissive: '#DA1212', emissiveIntensity: 0.3 }), []);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();

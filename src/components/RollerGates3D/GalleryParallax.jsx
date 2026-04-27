@@ -7,10 +7,10 @@ import installCommercial from '../../assets/rg_install_commercial.png';
 import installWarehouse from '../../assets/rg_install_warehouse.png';
 
 const galleryItems = [
-  { img: installFactory, label: 'Factory', loc: 'Colombo', bg: installWarehouse },
-  { img: installGarage, label: 'Residence', loc: 'Kandy', bg: installFactory },
-  { img: installCommercial, label: 'Commercial', loc: 'Galle', bg: installGarage },
-  { img: installWarehouse, label: 'Warehouse', loc: 'Katunayake', bg: installCommercial },
+  { img: installFactory, label: 'Home Garage', loc: 'Colombo', bg: installWarehouse },
+  { img: installGarage, label: 'Luxury Residence', loc: 'Kandy', bg: installFactory },
+  { img: installCommercial, label: 'Commercial Entrance', loc: 'Galle', bg: installGarage },
+  { img: installWarehouse, label: 'Industrial Warehouse', loc: 'Katunayake', bg: installCommercial },
 ];
 
 /* ─── Single Parallax Card ─── */

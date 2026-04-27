@@ -19,6 +19,7 @@ const Footer = lazy(() => import('./components/Footer'));
 
 /* ─── Lazy load sub-pages ─── */
 const RollerGatesPage = lazy(() => import('./pages/RollerGatesPage'));
+const RollerDoorsPage = lazy(() => import('./pages/RollerDoorsPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage'));
 const CompaniesPage = lazy(() => import('./pages/CompaniesPage/CompaniesPage'));
 const ProductsPage = lazy(() => import('./pages/ProductsPage/ProductsPage'));
@@ -102,6 +103,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/companies" element={<CompaniesPage />} />
         <Route path="/roller-gates" element={<RollerGatesPage />} />
+        <Route path="/roller-doors" element={<RollerDoorsPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/contact" element={<ContactPage />} />

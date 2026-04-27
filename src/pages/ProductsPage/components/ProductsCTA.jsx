@@ -9,33 +9,34 @@ const ProductsCTA = () => {
   return (
     <section className="pcta-section">
       <div className="pcta-inner">
-        <motion.p
-          className="products-kicker"
+        <motion.div
+          className="pcta-label"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease }}
         >
-          Ready to Begin
-        </motion.p>
+          <span className="pcta-label-line" />
+          <span className="pcta-label-text">Ready to Build</span>
+          <span className="pcta-label-line" />
+        </motion.div>
         <motion.h2
-          className="products-title-lg"
+          className="pcta-title"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.1, ease }}
         >
-          Build with <em style={{ color: 'var(--accent-red, #DA1212)', fontStyle: 'italic' }}>Elcardo.</em>
+          Specify Elcardo for <em className="pcta-title-em">your next project.</em>
         </motion.h2>
         <motion.p
-          className="products-body"
-          style={{ textAlign: 'center', margin: '24px auto 48px' }}
+          className="pcta-body"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2, ease }}
         >
-          Contact our technical team to specify Elcardo systems for your next project.
+          Contact our technical team to discuss requirements, request samples, or schedule a site consultation.
         </motion.p>
         <motion.div
           className="pcta-actions"
@@ -44,8 +45,8 @@ const ProductsCTA = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.3, ease }}
         >
-          <Link to="/" className="products-btn-primary">View Projects</Link>
-          <Link to="/" className="products-btn-outline">Contact Sales</Link>
+          <Link to="/projects" className="pcta-btn-primary">View Projects</Link>
+          <Link to="/contact" className="pcta-btn-outline">Contact Sales</Link>
         </motion.div>
       </div>
     </section>

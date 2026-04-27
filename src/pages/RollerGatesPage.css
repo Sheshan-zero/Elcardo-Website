@@ -5,9 +5,9 @@
 
 /* ─── Global Page ─── */
 .rg-page {
-  background: #000;
-  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-  color: #fff;
+  background: var(--off-white, #f5f5f7);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: var(--near-black, #0a0a0f);
   overflow-x: hidden;
 }
 
@@ -17,14 +17,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #080808;
+  background: var(--off-white, #f5f5f7);
 }
 
 .rg-section-loader-spinner {
   width: 28px;
   height: 28px;
-  border: 2px solid rgba(255,255,255,0.08);
-  border-top-color: rgba(255,255,255,0.3);
+  border: 2px solid rgba(0,0,0,0.08);
+  border-top-color: var(--accent-red, #DA1212);
   border-radius: 50%;
   animation: rgSpin 0.8s linear infinite;
 }
@@ -33,63 +33,9 @@
   to { transform: rotate(360deg); }
 }
 
-/* ===== NAV BAR ===== */
-.rg-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 var(--container-padding, 48px);
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
 
-.rg-nav-back {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255, 255, 255, 0.65);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+/* ===== NAV (now uses global Navbar) ===== */
 
-.rg-nav-back:hover { color: #fff; }
-
-.rg-nav-title {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.4);
-  text-transform: uppercase;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.rg-nav-cta {
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: #ff6b00;
-  padding: 7px 22px;
-  border-radius: 100px;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.rg-nav-cta:hover {
-  background: #ff8533;
-  transform: translateY(-1px);
-}
 
 /* ─── Shared ─── */
 .rg-hero-italic {
@@ -102,7 +48,7 @@
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #ff6b00;
+  color: var(--accent-red, #DA1212);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -113,7 +59,7 @@
   content: '';
   width: 32px;
   height: 1.5px;
-  background: #ff6b00;
+  background: var(--accent-red, #DA1212);
   flex-shrink: 0;
 }
 
@@ -299,7 +245,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
-  background: #0a0a0a;
+  background: var(--off-white, #f5f5f7);
 }
 
 .rg-intro-canvas-col {
@@ -319,16 +265,16 @@
 }
 
 .rg-intro-statement {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-body, 'Inter', sans-serif);
   font-size: clamp(24px, 2.8vw, 38px);
   font-weight: 400;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--mid-gray, #8A8F98);
   letter-spacing: -0.5px;
 }
 
 .rg-intro-statement strong {
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   font-weight: 500;
 }
 
@@ -337,8 +283,7 @@
    ============================================================ */
 .rg-interactive {
   padding: 120px 0;
-  background: #080808;
-  background-image: radial-gradient(ellipse at 50% 60%, rgba(255,107,0,0.04) 0%, transparent 50%);
+  background: #f0f0f2;
   position: relative;
   overflow: hidden;
 }
@@ -350,17 +295,17 @@
 }
 
 .rg-interactive-title {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(36px, 5vw, 68px);
   font-weight: 500;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   line-height: 1.08;
   letter-spacing: -1px;
 }
 
 .rg-interactive-sub {
   font-size: 15px;
-  color: rgba(255,255,255,0.3);
+  color: var(--mid-gray, #8A8F98);
   margin-top: 16px;
 }
 
@@ -378,9 +323,9 @@
   left: 10%;
   right: 10%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,107,0,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(218,18,18,0.2), transparent);
   border-radius: 50%;
-  box-shadow: 0 0 40px 10px rgba(255,107,0,0.08);
+  box-shadow: 0 0 40px 10px rgba(218,18,18,0.05);
 }
 
 .rg-interactive-canvas-wrap canvas {
@@ -437,7 +382,7 @@
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ff6b00;
+  background: var(--accent-red, #DA1212);
   color: #fff;
   border: none;
   padding: 12px 32px;
@@ -450,9 +395,9 @@
 }
 
 .rg-lift-toggle:hover {
-  background: #ff8533;
+  background: var(--accent-red-light, #E83A3A);
   transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255,107,0,0.3);
+  box-shadow: 0 12px 40px rgba(218,18,18,0.3);
 }
 
 /* ============================================================
@@ -462,6 +407,7 @@
   position: relative;
   height: 100vh;
   overflow: hidden;
+  background: #0a0a0f;
 }
 
 .rg-story-canvas-wrap {
@@ -591,7 +537,7 @@
    ============================================================ */
 .rg-materials-3d {
   padding: 140px var(--container-padding, 48px);
-  background: #0a0a0f;
+  background: var(--off-white, #f5f5f7);
 }
 
 .rg-materials-3d-header {
@@ -600,10 +546,10 @@
 }
 
 .rg-materials-title {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(36px, 5vw, 68px);
   font-weight: 500;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   line-height: 1.08;
   letter-spacing: -1px;
 }
@@ -617,18 +563,19 @@
 }
 
 .rg-mat-panel {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: #fff;
+  border: 1px solid var(--border-light, rgba(0,0,0,0.08));
   border-radius: 20px;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .rg-mat-panel:hover {
-  background: rgba(255,255,255,0.06);
+  background: #fff;
   transform: translateY(-8px);
-  border-color: rgba(255,107,0,0.15);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+  border-color: rgba(218,18,18,0.15);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.1);
 }
 
 .rg-mat-panel-canvas {
@@ -647,7 +594,7 @@
 .rg-mat-panel-info h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   margin-bottom: 12px;
 }
 
@@ -659,7 +606,7 @@
 
 .rg-mat-panel-info li {
   font-size: 13px;
-  color: rgba(255,255,255,0.4);
+  color: var(--mid-gray, #8A8F98);
   padding: 4px 0;
   padding-left: 16px;
   position: relative;
@@ -669,7 +616,7 @@
   content: '•';
   position: absolute;
   left: 0;
-  color: #ff6b00;
+  color: var(--accent-red, #DA1212);
 }
 
 .rg-mat-spec-bars {
@@ -683,7 +630,7 @@
   justify-content: space-between;
   font-size: 11px;
   font-weight: 500;
-  color: rgba(255,255,255,0.4);
+  color: var(--mid-gray, #8A8F98);
   margin-bottom: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -691,14 +638,14 @@
 
 .rg-mat-spec-bar-track {
   height: 3px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.06);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .rg-mat-spec-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff6b00, #ff8533);
+  background: linear-gradient(90deg, var(--accent-red, #DA1212), var(--accent-red-light, #E83A3A));
   border-radius: 2px;
 }
 
@@ -706,14 +653,14 @@
    7. FEATURES — Alternating Immersive Blocks
    ============================================================ */
 .rg-features-3d {
-  background: #0f0f0f;
+  background: #fff;
 }
 
 .rg-feat-block {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 80vh;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
 }
 
 .rg-feat-block--reverse {
@@ -732,10 +679,10 @@
 }
 
 .rg-feat-block-title {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(32px, 4vw, 56px);
   font-weight: 500;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   line-height: 1.06;
   letter-spacing: -1px;
 }
@@ -743,7 +690,7 @@
 .rg-feat-block-desc {
   font-size: clamp(15px, 1.1vw, 17px);
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--mid-gray, #8A8F98);
   margin-top: 28px;
   line-height: 1.75;
   max-width: 420px;
@@ -797,7 +744,7 @@
    ============================================================ */
 .rg-variants-3d {
   padding: 140px var(--container-padding, 48px);
-  background: #000;
+  background: #f0f0f2;
 }
 
 .rg-variants-3d-inner {
@@ -815,10 +762,10 @@
 }
 
 .rg-variants-title {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(36px, 5vw, 68px);
   font-weight: 500;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   letter-spacing: -1px;
 }
 
@@ -829,12 +776,13 @@
 }
 
 .rg-variant-card-3d {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: #fff;
+  border: 1px solid var(--border-light, rgba(0,0,0,0.08));
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   will-change: transform;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .rg-variant-card-canvas {
@@ -852,17 +800,17 @@
 }
 
 .rg-variant-card-body h3 {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: 24px;
   font-weight: 500;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   margin-bottom: 10px;
 }
 
 .rg-variant-card-body p {
   font-size: 14px;
   font-weight: 300;
-  color: rgba(255,255,255,0.35);
+  color: var(--mid-gray, #8A8F98);
   line-height: 1.65;
   margin-bottom: 16px;
 }
@@ -870,11 +818,11 @@
 .rg-variant-specs {
   font-size: 11px;
   font-weight: 500;
-  color: rgba(255,255,255,0.2);
+  color: var(--mid-gray, #8A8F98);
   letter-spacing: 0.5px;
   padding-top: 16px;
   display: block;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--border-light, rgba(0,0,0,0.06));
 }
 
 /* ============================================================
@@ -882,7 +830,7 @@
    ============================================================ */
 .rg-gallery-3d {
   padding: 140px var(--container-padding, 48px);
-  background: #080808;
+  background: var(--off-white, #f5f5f7);
 }
 
 .rg-gallery-3d-inner {
@@ -895,10 +843,10 @@
 }
 
 .rg-gallery-title {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(36px, 5vw, 64px);
   font-weight: 500;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   line-height: 1.08;
   letter-spacing: -1px;
 }
@@ -982,7 +930,7 @@
 .rg-stats-3d {
   position: relative;
   padding: 140px var(--container-padding, 48px);
-  background: #050505;
+  background: #fff;
   overflow: hidden;
 }
 
@@ -1024,7 +972,7 @@
   top: 20%;
   height: 60%;
   width: 1px;
-  background: rgba(255,255,255,0.06);
+  background: var(--border-light, rgba(0,0,0,0.08));
 }
 
 .rg-stat-card:last-child::after {
@@ -1032,10 +980,10 @@
 }
 
 .rg-stat-num {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(32px, 4vw, 52px);
   font-weight: 600;
-  color: #f5f5f7;
+  color: var(--near-black, #0a0a0f);
   line-height: 1;
   letter-spacing: -2px;
 }
@@ -1043,7 +991,7 @@
 .rg-stat-label {
   font-size: 13px;
   font-weight: 400;
-  color: rgba(255,255,255,0.3);
+  color: var(--mid-gray, #8A8F98);
   margin-top: 12px;
 }
 
@@ -1078,7 +1026,7 @@
 }
 
 .rg-cta-headline {
-  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display, 'Playfair Display', serif);
   font-size: clamp(36px, 5.5vw, 80px);
   font-weight: 500;
   color: #f5f5f7;
@@ -1104,7 +1052,7 @@
 
 /* Button variants */
 .rg-btn-primary {
-  background: #ff6b00;
+  background: var(--accent-red, #DA1212);
   color: #fff;
   padding: 18px 48px;
   border-radius: 100px;
@@ -1118,9 +1066,9 @@
 }
 
 .rg-btn-primary:hover {
-  background: #ff8533;
+  background: var(--accent-red-light, #E83A3A);
   transform: translateY(-3px);
-  box-shadow: 0 20px 60px rgba(255,107,0,0.35);
+  box-shadow: 0 20px 60px rgba(218,18,18,0.35);
 }
 
 .rg-btn-primary--white {

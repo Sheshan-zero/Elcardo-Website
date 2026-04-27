@@ -356,8 +356,9 @@ export default function EcosystemStorytelling() {
             className="eco-node eco-node--center"
             style={{
               position: 'absolute',
-              left: `calc(50% - 55px)`,
-              top: `calc(50% - 70px)`,
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
               opacity: showCenter ? overviewOpacity : 0,
               transition: 'opacity 0.6s ease',
               pointerEvents: 'none',
@@ -387,8 +388,9 @@ export default function EcosystemStorytelling() {
                 className={`eco-node ${isActive ? 'eco-node--active' : ''} ${isDimmed ? 'eco-node--dimmed' : ''}`}
                 style={{
                   position: 'absolute',
-                  left: `calc(${pos.x * 100}% - 52px)`,
-                  top: `calc(${pos.y * 100}% - 60px)`,
+                  left: `${pos.x * 100}%`,
+                  top: `${pos.y * 100}%`,
+                  transform: 'translate(-50%, -50%)',
                   transition: 'left 2.2s cubic-bezier(0.16, 1, 0.3, 1), top 2.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease, filter 1.2s ease',
                 }}
               >
@@ -422,41 +424,47 @@ export default function EcosystemStorytelling() {
                 const wb = WOBBLE_CONFIGS[ci];
 
                 return (
-                  <motion.div
-                    key={`card-${currentPhase}-${ci}`}
-                    className="eco-story-card"
+                  <div
+                    key={`card-wrap-${currentPhase}-${ci}`}
                     style={{
-                      left: `calc(${cp.x * 100}% - 100px)`,
-                      top: `calc(${cp.y * 100}% - 75px)`,
-                    }}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.92,
-                      y: 24,
-                      rotate: wb.rot,
-                    }}
-                    animate={{
-                      opacity: op,
-                      scale: op > 0.5 ? 1 : 0.96,
-                      y: 0,
-                      rotate: 0,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.94,
-                      y: -12,
-                    }}
-                    transition={{
-                      duration: 1.4,
-                      ease: EASE,
-                      delay: ci * 0.12,
+                      position: 'absolute',
+                      left: `${cp.x * 100}%`,
+                      top: `${cp.y * 100}%`,
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 4,
                     }}
                   >
-                    <div className="eco-story-card__inner">
-                      <img src={card.img} alt={card.caption} className="eco-story-card__image" loading="lazy" />
-                      <div className="eco-story-card__caption">{card.caption}</div>
-                    </div>
-                  </motion.div>
+                    <motion.div
+                      className="eco-story-card"
+                      initial={{
+                        opacity: 0,
+                        scale: 0.92,
+                        y: 24,
+                        rotate: wb.rot,
+                      }}
+                      animate={{
+                        opacity: op,
+                        scale: op > 0.5 ? 1 : 0.96,
+                        y: 0,
+                        rotate: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.94,
+                        y: -12,
+                      }}
+                      transition={{
+                        duration: 1.4,
+                        ease: EASE,
+                        delay: ci * 0.12,
+                      }}
+                    >
+                      <div className="eco-story-card__inner">
+                        <img src={card.img} alt={card.caption} className="eco-story-card__image" loading="lazy" />
+                        <div className="eco-story-card__caption">{card.caption}</div>
+                      </div>
+                    </motion.div>
+                  </div>
                 );
               })}
             </AnimatePresence>

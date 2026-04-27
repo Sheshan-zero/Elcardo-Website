@@ -1,0 +1,167 @@
+/* ============================================================
+   ROLLER DOORS PAGE — Apple-Style Premium Light Theme
+   Elcardo Brand System
+   ============================================================ */
+
+.rd-page {
+  background: var(--off-white, #F5F5F7);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: var(--text-primary, #0A0A0F);
+  overflow-x: hidden;
+}
+
+.rd-main { position: relative; }
+
+/* ─── Section Loader ─── */
+.rd-section-loader {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--off-white, #F5F5F7);
+}
+.rd-section-loader-spinner {
+  width: 24px; height: 24px;
+  border: 2px solid var(--border-light, rgba(0,0,0,0.08));
+  border-top-color: var(--accent-red, #DA1212);
+  border-radius: 50%;
+  animation: rdSpin .8s linear infinite;
+}
+@keyframes rdSpin { to { transform: rotate(360deg); } }
+
+/* ===== PRODUCT SUBNAV ===== */
+.rd-product-subnav {
+  position: fixed; top: 72px; left: 0; right: 0; z-index: 990;
+  height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(245,245,247,0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-light);
+}
+.rd-subnav-inner {
+  display: flex; align-items: center; gap: 4px;
+  overflow-x: auto;
+  padding: 0 var(--container-padding, 48px);
+  scrollbar-width: none;
+}
+.rd-subnav-inner::-webkit-scrollbar { display: none; }
+.rd-subnav-item {
+  font-family: var(--font-body); font-size: 12px; font-weight: 500;
+  color: var(--mid-gray, #8A8F98);
+  padding: 8px 16px; border: none; background: transparent;
+  border-radius: 100px; cursor: pointer; white-space: nowrap;
+  transition: all .3s var(--ease-out-expo);
+  letter-spacing: .3px;
+}
+.rd-subnav-item:hover {
+  color: var(--text-primary); background: rgba(0,0,0,.04);
+}
+.rd-subnav-item.active {
+  color: #fff; background: var(--primary-navy, #041562); font-weight: 600;
+}
+
+/* ===== SHARED TYPOGRAPHY ===== */
+.rd-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px;
+}
+.rd-label::before {
+  content: ''; width: 32px; height: 1.5px;
+  background: var(--accent-red); flex-shrink: 0;
+}
+
+.rd-heading {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 500; line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--text-primary, #0A0A0F);
+  margin-bottom: 20px;
+}
+.rd-heading--white { color: #fff; }
+
+.rd-body-text {
+  font-size: clamp(15px, 1.1vw, 17px);
+  font-weight: 300; line-height: 1.75;
+  color: var(--mid-gray, #8A8F98);
+  max-width: 560px;
+}
+.rd-body-text--white { color: rgba(255,255,255,.6); }
+
+/* ===== SHARED BUTTONS ===== */
+.rd-btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent-red, #DA1212); color: #fff;
+  padding: 14px 36px; border-radius: 100px; border: none;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  transition: all .4s var(--ease-out-expo);
+}
+.rd-btn-primary:hover {
+  background: var(--accent-red-dark, #B30E0E);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(218,18,18,.25);
+}
+.rd-btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #fff; color: var(--text-primary);
+  padding: 14px 36px; border-radius: 100px;
+  border: 1px solid var(--border-light);
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  transition: all .4s var(--ease-out-expo);
+}
+.rd-btn-secondary:hover {
+  background: var(--off-white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.rd-btn-navy {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--primary-navy, #041562); color: #fff;
+  padding: 14px 36px; border-radius: 100px; border: none;
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  transition: all .4s var(--ease-out-expo);
+}
+.rd-btn-navy:hover {
+  background: var(--mid-blue, #0A3D7A);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(4,21,98,.3);
+}
+.rd-btn-outline-dark {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1.5px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.8);
+  padding: 14px 36px; border-radius: 100px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  text-decoration: none; background: transparent; cursor: pointer;
+  transition: all .4s var(--ease-out-expo);
+}
+.rd-btn-outline-dark:hover {
+  border-color: rgba(255,255,255,.6); color: #fff;
+  transform: translateY(-2px);
+}
+.rd-btn-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.7);
+  padding: 14px 36px; border-radius: 100px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  text-decoration: none; background: transparent; cursor: pointer;
+  transition: all .4s var(--ease-out-expo);
+}
+.rd-btn-ghost:hover {
+  border-color: rgba(255,255,255,.5); color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .rd-product-subnav { top: 56px; height: 40px; }
+  .rd-subnav-item { font-size: 11px; padding: 6px 12px; }
+}
