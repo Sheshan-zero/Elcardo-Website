@@ -8,7 +8,7 @@ import './Navbar.css';
 const base = import.meta.env.BASE_URL;
 
 const PRODUCTS = [
-  { id: 'roller-gates', name: 'Roller Gates', image: `${base}gate.png` },
+  { id: 'roller-gates', name: 'Roller Doors', image: `${base}gate.png` },
   { id: 'solar', name: 'Solar Systems', image: `${base}solar.png` },
   { id: 'batteries', name: 'Battery Solutions', image: `${base}battery.png` },
   { id: 'steel', name: 'Steel & Fabrication', image: `${base}steel.png` },
@@ -107,7 +107,7 @@ export default function Navbar() {
                 {link.label}
                 {link.hasMega && (
                   <svg className="nav-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </Link>
@@ -190,7 +190,7 @@ export default function Navbar() {
                   <span className="mega-sidebar-label">Deep Expertise</span>
                   <ul className="mega-highlight-list">
                     {[
-                      { l: 'Roller Doors & Gates', hash: 'roller-gates' },
+                      { l: 'Roller Gates', hash: 'roller-gates' },
                       { l: 'Solar & Energy Solutions', hash: 'solar' },
                       { l: 'Steel & Fabrication', hash: 'steel' },
                       { l: 'Wood & Architectural Finishes', hash: 'wood' }

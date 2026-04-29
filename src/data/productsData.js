@@ -10,7 +10,6 @@ import divEnergy from '../assets/div_energy.png';
 import divLifestyle from '../assets/div_lifestyle.png';
 
 // Product images
-import imgRollerDoors from '../assets/prod_roller_doors.png';
 import imgRollerShutters from '../assets/prod_roller_shutters.png';
 import imgGates from '../assets/prod_gates.png';
 import imgSectionalDoors from '../assets/prod_sectional_doors.png';
@@ -33,7 +32,7 @@ export const DIVISIONS = [
     descriptor: 'Automated entry systems engineered for security, speed, and architectural precision.',
     image: divAccess,
     icon: '⛩',
-    productCount: 5,
+    productCount: 4,
   },
   {
     id: 'steel',
@@ -76,17 +75,6 @@ export const DIVISIONS = [
 /* ─── Product Catalog ─── */
 export const PRODUCTS = [
   /* ── Access & Automation ── */
-  {
-    id: 'roller-doors',
-    division: 'access',
-    title: 'Roller Doors',
-    description: 'Heavy-duty motorized roller doors for industrial and commercial applications.',
-    image: imgRollerDoors,
-    types: ['Galvanized Steel', 'Aluminum', 'Insulated', 'Perforated'],
-    features: ['Motor-operated', 'Wind-lock system', 'Anti-lift protection', 'Remote access'],
-    useCases: ['Warehouses', 'Factories', 'Loading docks', 'Commercial garages'],
-    brochureLink: '#',
-  },
   {
     id: 'roller-shutters',
     division: 'access',

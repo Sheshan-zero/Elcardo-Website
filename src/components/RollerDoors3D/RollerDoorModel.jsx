@@ -1,390 +1,466 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef, useMemo, useEffect, useCallback, useState } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, Environment, OrbitControls, ContactShadows } from '@react-three/drei';
-import { useSpring, animated } from '@react-spring/three';
+import { useFrame, useThree } from '@react-three/fiber';
+import { Environment } from '@react-three/drei';
 
-/* ─── Realistic Dimensions (meters) ─── */
-const DOOR_W = 3.2;        // overall width
-const DOOR_H = 3.6;        // overall height
-const SLAT_COUNT = 32;
-const SLAT_H = DOOR_H / SLAT_COUNT;
-const SLAT_DEPTH = 0.028;
-const SLAT_GAP = 0.003;
-const RAIL_W = 0.08;
-const RAIL_D = 0.10;
-const DRUM_R = 0.30;
-const DRUM_L = DOOR_W + 0.30;
-const HOUSING_H = 0.72;
-const HOUSING_D = 0.72;
-const MOTOR_R = 0.11;
-const MOTOR_L = 0.52;
-const BRACKET_T = 0.05;
-const FRAME_CLR = '#1e1e22';
+/* ───────────────────────────────────────────────
+   COLOR DATA — shared across sections
+   ─────────────────────────────────────────────── */
+export const colorOptions = [
+  { name: 'Arctic White', hex: '#FFFFFF', rough: 0.2, metal: 0.1 },
+  { name: 'Graphite Grey', hex: '#333538', rough: 0.4, metal: 0.15 },
+  { name: 'Gloss Black', hex: '#0A0A0A', rough: 0.1, metal: 0.2 },
+  { name: 'Metallic Silver', hex: '#B0B5B9', rough: 0.2, metal: 0.6 },
+  { name: 'Wood Look', hex: '#8B5A2B', rough: 0.6, metal: 0.0 },
+  { name: 'Custom Color', hex: '#C21E1E', rough: 0.15, metal: 0.1 },
+];
 
-/* ─── Material Presets ─── */
-function makeMaterials(hex = '#e0e0e4', finish = 'metallic') {
-  const isWood  = finish === 'wood';
-  const isMatte = finish === 'matte';
+/* ───────────────────────────────────────────────
+   SLAT SHAPE — curved profile of real roller door
+   ─────────────────────────────────────────────── */
+function makeSlatShape() {
+  const pts = [];
+  const w = 0.5; // width ratio
+  const segments = 12;
 
-  const slatRoughness  = isWood ? 0.65 : isMatte ? 0.55 : 0.20;
-  const slatMetalness  = isWood ? 0.0  : isMatte ? 0.25 : 0.82;
-  const slatEnvMap     = isWood ? 0.6  : isMatte ? 0.8  : 2.2;
+  // Basic curve for the slat
+  pts.push(new THREE.Vector2(-w, 0.05));
+  pts.push(new THREE.Vector2(-w, 0.02));
+  
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    const x = -w + (w * 2) * t;
+    const bulge = Math.sin(Math.PI * t) * 0.08; // Curve out
+    pts.push(new THREE.Vector2(x, 0.02 - bulge));
+  }
 
-  return {
-    slat: new THREE.MeshPhysicalMaterial({
-      color: hex,
-      roughness: slatRoughness,
-      metalness: slatMetalness,
-      envMapIntensity: slatEnvMap,
-      clearcoat: isMatte ? 0 : 0.15,
-      clearcoatRoughness: 0.4,
-    }),
-    frame: new THREE.MeshStandardMaterial({
-      color: FRAME_CLR,
-      roughness: 0.22,
-      metalness: 0.88,
-      envMapIntensity: 1.4,
-    }),
-    motor: new THREE.MeshStandardMaterial({
-      color: '#041562',
-      roughness: 0.30,
-      metalness: 0.72,
-      envMapIntensity: 1.6,
-    }),
-    drumInner: new THREE.MeshStandardMaterial({
-      color: '#2e2e32',
-      roughness: 0.35,
-      metalness: 0.75,
-    }),
-    bracket: new THREE.MeshStandardMaterial({
-      color: '#2c2c30',
-      roughness: 0.28,
-      metalness: 0.82,
-    }),
-    rubber: new THREE.MeshStandardMaterial({
-      color: '#111114',
-      roughness: 0.85,
-      metalness: 0.05,
-    }),
-    sensor: new THREE.MeshStandardMaterial({
-      color: '#DA1212',
-      roughness: 0.4,
-      metalness: 0.3,
-      emissive: '#DA1212',
-      emissiveIntensity: 0.15,
-    }),
-  };
+  pts.push(new THREE.Vector2(w, 0.05));
+  pts.push(new THREE.Vector2(w, -0.01));
+  pts.push(new THREE.Vector2(-w, -0.01));
+
+  const shape = new THREE.Shape();
+  shape.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(p => shape.lineTo(p.x, p.y));
+  shape.closePath();
+  return shape;
 }
 
-/* ─── Shared Geometries (created once) ─── */
-const geoCache = {};
-function getGeo(key, fn) {
-  if (!geoCache[key]) geoCache[key] = fn();
-  return geoCache[key];
-}
+/* ───────────────────────────────────────────────
+   ROLLER DOOR SCENE COMPONENT
+   Renders a fully-detailed roller door with:
+   - Fascia box, drum, guide rails, slats, bottom bar
+   - Configurable color, roughness, metalness
+   - Open/close animation support
+   ─────────────────────────────────────────────── */
+export function RollerDoorScene({
+  colorHex = '#E8E4DE',
+  roughness = 0.55,
+  metalness = 0.15,
+  openAmount = 0,
+  rotationY = 0,
+  rotationX = 0,
+  autoRotate = false,
+  interactive = false,
+  showFloor = true,
+  exploded = false,
+}) {
+  const groupRef = useRef();
+  const slatsRef = useRef();
+  const gapsRef = useRef();
+  const fasciaGroupRef = useRef();
+  const drumGroupRef = useRef();
+  const railsGroupRef = useRef();
 
-/* ─── Individual Slat with rounded profile ─── */
-function Slat({ index, material, springOpen, total }) {
-  const ref = useRef();
-  const baseY = -DOOR_H / 2 + (index + 0.5) * SLAT_H;
+  const doorW = 2.0;
+  const doorH = 3.2;
+  const slatCount = 18;
+  const slatSpacing = doorH / slatCount;
+  const railDepth = 0.18;
+  const railW = 0.09;
+  const fasH = 0.52;
+  const fasDepth = 0.28;
 
-  // rounded box for each slat
-  const geo = useMemo(() => {
-    const shape = new THREE.Shape();
-    const w = (DOOR_W - RAIL_W * 2 - 0.04) / 2;
-    const h = (SLAT_H - SLAT_GAP) / 2;
-    const r = 0.004;
-    shape.moveTo(-w + r, -h);
-    shape.lineTo(w - r, -h);
-    shape.quadraticCurveTo(w, -h, w, -h + r);
-    shape.lineTo(w, h - r);
-    shape.quadraticCurveTo(w, h, w - r, h);
-    shape.lineTo(-w + r, h);
-    shape.quadraticCurveTo(-w, h, -w, h - r);
-    shape.lineTo(-w, -h + r);
-    shape.quadraticCurveTo(-w, -h, -w + r, -h);
-    const extSettings = { depth: SLAT_DEPTH, bevelEnabled: true, bevelThickness: 0.002, bevelSize: 0.002, bevelSegments: 2 };
-    return new THREE.ExtrudeGeometry(shape, extSettings);
+  /* ── Computed slat positions ── */
+  const slatPositions = useMemo(() => {
+    const arr = [];
+    for (let i = 0; i < slatCount; i++) {
+      arr.push(-doorH / 2 + slatSpacing * 0.5 + i * slatSpacing);
+    }
+    return arr;
   }, []);
 
-  useFrame(() => {
-    if (!ref.current) return;
-    const p = springOpen.get();
-    const travel = DOOR_H + 0.8;
-    const y = baseY + p * travel;
-    const drumY = DOOR_H / 2 + DRUM_R + 0.18;
+  /* ── Geometries (memoized) ── */
+  const slatGeo = useMemo(() => {
+    // Extrude the curved shape along the width of the door
+    const shape = makeSlatShape();
+    const extrudeSettings = { depth: doorW - 0.02, bevelEnabled: false, curveSegments: 12 };
+    const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+    // Center the geometry
+    geo.computeBoundingBox();
+    const centerOffset = -0.5 * (geo.boundingBox.max.x - geo.boundingBox.min.x);
+    const yOffset = -0.5 * (geo.boundingBox.max.y - geo.boundingBox.min.y);
+    const zOffset = -0.5 * (geo.boundingBox.max.z - geo.boundingBox.min.z);
+    geo.translate(centerOffset, yOffset, zOffset);
+    // Rotate so it faces forward (ExtrudeGeometry extrudes along Z, we want it along X)
+    geo.rotateY(Math.PI / 2);
+    // Scale down to match slatSpacing height (leave a tiny 2% seam) and realistic 0.04 depth
+    const originalHeight = geo.boundingBox.max.y - geo.boundingBox.min.y;
+    geo.scale(1, (slatSpacing * 0.98) / originalHeight, 0.04);
+    return geo;
+  }, [doorW, slatSpacing]);
 
-    if (y > drumY) {
-      // wrap around drum
-      const dist = y - drumY;
-      const angle = dist / DRUM_R;
-      ref.current.position.set(0, drumY + Math.cos(angle) * DRUM_R * 0.5, -DRUM_R + Math.sin(angle) * DRUM_R * 0.3);
-      ref.current.rotation.x = angle * 0.5;
-      ref.current.scale.setScalar(Math.max(0, 1 - (dist / (DOOR_H * 0.5))));
-    } else {
-      ref.current.position.set(0, y, 0);
-      ref.current.rotation.x = 0;
-      ref.current.scale.setScalar(1);
+  const gapGeo = useMemo(() => new THREE.BoxGeometry(doorW - 0.04, slatSpacing * 0.1, 0.01), [doorW, slatSpacing]);
+
+  /* ── Materials (Using Physical for realistic clearcoat paint) ── */
+  const doorMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color(colorHex),
+    roughness,
+    metalness,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.15,
+    envMapIntensity: 1.0, // Restored because Physical material handles it better
+  }), []);
+
+  const frameMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color(colorHex).multiplyScalar(0.9),
+    roughness: 0.55,
+    metalness: metalness * 0.8 + 0.2,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.2,
+  }), []);
+
+  const housingMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color(colorHex).multiplyScalar(0.95),
+    roughness: 0.45,
+    metalness: metalness * 0.85 + 0.25,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.15,
+  }), []);
+
+  const drumInnerMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: 0x1A1A1A, roughness: 0.7, metalness: 0.5,
+  }), []);
+
+  const gapMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: 0x0A0A0A, roughness: 0.9, metalness: 0,
+  }), []);
+
+  const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: 0x111111, roughness: 0.95, metalness: 0,
+  }), []);
+
+  const floorMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: 0xECEAE6, roughness: 1, metalness: 0,
+  }), []);
+
+  /* ── Animation loop ── */
+  const openRef = useRef(0);
+  const explodeRef = useRef(0);
+  const timeRef = useRef(0);
+  
+  // Target color refs for smooth lerping
+  const targetColor = useMemo(() => new THREE.Color(), []);
+  
+  useEffect(() => {
+    targetColor.set(colorHex);
+  }, [colorHex, targetColor]);
+
+  useFrame((_, delta) => {
+    timeRef.current += delta;
+
+    // Smoothly animate colors for realistic paint transition effect
+    doorMat.color.lerp(targetColor, 0.08);
+    doorMat.roughness += (roughness - doorMat.roughness) * 0.08;
+    doorMat.metalness += (metalness - doorMat.metalness) * 0.08;
+    
+    const frameTarget = targetColor.clone().multiplyScalar(0.9);
+    frameMat.color.lerp(frameTarget, 0.08);
+    
+    const housingTarget = targetColor.clone().multiplyScalar(0.95);
+    housingMat.color.lerp(housingTarget, 0.08);
+
+    // Smoothly animate open & explode amounts
+    openRef.current += (openAmount - openRef.current) * 0.05;
+    explodeRef.current += ((exploded ? 1 : 0) - explodeRef.current) * 0.05;
+
+    // Explode animations
+    if (fasciaGroupRef.current) {
+      fasciaGroupRef.current.position.y = explodeRef.current * 0.8;
+      fasciaGroupRef.current.position.z = explodeRef.current * 0.5;
+    }
+    if (drumGroupRef.current) {
+      drumGroupRef.current.position.y = explodeRef.current * 0.4;
+    }
+    if (railsGroupRef.current) {
+      railsGroupRef.current.position.z = explodeRef.current * 0.6;
+    }
+
+    // Auto-rotate
+    if (autoRotate && groupRef.current) {
+      groupRef.current.rotation.y = rotationY + Math.sin(timeRef.current * 0.3) * 0.04;
+    } else if (groupRef.current) {
+      groupRef.current.rotation.y = rotationY;
+      groupRef.current.rotation.x = rotationX;
+    }
+
+    // Animate slats (Realistic rolling mechanism)
+    if (slatsRef.current) {
+      const dummy = new THREE.Object3D();
+      const amt = openRef.current;
+      const travel = amt * (doorH - 0.2); // Total distance the door opens
+      const drumY = doorH / 2 + fasH * 0.45;
+      const drumR = 0.19;
+      const drumZ = -0.19; // Positioned so front is at Z=0
+
+      for (let i = 0; i < slatCount; i++) {
+        const baseY = slatPositions[i];
+        const pos = baseY + travel;
+
+        if (pos <= drumY) {
+          // Slat is straight
+          dummy.position.set(0, pos, 0);
+          dummy.rotation.set(0, 0, 0);
+        } else {
+          // Slat rolls around the drum
+          const s = pos - drumY;
+          // To simulate spiral, slightly increase radius as it wraps
+          const spiralR = drumR + Math.floor(s / (Math.PI * 2 * drumR)) * 0.02; 
+          const theta = s / spiralR;
+          
+          dummy.position.set(0, drumY + spiralR * Math.sin(theta), drumZ + spiralR * Math.cos(theta));
+          dummy.rotation.set(theta, 0, 0);
+        }
+        
+        dummy.scale.set(1, 1, 1);
+        dummy.updateMatrix();
+        slatsRef.current.setMatrixAt(i, dummy.matrix);
+      }
+      slatsRef.current.instanceMatrix.needsUpdate = true;
+    }
+
+    // Animate gaps
+    if (gapsRef.current) {
+      const dummy = new THREE.Object3D();
+      const amt = openRef.current;
+      const travel = amt * (doorH - 0.2);
+      const drumY = doorH / 2 + fasH * 0.45;
+      const drumR = 0.19;
+      const drumZ = -0.19;
+
+      for (let i = 0; i < slatCount; i++) {
+        const baseY = slatPositions[i] - slatSpacing * 0.5 + 0.005;
+        const pos = baseY + travel;
+
+        if (pos <= drumY) {
+          dummy.position.set(0, pos, 0);
+          dummy.rotation.set(0, 0, 0);
+        } else {
+          const s = pos - drumY;
+          const spiralR = drumR + Math.floor(s / (Math.PI * 2 * drumR)) * 0.02;
+          const theta = s / spiralR;
+          
+          dummy.position.set(0, drumY + spiralR * Math.sin(theta), drumZ + spiralR * Math.cos(theta));
+          dummy.rotation.set(theta, 0, 0);
+        }
+        
+        dummy.scale.set(1, 1, 1);
+        dummy.updateMatrix();
+        gapsRef.current.setMatrixAt(i, dummy.matrix);
+      }
+      gapsRef.current.instanceMatrix.needsUpdate = true;
     }
   });
 
-  return (
-    <mesh ref={ref} geometry={geo} material={material} castShadow receiveShadow rotation={[0, 0, 0]} />
-  );
-}
+  /* ── Build initial instance matrices ── */
+  useEffect(() => {
+    if (slatsRef.current) {
+      const dummy = new THREE.Object3D();
+      for (let i = 0; i < slatCount; i++) {
+        dummy.position.set(0, slatPositions[i], 0);
+        dummy.rotation.set(0, 0, 0);
+        dummy.scale.set(1, 1, 1);
+        dummy.updateMatrix();
+        slatsRef.current.setMatrixAt(i, dummy.matrix);
+      }
+      slatsRef.current.instanceMatrix.needsUpdate = true;
+    }
+    if (gapsRef.current) {
+      const dummy = new THREE.Object3D();
+      for (let i = 0; i < slatCount; i++) {
+        dummy.position.set(0, slatPositions[i] - slatSpacing * 0.5 + 0.005, 0.04);
+        dummy.scale.set(1, 1, 1);
+        dummy.rotation.set(0, 0, 0);
+        dummy.updateMatrix();
+        gapsRef.current.setMatrixAt(i, dummy.matrix);
+      }
+      gapsRef.current.instanceMatrix.needsUpdate = true;
+    }
+  }, []);
 
-/* ─── Bottom Bar (T-section) ─── */
-function BottomBar({ material, rubberMat, springOpen }) {
-  const ref = useRef();
-  useFrame(() => {
-    if (!ref.current) return;
-    const p = springOpen.get();
-    const y = -DOOR_H / 2 - 0.03 + p * (DOOR_H + 0.8);
-    ref.current.position.y = y;
-    ref.current.visible = p < 0.08;
-  });
+  /* ── Bolt positions for guide rails ── */
+  const boltPositions = useMemo(() => {
+    const positions = [];
+    const railH = doorH + fasH * 0.1;
+    [-1, 1].forEach(side => {
+      for (let b = 0; b < 5; b++) {
+        positions.push({
+          x: side * (doorW / 2 + railW / 2),
+          y: -0.02 - railH / 2 + (b + 0.5) * (railH / 5),
+          z: 0.02,
+          side,
+        });
+      }
+    });
+    return positions;
+  }, []);
 
   return (
-    <group ref={ref}>
-      {/* main bar */}
-      <mesh material={material} castShadow>
-        <boxGeometry args={[DOOR_W - RAIL_W * 2, 0.05, 0.06]} />
-      </mesh>
-      {/* rubber seal */}
-      <mesh material={rubberMat} position={[0, -0.035, 0]}>
-        <boxGeometry args={[DOOR_W - RAIL_W * 2 - 0.02, 0.02, 0.065]} />
-      </mesh>
-    </group>
-  );
-}
-
-/* ─── Guide Rail (L-profile) ─── */
-function GuideRail({ side, material, bracketMat }) {
-  const x = side * (DOOR_W / 2 + RAIL_W / 2);
-  return (
-    <group position={[x, 0, 0]}>
-      {/* vertical rail */}
-      <mesh material={material} castShadow>
-        <boxGeometry args={[RAIL_W, DOOR_H + 0.6, RAIL_D]} />
-      </mesh>
-      {/* inner lip */}
-      <mesh material={material} position={[-side * RAIL_W * 0.3, 0, RAIL_D / 2 + 0.01]}>
-        <boxGeometry args={[RAIL_W * 0.4, DOOR_H + 0.5, 0.025]} />
-      </mesh>
-      {/* floor anchor */}
-      <mesh material={bracketMat} position={[0, -DOOR_H / 2 - 0.15, 0]}>
-        <boxGeometry args={[RAIL_W + 0.06, 0.12, RAIL_D + 0.04]} />
-      </mesh>
-      {/* top mounting bracket */}
-      <mesh material={bracketMat} position={[side * 0.02, DOOR_H / 2 + 0.3, RAIL_D / 2 + 0.02]}>
-        <boxGeometry args={[RAIL_W + 0.04, 0.16, BRACKET_T]} />
-      </mesh>
-    </group>
-  );
-}
-
-/* ─── Drum Housing (box + internal cylinder) ─── */
-function DrumHousing({ materials }) {
-  const housingY = DOOR_H / 2 + HOUSING_H / 2 + 0.1;
-  return (
-    <group position={[0, housingY, -HOUSING_D / 2 + 0.05]}>
-      {/* outer housing shell */}
-      <mesh material={materials.frame} castShadow>
-        <boxGeometry args={[DRUM_L, HOUSING_H, HOUSING_D]} />
-      </mesh>
-      {/* end plates */}
-      {[-1, 1].map((s) => (
-        <mesh key={s} material={materials.bracket} position={[s * (DRUM_L / 2 + 0.02), 0, 0]}>
-          <boxGeometry args={[0.04, HOUSING_H - 0.06, HOUSING_D - 0.06]} />
+    <group ref={groupRef}>
+      {/* ─── FASCIA BOX ─── */}
+      <group ref={fasciaGroupRef}>
+        <mesh position={[0, doorH / 2 + fasH / 2, -fasDepth / 2 + 0.04]} material={housingMat} castShadow>
+          <boxGeometry args={[doorW + railW * 2 + 0.02, fasH, fasDepth]} />
         </mesh>
-      ))}
-      {/* internal drum cylinder */}
-      <mesh material={materials.drumInner} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[DRUM_R, DRUM_R, DRUM_L - 0.2, 48]} />
-      </mesh>
-      {/* drum shaft */}
-      <mesh material={materials.bracket} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.03, 0.03, DRUM_L + 0.1, 16]} />
-      </mesh>
-    </group>
-  );
-}
-
-/* ─── Motor Unit ─── */
-function MotorUnit({ materials }) {
-  const housingY = DOOR_H / 2 + HOUSING_H / 2 + 0.1;
-  const motorX = -DRUM_L / 2 + 0.18;
-  return (
-    <group position={[motorX, housingY, -HOUSING_D / 2 + 0.05]}>
-      {/* motor body */}
-      <mesh material={materials.motor} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[MOTOR_R, MOTOR_R, MOTOR_L, 32]} />
-      </mesh>
-      {/* motor end cap */}
-      <mesh material={materials.bracket} position={[-MOTOR_L / 2 - 0.02, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[MOTOR_R + 0.02, MOTOR_R - 0.01, 0.04, 32]} />
-      </mesh>
-      {/* connector ribbing */}
-      {[0.08, 0.16, 0.24].map((offset) => (
-        <mesh key={offset} material={materials.bracket} position={[MOTOR_L / 2 - offset, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <torusGeometry args={[MOTOR_R + 0.005, 0.006, 8, 24]} />
+        {/* Fascia top cap */}
+        <mesh position={[0, doorH / 2 + fasH + 0.012, -fasDepth / 2 + 0.04]} material={frameMat}>
+          <boxGeometry args={[doorW + railW * 2 + 0.02, 0.025, fasDepth]} />
         </mesh>
-      ))}
-    </group>
-  );
-}
-
-/* ─── Safety Sensors ─── */
-function SafetySensors({ materials }) {
-  const sensorY = -DOOR_H / 2 + 0.15;
-  return (
-    <>
-      {[-1, 1].map((s) => (
-        <group key={s} position={[s * (DOOR_W / 2 + RAIL_W + 0.06), sensorY, RAIL_D / 2 + 0.02]}>
-          {/* sensor housing */}
-          <mesh material={materials.frame}>
-            <boxGeometry args={[0.035, 0.06, 0.03]} />
-          </mesh>
-          {/* sensor lens */}
-          <mesh material={materials.sensor} position={[0, 0, 0.018]}>
-            <sphereGeometry args={[0.008, 16, 16]} />
-          </mesh>
-        </group>
-      ))}
-    </>
-  );
-}
-
-/* ─── Main Model ─── */
-export default function RollerDoorModel({
-  state = 'interactive',
-  colorHex = '#e0e0e4',
-  finish = 'metallic',
-  openProgress = 0,
-  explodedProgress = 0,
-}) {
-  const materials = useMemo(() => makeMaterials(colorHex, finish), [colorHex, finish]);
-
-  const { springOpen } = useSpring({
-    springOpen: openProgress,
-    config: { mass: 1.2, tension: 90, friction: 24 },
-  });
-
-  const { springExplode } = useSpring({
-    springExplode: explodedProgress,
-    config: { mass: 1, tension: 70, friction: 22 },
-  });
-
-  // Exploded offsets
-  const drumYOff = springExplode.to((e) => e * 1.2);
-  const motorZOff = springExplode.to((e) => e * -2.0);
-  const railXOff = springExplode.to((e) => e * 0.7);
-
-  // Camera position based on mode
-  const camPos = state === 'motor'
-    ? [-3, 3, 4]
-    : state === 'color'
-    ? [0, 0.5, 6.5]
-    : [0, 0.3, 7.5];
-
-  const camFov = state === 'motor' ? 30 : state === 'color' ? 34 : 36;
-
-  return (
-    <>
-      <PerspectiveCamera makeDefault position={camPos} fov={camFov} />
-
-      {/* Lighting — studio setup */}
-      <ambientLight intensity={0.4} />
-      <directionalLight
-        position={[8, 14, 8]}
-        intensity={1.8}
-        castShadow
-        shadow-mapSize={2048}
-        shadow-bias={-0.0005}
-        shadow-camera-far={30}
-        shadow-camera-left={-6}
-        shadow-camera-right={6}
-        shadow-camera-top={6}
-        shadow-camera-bottom={-6}
-      />
-      <directionalLight position={[-5, 8, -4]} intensity={0.4} />
-      <spotLight position={[-6, 5, 12]} angle={0.35} penumbra={1} intensity={0.6} />
-      <spotLight position={[6, 3, 8]} angle={0.5} penumbra={0.8} intensity={0.3} color="#dde4f0" />
-
-      <Environment preset="studio" environmentIntensity={0.8} />
-
-      {/* Contact shadows */}
-      {(state === 'interactive' || state === 'color' || state === 'hero') && (
-        <ContactShadows
-          position={[0, -DOOR_H / 2 - 0.22, 0]}
-          opacity={0.4}
-          scale={14}
-          blur={2.8}
-          far={6}
-          color="#1a1a2e"
-        />
-      )}
-
-      {/* Orbit controls */}
-      {(state === 'interactive' || state === 'color') && (
-        <OrbitControls
-          enableZoom
-          minDistance={3.5}
-          maxDistance={14}
-          minPolarAngle={Math.PI / 5}
-          maxPolarAngle={Math.PI / 1.7}
-          autoRotate={state === 'interactive'}
-          autoRotateSpeed={0.35}
-          enablePan={false}
-          enableDamping
-          dampingFactor={0.08}
-        />
-      )}
-
-      {state === 'motor' && (
-        <OrbitControls
-          enableZoom={false}
-          autoRotate
-          autoRotateSpeed={0.7}
-          target={[-DOOR_W / 2 + 0.3, DOOR_H / 2 + 0.5, -HOUSING_D / 2]}
-          enableDamping
-        />
-      )}
-
-      {/* ─── Door Assembly ─── */}
-      <group position={[0, 0, 0]}>
-        {/* Slats */}
-        <group>
-          {Array.from({ length: SLAT_COUNT }).map((_, i) => (
-            <Slat key={i} index={i} material={materials.slat} springOpen={springOpen} total={SLAT_COUNT} />
-          ))}
-        </group>
-
-        {/* Bottom bar */}
-        <BottomBar material={materials.frame} rubberMat={materials.rubber} springOpen={springOpen} />
-
-        {/* Guide Rails */}
-        <animated.group position-x={railXOff}>
-          <GuideRail side={1} material={materials.frame} bracketMat={materials.bracket} />
-        </animated.group>
-        <animated.group position-x={railXOff.to((x) => -x)}>
-          <GuideRail side={-1} material={materials.frame} bracketMat={materials.bracket} />
-        </animated.group>
-
-        {/* Drum Housing */}
-        <animated.group position-y={drumYOff}>
-          <DrumHousing materials={materials} />
-        </animated.group>
-
-        {/* Motor */}
-        <animated.group position-y={drumYOff} position-z={motorZOff}>
-          <MotorUnit materials={materials} />
-        </animated.group>
-
-        {/* Safety Sensors */}
-        <SafetySensors materials={materials} />
+        {/* Fascia bottom lip */}
+        <mesh position={[0, doorH / 2 + 0.015, 0.02]} material={frameMat}>
+          <boxGeometry args={[doorW + railW * 2 + 0.02, 0.03, 0.04]} />
+        </mesh>
       </group>
+
+      {/* ─── DRUM ─── */}
+      <group ref={drumGroupRef}>
+        {/* Main Drum Barrel */}
+        <mesh
+          position={[0, doorH / 2 + fasH * 0.45, -fasDepth * 0.3]}
+          rotation={[0, 0, Math.PI / 2]}
+          material={housingMat}
+          castShadow
+        >
+          <cylinderGeometry args={[0.19, 0.19, doorW + 0.05, 40]} />
+        </mesh>
+        {/* Inner drum shaft */}
+        <mesh
+          position={[0, doorH / 2 + fasH * 0.45, -fasDepth * 0.3]}
+          rotation={[0, 0, Math.PI / 2]}
+          material={drumInnerMat}
+        >
+          <cylinderGeometry args={[0.07, 0.07, doorW + 0.1, 24]} />
+        </mesh>
+        
+        {/* Tubular Motor Unit (Right side) */}
+        <mesh
+          position={[doorW / 2 + 0.12, doorH / 2 + fasH * 0.45, -fasDepth * 0.3]}
+          rotation={[0, 0, Math.PI / 2]}
+          material={drumInnerMat}
+          castShadow
+        >
+          <cylinderGeometry args={[0.08, 0.08, 0.25, 24]} />
+        </mesh>
+        {/* Motor End Cap / Manual Override Ring */}
+        <mesh
+          position={[doorW / 2 + 0.26, doorH / 2 + fasH * 0.45, -fasDepth * 0.3]}
+          rotation={[0, 0, Math.PI / 2]}
+          material={housingMat}
+          castShadow
+        >
+          <cylinderGeometry args={[0.09, 0.09, 0.05, 24]} />
+        </mesh>
+        {/* Motor wiring/connector detail */}
+        <mesh
+          position={[doorW / 2 + 0.26, doorH / 2 + fasH * 0.45 - 0.08, -fasDepth * 0.3 + 0.02]}
+          material={drumInnerMat}
+        >
+          <boxGeometry args={[0.02, 0.04, 0.02]} />
+        </mesh>
+      </group>
+
+      {/* ─── GUIDE RAILS ─── */}
+      <group ref={railsGroupRef}>
+        {[-1, 1].map(side => {
+          const railH = doorH + fasH * 0.1;
+          const railY = -0.02;
+          return (
+            <group key={`rail-${side}`}>
+              {/* Back plate */}
+              <mesh position={[side * (doorW / 2 + railW / 2), railY, -railDepth / 2]} material={frameMat} castShadow>
+                <boxGeometry args={[railW, railH, railDepth]} />
+              </mesh>
+              {/* Front flange */}
+              <mesh position={[side * (doorW / 2 + railW / 2), railY, 0.01]} material={frameMat}>
+                <boxGeometry args={[railW, railH, 0.02]} />
+              </mesh>
+              {/* Inner wall */}
+              <mesh position={[side * (doorW / 2 - 0.008), railY, -railDepth / 2]} material={frameMat}>
+                <boxGeometry args={[0.015, railH, railDepth]} />
+              </mesh>
+              {/* Outer cover */}
+              <mesh position={[side * (doorW / 2 + railW + 0.006), railY, -railDepth / 2]} material={frameMat}>
+                <boxGeometry args={[0.015, railH, railDepth]} />
+              </mesh>
+            </group>
+          );
+        })}
+        {/* Bolts */}
+        {boltPositions.map((bp, i) => (
+          <mesh key={`bolt-${i}`} position={[bp.x, bp.y, bp.z]} rotation={[0, 0, Math.PI / 2 * bp.side]} material={drumInnerMat}>
+            <cylinderGeometry args={[0.012, 0.012, 0.015, 8]} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* ─── BOTTOM BAR ─── */}
+      <mesh position={[0, -doorH / 2, -0.01]} material={frameMat} castShadow>
+        <boxGeometry args={[doorW + 0.04, 0.06, 0.09]} />
+      </mesh>
+
+      {/* Bottom seal */}
+      <mesh position={[0, -doorH / 2 - 0.04, 0.01]} material={sealMat}>
+        <boxGeometry args={[doorW + 0.04, 0.018, 0.04]} />
+      </mesh>
+
+      {/* ─── CURTAIN SLATS (instanced) ─── */}
+      <instancedMesh ref={slatsRef} args={[slatGeo, doorMat, slatCount]} castShadow receiveShadow />
+
+      {/* ─── GAP LINES (instanced) ─── */}
+      <instancedMesh ref={gapsRef} args={[gapGeo, gapMat, slatCount]} />
+
+      {/* ─── FLOOR ─── */}
+      {showFloor && (
+        <mesh position={[0, -doorH / 2 - 0.07, -1]} rotation={[-Math.PI / 2, 0, 0]} material={floorMat} receiveShadow>
+          <planeGeometry args={[6, 3]} />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+/* ───────────────────────────────────────────────
+   STANDARD LIGHTS
+   ─────────────────────────────────────────────── */
+export function SceneLights() {
+  return (
+    <>
+      <ambientLight intensity={0.45} color={0xffffff} />
+      <directionalLight
+        position={[5, 8, 5]}
+        intensity={1.3}
+        color={0xfff8f0}
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+      />
+      <pointLight position={[-4, 4, -4]} intensity={0.7} color={0xf0e8d8} />
+      <hemisphereLight args={[0xffffff, 0xe0e0e0, 0.35]} />
+      <directionalLight position={[-3, 2, -5]} intensity={0.4} color={0xe8f0ff} />
+      <React.Suspense fallback={null}>
+        <Environment preset="city" />
+      </React.Suspense>
     </>
   );
 }
+
+export default RollerDoorScene;

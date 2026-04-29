@@ -1,0 +1,2931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roller Doors — Elcardo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --off-white: #F5F4F2;
+            --navy: #1A2332;
+            --charcoal: #2D2D2D;
+            --red: #CC2929;
+            --silver: #E8E8E8;
+            --mid-grey: #6B7280;
+            --border: rgba(26, 35, 50, 0.1);
+            --shadow: 0 4px 24px rgba(26, 35, 50, 0.08);
+            --shadow-lg: 0 12px 48px rgba(26, 35, 50, 0.14);
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--white);
+            color: var(--charcoal);
+            overflow-x: hidden
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            line-height: 1.1
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 48px;
+            justify-content: space-between
+        }
+
+        .navbar-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--navy);
+            letter-spacing: 0.02em
+        }
+
+        .navbar-logo span {
+            color: var(--red)
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 32px;
+            list-style: none
+        }
+
+        .navbar-links a {
+            font-size: 0.85rem;
+            color: var(--mid-grey);
+            text-decoration: none;
+            transition: color 0.2s
+        }
+
+        .navbar-links a:hover {
+            color: var(--navy)
+        }
+
+        .navbar-cta {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s
+        }
+
+        .navbar-cta:hover {
+            background: #253347
+        }
+
+        /* SUBNAV */
+        .subnav {
+            position: sticky;
+            top: 60px;
+            z-index: 90;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            padding: 0 48px;
+            gap: 0;
+            overflow-x: auto
+        }
+
+        .subnav a {
+            font-size: 0.8rem;
+            color: var(--mid-grey);
+            text-decoration: none;
+            padding: 14px 20px;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s
+        }
+
+        .subnav a:hover {
+            color: var(--navy)
+        }
+
+        .subnav a.active {
+            color: var(--red);
+            border-bottom-color: var(--red)
+        }
+
+        /* SECTION BASE */
+        section {
+            padding: 100px 48px
+        }
+
+        .section-label {
+            color: var(--mid-grey);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-family: 'JetBrains Mono', monospace
+        }
+
+        .section-title {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            color: var(--navy);
+            margin-bottom: 24px
+        }
+
+        .section-body {
+            font-size: 1.05rem;
+            color: var(--mid-grey);
+            line-height: 1.75;
+            max-width: 560px
+        }
+
+        /* REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.9s var(--ease), transform 0.9s var(--ease)
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s
+        }
+
+        .reveal-delay-4 {
+            transition-delay: 0.4s
+        }
+
+        /* ===================== HERO ===================== */
+        #hero {
+            padding: 0;
+            height: 100vh;
+            min-height: 700px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+            margin-top: 60px
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 64px 80px 80px;
+            z-index: 2
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--off-white);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px 16px;
+            margin-bottom: 32px;
+            width: fit-content
+        }
+
+        .hero-badge span {
+            font-size: 0.78rem;
+            color: var(--mid-grey);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.06em;
+            text-transform: uppercase
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--red)
+        }
+
+        .hero-h1 {
+            font-size: clamp(3.5rem, 7vw, 5.5rem);
+            color: var(--navy);
+            line-height: 1.0;
+            margin-bottom: 24px
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--mid-grey);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            max-width: 380px
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .btn-primary {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            letter-spacing: 0.01em
+        }
+
+        .btn-primary:hover {
+            background: #253347;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(26, 35, 50, 0.25)
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--navy);
+            border: 1.5px solid var(--navy);
+            padding: 14px 32px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s var(--ease)
+        }
+
+        .btn-ghost:hover {
+            background: var(--off-white)
+        }
+
+        .hero-canvas-wrap {
+            position: relative;
+            background: linear-gradient(135deg, #F8F7F5 0%, #EEECEA 100%)
+        }
+
+        #hero-canvas {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 32px;
+            left: 80px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.5
+        }
+
+        .scroll-line {
+            width: 32px;
+            height: 1px;
+            background: var(--mid-grey)
+        }
+
+        .hero-scroll-hint span {
+            font-size: 0.75rem;
+            color: var(--mid-grey);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
+            text-transform: uppercase
+        }
+
+        /* ===================== OVERVIEW ===================== */
+        #overview {
+            background: var(--off-white)
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 56px
+        }
+
+        .overview-card {
+            background: var(--white);
+            padding: 40px 36px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--ease)
+        }
+
+        .overview-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        .overview-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 24px;
+            opacity: 0.8
+        }
+
+        .overview-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 500
+        }
+
+        .overview-card p {
+            font-size: 0.93rem;
+            color: var(--mid-grey);
+            line-height: 1.7;
+            margin-bottom: 20px
+        }
+
+        .overview-card a {
+            font-size: 0.85rem;
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .overview-card a:hover {
+            color: var(--red)
+        }
+
+        .overview-stat {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: baseline;
+            gap: 8px
+        }
+
+        .overview-stat .num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy)
+        }
+
+        .overview-stat .label {
+            font-size: 0.8rem;
+            color: var(--mid-grey)
+        }
+
+        /* ===================== 3D STUDIO ===================== */
+        #studio {
+            background: var(--white)
+        }
+
+        .studio-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-top: 56px;
+            align-items: start
+        }
+
+        .studio-canvas-wrap {
+            position: relative;
+            background: linear-gradient(145deg, #F8F7F5, #ECEAE7);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 520px
+        }
+
+        #studio-canvas {
+            width: 100%;
+            height: 100%
+        }
+
+        .studio-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px
+        }
+
+        .ctrl-section {
+            background: var(--off-white);
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid var(--border)
+        }
+
+        .ctrl-label {
+            font-size: 0.75rem;
+            color: var(--mid-grey);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 16px
+        }
+
+        .color-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s var(--ease);
+            position: relative
+        }
+
+        .color-swatch.active {
+            transform: scale(1.2);
+            border-color: var(--navy)
+        }
+
+        .color-swatch::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1.5px solid transparent;
+            transition: border-color 0.2s
+        }
+
+        .color-swatch.active::after {
+            border-color: var(--navy)
+        }
+
+        .finish-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--navy);
+            margin-top: 12px;
+            min-height: 28px;
+            transition: opacity 0.3s
+        }
+
+        .ctrl-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .ctrl-btn {
+            background: var(--white);
+            border: 1px solid var(--border);
+            color: var(--navy);
+            padding: 11px 20px;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left
+        }
+
+        .ctrl-btn:hover {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy)
+        }
+
+        .ctrl-btn.active-btn {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy)
+        }
+
+        .view-hint {
+            font-size: 0.78rem;
+            color: var(--mid-grey);
+            text-align: center;
+            padding: 8px 0;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.06em
+        }
+
+        /* ===================== COLOR STORY ===================== */
+        #finishes {
+            background: var(--off-white)
+        }
+
+        .color-story {
+            margin-top: 64px;
+            text-align: center
+        }
+
+        .color-preview {
+            width: 100%;
+            max-width: 700px;
+            height: 360px;
+            margin: 0 auto;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg)
+        }
+
+        .color-finish-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin-top: 40px;
+            margin-bottom: 8px;
+            min-height: 52px;
+            transition: opacity 0.3s
+        }
+
+        .color-finish-sub {
+            font-size: 0.9rem;
+            color: var(--mid-grey);
+            margin-bottom: 32px
+        }
+
+        .finish-swatches {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .finish-swatch-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0
+        }
+
+        .finish-swatch-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: all 0.25s var(--ease);
+            position: relative
+        }
+
+        .finish-swatch-btn.active .finish-swatch-circle {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 3px white, 0 0 0 5px var(--navy)
+        }
+
+        .finish-swatch-btn span {
+            font-size: 0.72rem;
+            color: var(--mid-grey);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.06em
+        }
+
+        /* ===================== MECHANISM ===================== */
+        #mechanism {
+            background: var(--white);
+            padding: 0
+        }
+
+        .mechanism-sticky {
+            position: sticky;
+            top: 120px;
+            height: calc(100vh - 140px);
+            display: flex;
+            align-items: center;
+            padding: 0 80px;
+            gap: 80px
+        }
+
+        .mechanism-scroll-track {
+            height: 400vh;
+            position: relative
+        }
+
+        .mechanism-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 32px
+        }
+
+        .mechanism-stages {
+            display: flex;
+            flex-direction: column;
+            gap: 24px
+        }
+
+        .mstage {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            opacity: 0.25;
+            transition: opacity 0.5s var(--ease)
+        }
+
+        .mstage.active-stage {
+            opacity: 1
+        }
+
+        .mstage-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--silver);
+            line-height: 1;
+            min-width: 56px
+        }
+
+        .mstage.active-stage .mstage-num {
+            color: var(--navy)
+        }
+
+        .mstage-text h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .mstage-text p {
+            font-size: 0.88rem;
+            color: var(--mid-grey);
+            line-height: 1.6
+        }
+
+        .mechanism-visual {
+            flex: 0 0 460px;
+            height: 420px;
+            position: relative
+        }
+
+        #mechanism-canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #F8F7F5, #ECEAE7)
+        }
+
+        /* ===================== ENGINEERING / X-RAY ===================== */
+        #interior {
+            background: var(--off-white)
+        }
+
+        .engineering-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 60px;
+            margin-top: 56px;
+            align-items: center
+        }
+
+        .engineering-canvas-wrap {
+            height: 500px;
+            background: var(--white);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow)
+        }
+
+        #engineering-canvas {
+            width: 100%;
+            height: 100%
+        }
+
+        .component-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .comp-item {
+            padding: 14px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 14px
+        }
+
+        .comp-item:hover {
+            background: var(--white);
+            border-color: var(--border)
+        }
+
+        .comp-item.active-comp {
+            background: var(--white);
+            border-color: var(--navy)
+        }
+
+        .comp-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--silver);
+            flex-shrink: 0;
+            transition: background 0.2s
+        }
+
+        .comp-item.active-comp .comp-dot {
+            background: var(--red)
+        }
+
+        .comp-item h5 {
+            font-size: 0.92rem;
+            color: var(--navy);
+            font-weight: 500
+        }
+
+        .comp-item p {
+            font-size: 0.78rem;
+            color: var(--mid-grey);
+            margin-top: 2px
+        }
+
+        /* ===================== AUTOMATION ===================== */
+        #automation {
+            background: var(--white)
+        }
+
+        .automation-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-top: 56px
+        }
+
+        .automation-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0
+        }
+
+        .auto-feature {
+            display: flex;
+            gap: 20px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .auto-feature:last-child {
+            border-bottom: none
+        }
+
+        .auto-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--off-white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .auto-feature h4 {
+            font-size: 0.97rem;
+            color: var(--navy);
+            font-weight: 500;
+            margin-bottom: 5px
+        }
+
+        .auto-feature p {
+            font-size: 0.87rem;
+            color: var(--mid-grey);
+            line-height: 1.6
+        }
+
+        .automation-visual {
+            height: 400px;
+            background: linear-gradient(145deg, #F8F7F5, #ECEAE7);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative
+        }
+
+        #automation-canvas {
+            width: 100%;
+            height: 100%
+        }
+
+        /* ===================== MATERIALS ===================== */
+        #materials {
+            background: var(--off-white)
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 56px
+        }
+
+        .mat-card {
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--white);
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--ease)
+        }
+
+        .mat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        .mat-swatch {
+            height: 160px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .mat-swatch-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s var(--ease)
+        }
+
+        .mat-card:hover .mat-swatch-inner {
+            transform: scale(1.04)
+        }
+
+        .mat-info {
+            padding: 20px 18px
+        }
+
+        .mat-info h4 {
+            font-size: 0.95rem;
+            color: var(--navy);
+            font-weight: 500;
+            margin-bottom: 6px
+        }
+
+        .mat-info p {
+            font-size: 0.8rem;
+            color: var(--mid-grey);
+            line-height: 1.5
+        }
+
+        /* ===================== VARIANTS ===================== */
+        #variants {
+            background: var(--white)
+        }
+
+        .variants-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 56px
+        }
+
+        .variant-card {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--ease);
+            background: var(--white)
+        }
+
+        .variant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg)
+        }
+
+        .variant-img {
+            height: 180px;
+            overflow: hidden;
+            position: relative
+        }
+
+        .variant-img-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s var(--ease);
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .variant-card:hover .variant-img-inner {
+            transform: scale(1.03)
+        }
+
+        .variant-info {
+            padding: 20px 18px
+        }
+
+        .variant-info h4 {
+            font-size: 0.95rem;
+            color: var(--navy);
+            font-weight: 500;
+            margin-bottom: 6px
+        }
+
+        .variant-info p {
+            font-size: 0.8rem;
+            color: var(--mid-grey);
+            line-height: 1.5;
+            margin-bottom: 12px
+        }
+
+        .variant-badge {
+            display: inline-block;
+            background: var(--off-white);
+            color: var(--navy);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.04em
+        }
+
+        /* ===================== APPLICATIONS ===================== */
+        #applications {
+            background: var(--off-white);
+            padding: 100px 0
+        }
+
+        .applications-header {
+            padding: 0 48px;
+            margin-bottom: 56px
+        }
+
+        .apps-scroll {
+            display: flex;
+            gap: 24px;
+            padding: 0 48px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none
+        }
+
+        .apps-scroll::-webkit-scrollbar {
+            display: none
+        }
+
+        .app-card {
+            flex: 0 0 600px;
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            scroll-snap-align: start;
+            cursor: pointer
+        }
+
+        .app-card:hover .app-img-inner {
+            transform: scale(1.03)
+        }
+
+        .app-img-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s var(--ease)
+        }
+
+        .app-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 32px;
+            background: linear-gradient(transparent, rgba(26, 35, 50, 0.7));
+            color: white
+        }
+
+        .app-card-overlay .app-location {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 6px
+        }
+
+        .app-card-overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 4px
+        }
+
+        .app-card-overlay p {
+            font-size: 0.85rem;
+            opacity: 0.7
+        }
+
+        /* ===================== FEATURE STATEMENTS ===================== */
+        #features {
+            background: var(--white);
+            padding: 0
+        }
+
+        .feature-chapter {
+            padding: 100px 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .feature-chapter:nth-child(even) {
+            background: var(--off-white)
+        }
+
+        .feature-chapter:nth-child(even) .feature-content {
+            order: 2
+        }
+
+        .feature-chapter:nth-child(even) .feature-visual {
+            order: 1
+        }
+
+        .feature-eyebrow {
+            font-size: 0.75rem;
+            color: var(--red);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 16px
+        }
+
+        .feature-heading {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--navy);
+            line-height: 1.05;
+            margin-bottom: 20px
+        }
+
+        .feature-body {
+            font-size: 1rem;
+            color: var(--mid-grey);
+            line-height: 1.75
+        }
+
+        .feature-visual {
+            height: 340px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative
+        }
+
+        /* ===================== SPECS ===================== */
+        #specs {
+            background: var(--off-white)
+        }
+
+        .specs-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--border);
+            margin-top: 48px;
+            margin-bottom: 40px
+        }
+
+        .spec-tab {
+            padding: 14px 32px;
+            font-size: 0.88rem;
+            color: var(--mid-grey);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: 'DM Sans', sans-serif
+        }
+
+        .spec-tab.active {
+            color: var(--navy);
+            border-bottom-color: var(--red);
+            font-weight: 500
+        }
+
+        .spec-panel {
+            display: none
+        }
+
+        .spec-panel.active {
+            display: block
+        }
+
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .spec-table tr:nth-child(even) td {
+            background: var(--white)
+        }
+
+        .spec-table td {
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            border: none
+        }
+
+        .spec-table td:first-child {
+            color: var(--mid-grey);
+            width: 40%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em
+        }
+
+        .spec-table td:last-child {
+            color: var(--navy);
+            font-weight: 400
+        }
+
+        /* ===================== CTA ===================== */
+        #quote {
+            background: var(--navy);
+            color: white;
+            padding: 120px 80px;
+            text-align: center
+        }
+
+        .cta-label {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.45);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 24px
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.05
+        }
+
+        .cta-sub {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 48px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 56px
+        }
+
+        .btn-cta-primary {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s var(--ease)
+        }
+
+        .btn-cta-primary:hover {
+            background: #B52424;
+            transform: translateY(-1px)
+        }
+
+        .btn-cta-ghost {
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            padding: 16px 40px;
+            border-radius: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s var(--ease)
+        }
+
+        .btn-cta-ghost:hover {
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.06)
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12)
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .contact-item span {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.6)
+        }
+
+        .contact-item svg {
+            opacity: 0.5
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-logo">El<span>c</span>ardo</div>
+        <ul class="navbar-links">
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Projects</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <button class="navbar-cta">Get a Quote</button>
+    </nav>
+
+    <!-- SUBNAV -->
+    <div class="subnav">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#studio">3D Studio</a>
+        <a href="#mechanism">Mechanism</a>
+        <a href="#interior">Interior</a>
+        <a href="#finishes">Finishes</a>
+        <a href="#variants">Variants</a>
+        <a href="#specs">Specs</a>
+        <a href="#quote">Quote</a>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="hero-badge reveal">
+                <span class="dot"></span>
+                <span>Elcardo · Roller Doors</span>
+            </div>
+            <h1 class="hero-h1 reveal reveal-delay-1">Roller<br>Doors</h1>
+            <p class="hero-sub reveal reveal-delay-2">Secure access. Smooth motion.<br>Built for modern spaces.</p>
+            <div class="hero-buttons reveal reveal-delay-3">
+                <button class="btn-primary"
+                    onclick="document.getElementById('quote').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+                <button class="btn-ghost">Download Brochure</button>
+            </div>
+            <div class="hero-scroll-hint reveal reveal-delay-4">
+                <div class="scroll-line"></div>
+                <span>Scroll to explore</span>
+            </div>
+        </div>
+        <div class="hero-canvas-wrap">
+            <canvas id="hero-canvas"></canvas>
+        </div>
+    </section>
+
+    <!-- ========== OVERVIEW ========== -->
+    <section id="overview">
+        <div class="section-label reveal">Product Overview</div>
+        <h2 class="section-title reveal reveal-delay-1">Built for every application.</h2>
+        <p class="section-body reveal reveal-delay-2">From modern homes to industrial facilities, Elcardo roller doors
+            combine engineering precision with architectural design.</p>
+        <div class="overview-grid">
+            <div class="overview-card reveal reveal-delay-1">
+                <svg class="overview-icon" viewBox="0 0 48 48" fill="none" stroke="#1A2332" stroke-width="1.5">
+                    <rect x="8" y="16" width="32" height="24" rx="1" />
+                    <path d="M8 16 L24 6 L40 16" />
+                    <rect x="18" y="28" width="12" height="12" />
+                    <line x1="24" y1="28" x2="24" y2="40" />
+                </svg>
+                <h3>Residential</h3>
+                <p>Modern access for garages and boundary walls. Designed to complement contemporary architecture.</p>
+                <a href="#">Explore residential →</a>
+                <div class="overview-stat"><span class="num">35+</span><span class="label">finish options</span></div>
+            </div>
+            <div class="overview-card reveal reveal-delay-2">
+                <svg class="overview-icon" viewBox="0 0 48 48" fill="none" stroke="#1A2332" stroke-width="1.5">
+                    <rect x="4" y="20" width="40" height="22" rx="1" />
+                    <rect x="4" y="14" width="40" height="8" />
+                    <line x1="16" y1="20" x2="16" y2="42" />
+                    <line x1="32" y1="20" x2="32" y2="42" />
+                    <rect x="10" y="24" width="10" height="18" />
+                    <rect x="28" y="24" width="10" height="18" />
+                </svg>
+                <h3>Commercial</h3>
+                <p>Reliable protection for shops and business entrances. High-cycle rated for daily operational demands.
+                </p>
+                <a href="#">Explore commercial →</a>
+                <div class="overview-stat"><span class="num">10k+</span><span class="label">daily cycles</span></div>
+            </div>
+            <div class="overview-card reveal reveal-delay-3">
+                <svg class="overview-icon" viewBox="0 0 48 48" fill="none" stroke="#1A2332" stroke-width="1.5">
+                    <rect x="2" y="22" width="44" height="20" rx="1" />
+                    <rect x="2" y="14" width="44" height="10" />
+                    <line x1="14" y1="22" x2="14" y2="42" />
+                    <line x1="34" y1="22" x2="34" y2="42" />
+                    <rect x="18" y="26" width="12" height="16" />
+                </svg>
+                <h3>Industrial</h3>
+                <p>Durable solutions for warehouses and facilities. Built to withstand heavy-duty environments.</p>
+                <a href="#">Explore industrial →</a>
+                <div class="overview-stat"><span class="num">6m</span><span class="label">max opening width</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 3D STUDIO ========== -->
+    <section id="studio">
+        <div class="section-label reveal">3D Product Studio</div>
+        <h2 class="section-title reveal reveal-delay-1">Explore every angle.</h2>
+        <p class="section-body reveal reveal-delay-2">Drag to rotate, zoom to inspect. Select a finish to see it applied
+            instantly.</p>
+        <div class="studio-layout reveal reveal-delay-2">
+            <div class="studio-canvas-wrap">
+                <canvas id="studio-canvas"></canvas>
+                <div class="view-hint">Drag to rotate · Scroll to zoom</div>
+            </div>
+            <div class="studio-controls">
+                <div class="ctrl-section">
+                    <div class="ctrl-label">Finish</div>
+                    <div class="color-swatches" id="studio-swatches"></div>
+                    <div class="finish-label" id="studio-finish-label">White Finish</div>
+                </div>
+                <div class="ctrl-section">
+                    <div class="ctrl-label">Controls</div>
+                    <div class="ctrl-buttons">
+                        <button class="ctrl-btn" id="btn-open-studio">Open Door</button>
+                        <button class="ctrl-btn" id="btn-reset-studio">Reset View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== COLOR STORY ========== -->
+    <section id="finishes">
+        <div class="section-label reveal">Finish Options</div>
+        <h2 class="section-title reveal reveal-delay-1">Made to match.</h2>
+        <p class="section-body reveal reveal-delay-2" style="margin:0 auto;text-align:center;max-width:480px">Every
+            Elcardo roller door is available in a range of architect-grade finishes.</p>
+        <div class="color-story reveal reveal-delay-2">
+            <div class="color-preview" id="color-preview"></div>
+            <div class="color-finish-name" id="color-finish-name">White Finish</div>
+            <div class="color-finish-sub">Standard powder coat · UV stable · Scratch resistant</div>
+            <div class="finish-swatches" id="finish-swatches"></div>
+        </div>
+    </section>
+
+    <!-- ========== MECHANISM ========== -->
+    <section id="mechanism" style="padding:100px 0 0;">
+        <div style="padding:0 80px;margin-bottom:60px">
+            <div class="section-label reveal">Opening Mechanism</div>
+            <h2 class="section-title reveal reveal-delay-1">See how it moves.</h2>
+            <p class="section-body reveal reveal-delay-2">Scroll to watch the door open — and understand each stage of
+                the mechanism.</p>
+        </div>
+        <div class="mechanism-scroll-track" id="mechanism-track">
+            <div
+                style="position:sticky;top:120px;height:calc(100vh - 140px);display:flex;align-items:center;padding:0 80px;gap:80px">
+                <div style="flex:1">
+                    <div class="mechanism-stages">
+                        <div class="mstage active-stage" data-stage="0">
+                            <div class="mstage-num">01</div>
+                            <div class="mstage-text">
+                                <h4>Vertical Rolling Movement</h4>
+                                <p>The curtain lifts vertically, guided precisely by the side rails on both edges.</p>
+                            </div>
+                        </div>
+                        <div class="mstage" data-stage="1">
+                            <div class="mstage-num">02</div>
+                            <div class="mstage-text">
+                                <h4>Space-Saving Access</h4>
+                                <p>No swing clearance needed. The door rolls into the compact drum housing above.</p>
+                            </div>
+                        </div>
+                        <div class="mstage" data-stage="2">
+                            <div class="mstage-num">03</div>
+                            <div class="mstage-text">
+                                <h4>Smooth Guided Operation</h4>
+                                <p>Precision-engineered guide rails ensure consistent, rattle-free movement every cycle.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mstage" data-stage="3">
+                            <div class="mstage-num">04</div>
+                            <div class="mstage-text">
+                                <h4>Motor-Ready System</h4>
+                                <p>Pre-configured for direct motor attachment. Upgrade to automation at any time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:0 0 460px;height:420px;position:relative">
+                    <canvas id="mechanism-canvas"
+                        style="width:100%;height:100%;border-radius:12px;background:linear-gradient(145deg,#F8F7F5,#ECEAE7)"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== INTERIOR / X-RAY ========== -->
+    <section id="interior" style="background:var(--off-white)">
+        <div class="section-label reveal">Engineering View</div>
+        <h2 class="section-title reveal reveal-delay-1">Inside the door.</h2>
+        <p class="section-body reveal reveal-delay-2">Every component is engineered for longevity and precision. Click
+            to explore.</p>
+        <div class="engineering-layout reveal reveal-delay-2">
+            <div class="engineering-canvas-wrap">
+                <canvas id="engineering-canvas"></canvas>
+            </div>
+            <div class="component-list" id="component-list">
+                <div class="comp-item active-comp" data-comp="0">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Motor System</h5>
+                        <p>AC/DC direct-drive unit</p>
+                    </div>
+                </div>
+                <div class="comp-item" data-comp="1">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Rolling Drum</h5>
+                        <p>Central barrel, balanced load</p>
+                    </div>
+                </div>
+                <div class="comp-item" data-comp="2">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Curtain / Slats</h5>
+                        <p>Interlocked steel sections</p>
+                    </div>
+                </div>
+                <div class="comp-item" data-comp="3">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Guide Rails</h5>
+                        <p>Precision-formed channels</p>
+                    </div>
+                </div>
+                <div class="comp-item" data-comp="4">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Safety Sensor Ready</h5>
+                        <p>Obstacle auto-reverse zone</p>
+                    </div>
+                </div>
+                <div class="comp-item" data-comp="5">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Manual Override</h5>
+                        <p>Spring-assisted emergency lift</p>
+                    </div>
+                </div>
+                <div class="comp-item" data-comp="6">
+                    <div class="comp-dot"></div>
+                    <div>
+                        <h5>Mounting Brackets</h5>
+                        <p>Heavy-gauge steel anchors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== AUTOMATION ========== -->
+    <section id="automation">
+        <div class="section-label reveal">Motor & Automation</div>
+        <h2 class="section-title reveal reveal-delay-1">Effortless control.</h2>
+        <div class="automation-layout">
+            <div class="automation-features reveal reveal-delay-1">
+                <div class="auto-feature">
+                    <div class="auto-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1A2332"
+                            stroke-width="1.5">
+                            <circle cx="10" cy="10" r="7" />
+                            <path d="M10 6v4l3 2" />
+                        </svg></div>
+                    <div>
+                        <h4>Remote Operation</h4>
+                        <p>Multi-channel RF remote. Control from vehicle without leaving your seat.</p>
+                    </div>
+                </div>
+                <div class="auto-feature">
+                    <div class="auto-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1A2332"
+                            stroke-width="1.5">
+                            <path d="M4 12 Q10 4 16 12" />
+                            <path d="M6 16 Q10 10 14 16" />
+                            <circle cx="10" cy="17" r="1" fill="#1A2332" />
+                        </svg></div>
+                    <div>
+                        <h4>Quiet Daily Movement</h4>
+                        <p>Engineered for silent, smooth performance through thousands of cycles.</p>
+                    </div>
+                </div>
+                <div class="auto-feature">
+                    <div class="auto-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1A2332"
+                            stroke-width="1.5">
+                            <path d="M3 10h14M3 10l4-4M3 10l4 4" />
+                        </svg></div>
+                    <div>
+                        <h4>Safety Sensor Compatible</h4>
+                        <p>Works with leading obstacle-detection systems. Auto-reverses on contact.</p>
+                    </div>
+                </div>
+                <div class="auto-feature">
+                    <div class="auto-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1A2332"
+                            stroke-width="1.5">
+                            <rect x="6" y="3" width="8" height="14" rx="1" />
+                            <line x1="10" y1="7" x2="10" y2="13" />
+                        </svg></div>
+                    <div>
+                        <h4>Manual Override</h4>
+                        <p>Spring-assisted release. Full access without power — always.</p>
+                    </div>
+                </div>
+                <div class="auto-feature">
+                    <div class="auto-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1A2332"
+                            stroke-width="1.5">
+                            <rect x="4" y="8" width="12" height="8" rx="1" />
+                            <path d="M8 8V6a2 2 0 014 0v2" />
+                        </svg></div>
+                    <div>
+                        <h4>Built for Frequency</h4>
+                        <p>Rated for 10,000+ daily cycles. Commercial-grade reliability.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="automation-visual reveal reveal-delay-2">
+                <canvas id="automation-canvas" style="width:100%;height:100%"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MATERIALS ========== -->
+    <section id="materials" style="background:var(--off-white)">
+        <div class="section-label reveal">Materials & Construction</div>
+        <h2 class="section-title reveal reveal-delay-1">Built to last.</h2>
+        <div class="materials-grid reveal reveal-delay-2">
+            <div class="mat-card">
+                <div class="mat-swatch">
+                    <div class="mat-swatch-inner" style="background:linear-gradient(135deg,#C8C8C4,#A0A09C,#D0D0CC)">
+                    </div>
+                </div>
+                <div class="mat-info">
+                    <h4>Galvanised Steel</h4>
+                    <p>High tensile, corrosion resistant. The structural core.</p>
+                </div>
+            </div>
+            <div class="mat-card">
+                <div class="mat-swatch">
+                    <div class="mat-swatch-inner" style="background:linear-gradient(135deg,#E8E4DE,#D4CFC8,#EAE6E0)">
+                    </div>
+                </div>
+                <div class="mat-info">
+                    <h4>Powder Coat</h4>
+                    <p>UV stable, scratch resistant. 35+ colour options.</p>
+                </div>
+            </div>
+            <div class="mat-card">
+                <div class="mat-swatch">
+                    <div class="mat-swatch-inner" style="background:linear-gradient(135deg,#D8D4CE,#C0BDB6,#E0DDD8)">
+                    </div>
+                </div>
+                <div class="mat-info">
+                    <h4>Aluminium Frame</h4>
+                    <p>Lightweight structural extrusion. Corrosion-proof.</p>
+                </div>
+            </div>
+            <div class="mat-card">
+                <div class="mat-swatch">
+                    <div class="mat-swatch-inner" style="background:linear-gradient(135deg,#8B7355,#6B5840,#9C8466)">
+                    </div>
+                </div>
+                <div class="mat-info">
+                    <h4>Wood-Look Finish</h4>
+                    <p>Premium laminate. Natural warmth, zero maintenance.</p>
+                </div>
+            </div>
+            <div class="mat-card">
+                <div class="mat-swatch">
+                    <div class="mat-swatch-inner"
+                        style="background:repeating-linear-gradient(0deg,#C8C8C4,#C8C8C4 4px,#D8D8D4 4px,#D8D8D4 8px)">
+                    </div>
+                </div>
+                <div class="mat-info">
+                    <h4>Perforated Sheet</h4>
+                    <p>Ventilation with security. Ideal for showrooms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== VARIANTS ========== -->
+    <section id="variants">
+        <div class="section-label reveal">Product Variants</div>
+        <h2 class="section-title reveal reveal-delay-1">Choose your type.</h2>
+        <div class="variants-grid reveal reveal-delay-2">
+            <div class="variant-card">
+                <div class="variant-img">
+                    <div class="variant-img-inner" style="background:linear-gradient(145deg,#2D2D2D,#1A1A1A)"><svg
+                            width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <rect x="15" y="10" width="50" height="6" fill="#444" rx="1" />
+                            <rect x="15" y="18" width="50" height="6" fill="#3A3A3A" rx="1" />
+                            <rect x="15" y="26" width="50" height="6" fill="#444" rx="1" />
+                            <rect x="15" y="34" width="50" height="6" fill="#3A3A3A" rx="1" />
+                            <rect x="15" y="42" width="50" height="6" fill="#444" rx="1" />
+                            <rect x="15" y="50" width="50" height="6" fill="#3A3A3A" rx="1" />
+                            <rect x="15" y="58" width="50" height="6" fill="#444" rx="1" />
+                            <rect x="13" y="10" width="4" height="58" fill="#555" />
+                            <rect x="63" y="10" width="4" height="58" fill="#555" />
+                        </svg></div>
+                </div>
+                <div class="variant-info">
+                    <h4>Solid Roller</h4>
+                    <p>Full privacy. Maximum security and insulation.</p><span class="variant-badge">Residential
+                        garages</span>
+                </div>
+            </div>
+            <div class="variant-card">
+                <div class="variant-img">
+                    <div class="variant-img-inner" style="background:linear-gradient(145deg,#E8E4DE,#D4CFC8)"><svg
+                            width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <rect x="15" y="10" width="50" height="5" fill="#B8B4AE" rx="1" />
+                            <rect x="15" y="17" width="50" height="5" fill="#C8C4BE" rx="1" opacity="0.7" />
+                            <rect x="15" y="24" width="50" height="5" fill="#B8B4AE" rx="1" />
+                            <rect x="15" y="31" width="50" height="5" fill="#C8C4BE" rx="1" opacity="0.7" />
+                            <rect x="15" y="38" width="50" height="5" fill="#B8B4AE" rx="1" />
+                            <rect x="15" y="45" width="50" height="5" fill="#C8C4BE" rx="1" opacity="0.7" />
+                            <rect x="15" y="52" width="50" height="5" fill="#B8B4AE" rx="1" />
+                            <rect x="15" y="59" width="50" height="5" fill="#C8C4BE" rx="1" opacity="0.7" />
+                            <rect x="13" y="10" width="3" height="56" fill="#A0A09C" />
+                            <rect x="64" y="10" width="3" height="56" fill="#A0A09C" />
+                        </svg></div>
+                </div>
+                <div class="variant-info">
+                    <h4>Slatted Roller</h4>
+                    <p>Ventilation without compromise. Light and air flow.</p><span class="variant-badge">Commercial
+                        shopfronts</span>
+                </div>
+            </div>
+            <div class="variant-card">
+                <div class="variant-img">
+                    <div class="variant-img-inner" style="background:linear-gradient(145deg,#C0B8B0,#A8A09A)"><svg
+                            width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <rect x="15" y="10" width="50" height="5" fill="#888480" rx="1" />
+                            <rect x="15" y="10" width="50" height="5" fill="url(#perf)" rx="1" />
+                            <rect x="15" y="17" width="50" height="5" fill="#888480" rx="1" />
+                            <rect x="15" y="24" width="50" height="5" fill="#888480" rx="1" />
+                            <rect x="15" y="31" width="50" height="5" fill="#888480" rx="1" />
+                            <rect x="15" y="38" width="50" height="5" fill="#888480" rx="1" />
+                            <rect x="15" y="45" width="50" height="5" fill="#888480" rx="1" />
+                            <rect x="15" y="52" width="50" height="5" fill="#888480" rx="1" />
+                            <circle cx="22" cy="12" r="1.5" fill="#6B7280" />
+                            <circle cx="30" cy="12" r="1.5" fill="#6B7280" />
+                            <circle cx="38" cy="12" r="1.5" fill="#6B7280" />
+                            <circle cx="46" cy="12" r="1.5" fill="#6B7280" />
+                            <circle cx="54" cy="12" r="1.5" fill="#6B7280" />
+                            <circle cx="62" cy="12" r="1.5" fill="#6B7280" />
+                            <circle cx="22" cy="19" r="1.5" fill="#6B7280" />
+                            <circle cx="30" cy="19" r="1.5" fill="#6B7280" />
+                            <circle cx="38" cy="19" r="1.5" fill="#6B7280" />
+                            <circle cx="46" cy="19" r="1.5" fill="#6B7280" />
+                            <circle cx="54" cy="19" r="1.5" fill="#6B7280" />
+                            <circle cx="62" cy="19" r="1.5" fill="#6B7280" />
+                            <rect x="13" y="10" width="3" height="50" fill="#706C68" />
+                            <rect x="64" y="10" width="3" height="50" fill="#706C68" />
+                        </svg></div>
+                </div>
+                <div class="variant-info">
+                    <h4>Perforated Roller</h4>
+                    <p>Light in, visibility out. For display environments.</p><span class="variant-badge">Showrooms ·
+                        Car parks</span>
+                </div>
+            </div>
+            <div class="variant-card">
+                <div class="variant-img">
+                    <div class="variant-img-inner" style="background:linear-gradient(145deg,#F0EDE8,#E0DDD8)"><svg
+                            width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <rect x="15" y="10" width="50" height="5" fill="#C8C4BE" rx="1" />
+                            <rect x="15" y="17" width="50" height="5" fill="#D4D0CA" rx="1" />
+                            <rect x="15" y="24" width="50" height="5" fill="#C8C4BE" rx="1" />
+                            <rect x="15" y="31" width="50" height="5" fill="#D4D0CA" rx="1" />
+                            <rect x="15" y="38" width="50" height="5" fill="#C8C4BE" rx="1" />
+                            <rect x="15" y="45" width="50" height="5" fill="#D4D0CA" rx="1" />
+                            <rect x="15" y="52" width="50" height="5" fill="#C8C4BE" rx="1" />
+                            <rect x="13" y="10" width="3" height="50" fill="#B8B4AE" />
+                            <rect x="64" y="10" width="3" height="50" fill="#B8B4AE" />
+                            <circle cx="40" cy="60" r="6" fill="none" stroke="#B8B4AE" stroke-width="1.5" />
+                            <line x1="40" y1="57" x2="40" y2="63" stroke="#B8B4AE" stroke-width="1.5" />
+                        </svg></div>
+                </div>
+                <div class="variant-info">
+                    <h4>Manual Roller</h4>
+                    <p>Simple, reliable. No power required for operation.</p><span class="variant-badge">Low-frequency
+                        access</span>
+                </div>
+            </div>
+            <div class="variant-card">
+                <div class="variant-img">
+                    <div class="variant-img-inner" style="background:linear-gradient(145deg,#1A2332,#2D3848)"><svg
+                            width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <rect x="15" y="10" width="50" height="5" fill="#2D3848" rx="1" />
+                            <rect x="15" y="17" width="50" height="5" fill="#253040" rx="1" />
+                            <rect x="15" y="24" width="50" height="5" fill="#2D3848" rx="1" />
+                            <rect x="15" y="31" width="50" height="5" fill="#253040" rx="1" />
+                            <rect x="15" y="38" width="50" height="5" fill="#2D3848" rx="1" />
+                            <rect x="15" y="45" width="50" height="5" fill="#253040" rx="1" />
+                            <rect x="13" y="10" width="3" height="48" fill="#3A4558" />
+                            <rect x="64" y="10" width="3" height="48" fill="#3A4558" />
+                            <rect x="50" y="5" width="14" height="10" fill="#CC2929" rx="1" />
+                            <circle cx="57" cy="10" r="3" fill="#E83A3A" />
+                        </svg></div>
+                </div>
+                <div class="variant-info">
+                    <h4>Motorized Roller</h4>
+                    <p>Automated daily access. Smart integration ready.</p><span class="variant-badge">High-frequency
+                        use</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== APPLICATIONS ========== -->
+    <section id="applications" style="background:var(--off-white);padding:100px 0">
+        <div class="applications-header">
+            <div class="section-label reveal">Real-World Applications</div>
+            <h2 class="section-title reveal reveal-delay-1">Installed everywhere.</h2>
+            <p class="section-body reveal reveal-delay-2">From modern residences in Colombo to commercial facilities
+                across Sri Lanka.</p>
+        </div>
+        <div class="apps-scroll">
+            <div class="app-card">
+                <div class="app-img-inner"
+                    style="background:linear-gradient(135deg,#D4CFC8 0%,#B8B2A8 40%,#E8E4DE 100%)">
+                    <div
+                        style="width:100%;height:100%;display:flex;align-items:flex-end;justify-content:flex-end;padding:32px">
+                        <svg width="200" height="220" viewBox="0 0 200 220" fill="none">
+                            <rect x="30" y="60" width="140" height="140" fill="#C4C0B8" />
+                            <rect x="30" y="50" width="140" height="14" fill="#1A2332" />
+                            <rect x="50" y="64" width="100" height="8" fill="#2D3848" />
+                            <rect x="50" y="74" width="100" height="8" fill="#3A4558" opacity="0.8" />
+                            <rect x="50" y="84" width="100" height="8" fill="#2D3848" />
+                            <rect x="50" y="94" width="100" height="8" fill="#3A4558" opacity="0.8" />
+                            <rect x="50" y="104" width="100" height="8" fill="#2D3848" />
+                            <rect x="50" y="114" width="100" height="8" fill="#3A4558" opacity="0.8" />
+                            <rect x="50" y="124" width="100" height="8" fill="#2D3848" />
+                            <rect x="50" y="134" width="100" height="8" fill="#3A4558" opacity="0.8" />
+                            <rect x="50" y="144" width="100" height="8" fill="#2D3848" />
+                            <rect x="50" y="154" width="100" height="8" fill="#3A4558" opacity="0.8" />
+                            <rect x="28" y="64" width="6" height="100" fill="#2D2D2D" />
+                            <rect x="166" y="64" width="6" height="100" fill="#2D2D2D" />
+                            <rect x="30" y="180" width="140" height="20" fill="#E8E4DE" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="app-card-overlay">
+                    <div class="app-location">Residential · Colombo</div>
+                    <h3>Modern Home Garage</h3>
+                    <p>Motorized Solid · Charcoal Finish</p>
+                </div>
+            </div>
+            <div class="app-card">
+                <div class="app-img-inner" style="background:linear-gradient(135deg,#E8E4DE,#C8C4BE,#F0EDE8)">
+                    <div
+                        style="width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:0">
+                        <svg width="320" height="300" viewBox="0 0 320 300" fill="none">
+                            <rect x="0" y="100" width="320" height="200" fill="#E0DDD8" />
+                            <rect x="0" y="80" width="320" height="24" fill="#1A2332" />
+                            <rect x="40" y="104" width="240" height="8" fill="#C0BDB6" />
+                            <rect x="40" y="114" width="240" height="8" fill="#D0CCC6" opacity="0.7" />
+                            <rect x="40" y="124" width="240" height="8" fill="#C0BDB6" />
+                            <rect x="40" y="134" width="240" height="8" fill="#D0CCC6" opacity="0.7" />
+                            <rect x="40" y="144" width="240" height="8" fill="#C0BDB6" />
+                            <rect x="40" y="154" width="240" height="8" fill="#D0CCC6" opacity="0.7" />
+                            <rect x="40" y="164" width="240" height="8" fill="#C0BDB6" />
+                            <rect x="40" y="174" width="240" height="8" fill="#D0CCC6" opacity="0.7" />
+                            <rect x="40" y="184" width="240" height="8" fill="#C0BDB6" />
+                            <rect x="40" y="194" width="240" height="8" fill="#D0CCC6" opacity="0.7" />
+                            <rect x="38" y="104" width="5" height="100" fill="#888" />
+                            <rect x="277" y="104" width="5" height="100" fill="#888" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="app-card-overlay">
+                    <div class="app-location">Commercial · Nugegoda</div>
+                    <h3>Retail Shopfront</h3>
+                    <p>Slatted Roller · Metallic Silver</p>
+                </div>
+            </div>
+            <div class="app-card">
+                <div class="app-img-inner" style="background:linear-gradient(135deg,#3A3A38,#2D2D2A,#484844)">
+                    <div style="width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center">
+                        <svg width="360" height="340" viewBox="0 0 360 340" fill="none">
+                            <rect x="0" y="60" width="360" height="280" fill="#2A2A28" />
+                            <rect x="0" y="40" width="360" height="24" fill="#111" />
+                            <rect x="20" y="64" width="320" height="10" fill="#222" rx="1" />
+                            <rect x="20" y="76" width="320" height="10" fill="#1C1C1A" rx="1" />
+                            <rect x="20" y="88" width="320" height="10" fill="#222" rx="1" />
+                            <rect x="20" y="100" width="320" height="10" fill="#1C1C1A" rx="1" />
+                            <rect x="20" y="112" width="320" height="10" fill="#222" rx="1" />
+                            <rect x="20" y="124" width="320" height="10" fill="#1C1C1A" rx="1" />
+                            <rect x="20" y="136" width="320" height="10" fill="#222" rx="1" />
+                            <rect x="20" y="148" width="320" height="10" fill="#1C1C1A" rx="1" />
+                            <rect x="16" y="64" width="8" height="100" fill="#333" />
+                            <rect x="336" y="64" width="8" height="100" fill="#333" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="app-card-overlay">
+                    <div class="app-location">Industrial · Biyagama</div>
+                    <h3>Warehouse Entrance</h3>
+                    <p>Solid Roller · Charcoal · 6m span</p>
+                </div>
+            </div>
+            <div class="app-card">
+                <div class="app-img-inner" style="background:linear-gradient(135deg,#D8D4CE,#C4C0B8,#E4E0DA)">
+                    <div
+                        style="width:100%;height:100%;display:flex;align-items:flex-end;padding:0 40px;justify-content:center">
+                        <svg width="280" height="320" viewBox="0 0 280 320" fill="none">
+                            <rect x="20" y="80" width="240" height="240" fill="#C8C4BE" rx="2" />
+                            <rect x="20" y="60" width="240" height="24" fill="#8B7355" rx="1" />
+                            <rect x="40" y="84" width="200" height="7" fill="#B0ACA6" />
+                            <rect x="40" y="93" width="200" height="7" fill="#BAB6B0" opacity="0.8" />
+                            <rect x="40" y="102" width="200" height="7" fill="#B0ACA6" />
+                            <rect x="40" y="111" width="200" height="7" fill="#BAB6B0" opacity="0.8" />
+                            <rect x="40" y="120" width="200" height="7" fill="#B0ACA6" />
+                            <rect x="40" y="129" width="200" height="7" fill="#BAB6B0" opacity="0.8" />
+                            <rect x="40" y="138" width="200" height="7" fill="#B0ACA6" />
+                            <rect x="40" y="147" width="200" height="7" fill="#BAB6B0" opacity="0.8" />
+                            <rect x="18" y="84" width="6" height="80" fill="#9A9690" />
+                            <rect x="256" y="84" width="6" height="80" fill="#9A9690" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="app-card-overlay">
+                    <div class="app-location">Residential · Kandy</div>
+                    <h3>Boundary Entrance</h3>
+                    <p>Solid Roller · Wood-Look Finish</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FEATURE STATEMENTS ========== -->
+    <section id="features" style="padding:0">
+        <div class="feature-chapter">
+            <div class="feature-content reveal">
+                <div class="feature-eyebrow">Design</div>
+                <h2 class="feature-heading">Space<br>Saving.</h2>
+                <p class="feature-body">Vertical operation means no swing clearance. The curtain rolls cleanly into the
+                    compact drum housing above the opening — freeing every inch of your space.</p>
+            </div>
+            <div class="feature-visual reveal reveal-delay-2"
+                style="background:linear-gradient(145deg,#F8F7F5,#E8E5E0);display:flex;align-items:center;justify-content:center">
+                <svg width="220" height="280" viewBox="0 0 220 280" fill="none">
+                    <rect x="40" y="20" width="140" height="20" fill="#1A2332" rx="2" />
+                    <rect x="36" y="40" width="8" height="200" fill="#2D2D2D" rx="1" />
+                    <rect x="176" y="40" width="8" height="200" fill="#2D2D2D" rx="1" />
+                    <rect x="44" y="44" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="54" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="64" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="74" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="84" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="94" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="104" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="114" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="124" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="134" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="144" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="154" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="164" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="174" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="184" width="132" height="8" fill="#C8C4BE" />
+                    <rect x="44" y="194" width="132" height="8" fill="#D4D0CA" />
+                    <rect x="44" y="224" width="132" height="10" fill="#E8E4DE" rx="1" />
+                    <path d="M110 200 L110 215" stroke="#CC2929" stroke-width="2" />
+                    <path d="M104 210 L110 218 L116 210" stroke="#CC2929" stroke-width="1.5" fill="none" />
+                </svg>
+            </div>
+        </div>
+        <div class="feature-chapter">
+            <div class="feature-content reveal">
+                <div class="feature-eyebrow">Security</div>
+                <h2 class="feature-heading">Secure<br>by Design.</h2>
+                <p class="feature-body">Interlocked steel slats and reinforced guide rails resist forced entry. Each
+                    door is engineered to meet commercial security requirements — as standard.</p>
+            </div>
+            <div class="feature-visual reveal reveal-delay-2"
+                style="background:linear-gradient(145deg,#1A2332,#2D3848);display:flex;align-items:center;justify-content:center">
+                <svg width="200" height="240" viewBox="0 0 200 240" fill="none">
+                    <rect x="30" y="10" width="140" height="16" fill="#253040" rx="2" />
+                    <rect x="26" y="26" width="7" height="180" fill="#3A4558" />
+                    <rect x="167" y="26" width="7" height="180" fill="#3A4558" />
+                    <rect x="33" y="26" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="36" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="46" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="56" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="66" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="76" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="86" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="96" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="106" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="116" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="126" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="136" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="146" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="156" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="166" width="134" height="8" fill="#2D3848" />
+                    <rect x="33" y="176" width="134" height="8" fill="#253040" />
+                    <rect x="33" y="186" width="134" height="8" fill="#2D3848" />
+                    <circle cx="100" cy="120" r="20" fill="none" stroke="#CC2929" stroke-width="2" />
+                    <path d="M94 120 L98 124 L107 115" stroke="#CC2929" stroke-width="2" fill="none"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+        <div class="feature-chapter">
+            <div class="feature-content reveal">
+                <div class="feature-eyebrow">Personalisation</div>
+                <h2 class="feature-heading">Made<br>to Match.</h2>
+                <p class="feature-body">35+ finish options. From architectural whites to wood-look laminates — every
+                    Elcardo door is tailored to fit the aesthetic of your space.</p>
+            </div>
+            <div class="feature-visual reveal reveal-delay-2"
+                style="background:var(--off-white);display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:16px;padding:40px">
+                <div
+                    style="width:60px;height:60px;border-radius:50%;background:#F0EDE8;border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.1)">
+                </div>
+                <div
+                    style="width:60px;height:60px;border-radius:50%;background:#2D2D2D;border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.15)">
+                </div>
+                <div
+                    style="width:60px;height:60px;border-radius:50%;background:#1A1A1A;border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.2)">
+                </div>
+                <div
+                    style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#D0D0CC,#A8A8A4,#C8C8C4);border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.15)">
+                </div>
+                <div
+                    style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#9C8466,#7A6245,#B09070);border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.12)">
+                </div>
+                <div
+                    style="width:60px;height:60px;border-radius:50%;background:conic-gradient(#CC2929,#1A2332,#D0D0CC,#F0EDE8,#2D2D2D,#CC2929);border:3px solid white;box-shadow:0 4px 12px rgba(0,0,0,0.1)">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SPECS ========== -->
+    <section id="specs" style="background:var(--off-white)">
+        <div class="section-label reveal">Technical Specifications</div>
+        <h2 class="section-title reveal reveal-delay-1">Built to spec.</h2>
+        <div class="reveal reveal-delay-2">
+            <div class="specs-tabs">
+                <button class="spec-tab active" onclick="switchTab(this,'spec-overview')">Overview</button>
+                <button class="spec-tab" onclick="switchTab(this,'spec-automation')">Automation</button>
+                <button class="spec-tab" onclick="switchTab(this,'spec-dimensions')">Dimensions</button>
+            </div>
+            <div id="spec-overview" class="spec-panel active">
+                <table class="spec-table">
+                    <tr>
+                        <td>Operation Type</td>
+                        <td>Manual / Motorized</td>
+                    </tr>
+                    <tr>
+                        <td>Opening Style</td>
+                        <td>Vertical Rolling</td>
+                    </tr>
+                    <tr>
+                        <td>Materials</td>
+                        <td>Steel, Aluminium, Colorbond</td>
+                    </tr>
+                    <tr>
+                        <td>Design Options</td>
+                        <td>Solid, Slatted, Perforated</td>
+                    </tr>
+                    <tr>
+                        <td>Applications</td>
+                        <td>Residential, Commercial, Industrial</td>
+                    </tr>
+                    <tr>
+                        <td>Finish Options</td>
+                        <td>Custom Colours Available (35+)</td>
+                    </tr>
+                    <tr>
+                        <td>Maintenance</td>
+                        <td>Low Maintenance</td>
+                    </tr>
+                    <tr>
+                        <td>Automation</td>
+                        <td>Remote Control Compatible</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="spec-automation" class="spec-panel">
+                <table class="spec-table">
+                    <tr>
+                        <td>Motor Type</td>
+                        <td>AC / DC Options Available</td>
+                    </tr>
+                    <tr>
+                        <td>Operating Speed</td>
+                        <td>0.1 – 0.2 m/s</td>
+                    </tr>
+                    <tr>
+                        <td>Power Supply</td>
+                        <td>240V AC / 24V DC</td>
+                    </tr>
+                    <tr>
+                        <td>Remote Control</td>
+                        <td>Multi-channel RF</td>
+                    </tr>
+                    <tr>
+                        <td>Safety System</td>
+                        <td>Obstacle auto-reverse</td>
+                    </tr>
+                    <tr>
+                        <td>Battery Backup</td>
+                        <td>Optional module</td>
+                    </tr>
+                    <tr>
+                        <td>Cycle Rating</td>
+                        <td>10,000+ cycles/year</td>
+                    </tr>
+                    <tr>
+                        <td>Smart Integration</td>
+                        <td>Compatible with home automation systems</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="spec-dimensions" class="spec-panel">
+                <table class="spec-table">
+                    <tr>
+                        <td>Standard Widths</td>
+                        <td>1,500 – 6,000 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Standard Heights</td>
+                        <td>1,800 – 4,500 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Sizes</td>
+                        <td>Available on request</td>
+                    </tr>
+                    <tr>
+                        <td>Headroom Required</td>
+                        <td>300 – 450 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Sideroom Required</td>
+                        <td>75 – 100 mm each side</td>
+                    </tr>
+                    <tr>
+                        <td>Slat Height</td>
+                        <td>77 mm standard</td>
+                    </tr>
+                    <tr>
+                        <td>Drum Diameter</td>
+                        <td>160 – 250 mm (load dependent)</td>
+                    </tr>
+                    <tr>
+                        <td>Rail Depth</td>
+                        <td>60 – 80 mm</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA / QUOTE ========== -->
+    <section id="quote">
+        <div class="cta-label reveal">Ready to build?</div>
+        <h2 class="cta-title reveal reveal-delay-1">Build Your<br>Roller Door</h2>
+        <p class="cta-sub reveal reveal-delay-2">Choose your finish, application, and automation system. Our team will
+            design the right solution for your space.</p>
+        <div class="cta-buttons reveal reveal-delay-2">
+            <button class="btn-cta-primary">Request a Quote</button>
+            <button class="btn-cta-ghost">Download Brochure</button>
+            <button class="btn-cta-ghost">Contact Sales</button>
+        </div>
+        <div class="contact-row reveal reveal-delay-3">
+            <div class="contact-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5">
+                    <path
+                        d="M3 3h3l1.5 3.5-2 1.2a9 9 0 004.8 4.8l1.2-2L15 12v3a1 1 0 01-1 1C6 16 0 10 0 4a1 1 0 011-1h2z" />
+                </svg>
+                <span>+94 XX XXX XXXX</span>
+            </div>
+            <div class="contact-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5">
+                    <path d="M14 2H2a1 1 0 00-1 1v9a1 1 0 001 1h12a1 1 0 001-1V3a1 1 0 00-1-1zM1 3l7 5 7-5" />
+                </svg>
+                <span>info@elcardo.com</span>
+            </div>
+            <div class="contact-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.5">
+                    <path d="M8 0C5 0 3 2 3 5c0 4 5 10 5 10s5-6 5-10c0-3-2-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z" />
+                </svg>
+                <span>Colombo, Sri Lanka</span>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // =========================================================
+        // SCROLL REVEAL
+        // =========================================================
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Trigger hero reveals immediately
+        setTimeout(() => { document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible')) }, 100);
+
+        // =========================================================
+        // SUBNAV SCROLL SPY
+        // =========================================================
+        const sections = ['overview', 'studio', 'mechanism', 'interior', 'finishes', 'variants', 'specs', 'quote'];
+        const subnavLinks = document.querySelectorAll('.subnav a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && window.scrollY >= el.offsetTop - 180) current = id;
+            });
+            subnavLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+            });
+        });
+
+        // =========================================================
+        // SPEC TABS
+        // =========================================================
+        function switchTab(btn, panelId) {
+            document.querySelectorAll('.spec-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.spec-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(panelId).classList.add('active');
+        }
+
+        // =========================================================
+        // COLOR DATA
+        // =========================================================
+        const colorOptions = [
+            { name: 'White Finish', hex: '#F0EDE8', rough: 0.6, metal: 0.1 },
+            { name: 'Charcoal Finish', hex: '#2D2D2D', rough: 0.5, metal: 0.3 },
+            { name: 'Gloss Black', hex: '#1A1A1A', rough: 0.3, metal: 0.5 },
+            { name: 'Metallic Silver', hex: '#C4C4C0', rough: 0.15, metal: 0.95 },
+            { name: 'Wood Look', hex: '#9C8466', rough: 0.85, metal: 0.0 },
+            { name: 'Custom Color', hex: '#CC2929', rough: 0.5, metal: 0.2 },
+        ];
+
+        // =========================================================
+        // THREE.JS SHARED HELPERS
+        // =========================================================
+        function makeScene(canvas) {
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            const scene = new THREE.Scene();
+            scene.background = null;
+            const W = canvas.clientWidth, H = canvas.clientHeight;
+            renderer.setSize(W, H, false);
+            const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+            return { renderer, scene, camera };
+        }
+
+        function addLights(scene) {
+            scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+            const key = new THREE.DirectionalLight(0xfff8f0, 1.3);
+            key.position.set(5, 8, 5); key.castShadow = true;
+            key.shadow.mapSize.set(2048, 2048);
+            scene.add(key);
+            const fill = new THREE.PointLight(0xf0e8d8, 0.7);
+            fill.position.set(-4, 4, -4); scene.add(fill);
+            const hem = new THREE.HemisphereLight(0xffffff, 0xe0e0e0, 0.35);
+            scene.add(hem);
+            const rim = new THREE.DirectionalLight(0xe8f0ff, 0.4);
+            rim.position.set(-3, 2, -5); scene.add(rim);
+        }
+
+        // ── Build a single curved-slat profile using a CatmullRomCurve3 extruded shape ──
+        function makeSlatShape() {
+            // Cross-section of a real roller door slat: curved face + flat back + interlocking lips
+            const pts = [];
+            const w = 0.5; // half-width of slat profile
+            const segments = 12;
+            // Top locking lip (hook down)
+            pts.push(new THREE.Vector2(-w, 0.10));
+            pts.push(new THREE.Vector2(-w, 0.06));
+            pts.push(new THREE.Vector2(-w + 0.03, 0.04));
+            // Curved face (convex outward) - 8 points across
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const x = -w + 0.03 + (w * 2 - 0.06) * t;
+                const bulge = Math.sin(Math.PI * t) * 0.035; // convex bow
+                pts.push(new THREE.Vector2(x, 0.04 - bulge));
+            }
+            // Bottom locking lip (hook up)
+            pts.push(new THREE.Vector2(w - 0.03, 0.04));
+            pts.push(new THREE.Vector2(w, 0.06));
+            pts.push(new THREE.Vector2(w, 0.10));
+            // Back flat panel closing the profile
+            pts.push(new THREE.Vector2(w, 0.01));
+            pts.push(new THREE.Vector2(-w, 0.01));
+
+            const shape = new THREE.Shape();
+            shape.moveTo(pts[0].x, pts[0].y);
+            pts.forEach(p => shape.lineTo(p.x, p.y));
+            shape.closePath();
+            return shape;
+        }
+
+        function makeDoor(scene, colorHex, rough, metal) {
+            const group = new THREE.Group();
+            const doorColor = new THREE.Color(colorHex);
+
+            // ── Materials ──
+            const mat = new THREE.MeshStandardMaterial({
+                color: doorColor, roughness: rough, metalness: metal,
+                envMapIntensity: 1.0
+            });
+            // Slightly darker version for alternate slat face to give depth variation
+            const matAlt = new THREE.MeshStandardMaterial({
+                color: doorColor.clone().multiplyScalar(0.90), roughness: rough + 0.05, metalness: metal * 0.9
+            });
+            const frameMat = new THREE.MeshStandardMaterial({
+                color: new THREE.Color(colorHex).multiplyScalar(0.72),
+                roughness: 0.55, metalness: metal * 0.8 + 0.2
+            });
+            const housingMat = new THREE.MeshStandardMaterial({
+                color: new THREE.Color(colorHex).multiplyScalar(0.78),
+                roughness: 0.45, metalness: metal * 0.85 + 0.25
+            });
+            const drumInnerMat = new THREE.MeshStandardMaterial({ color: 0x1A1A1A, roughness: 0.7, metalness: 0.5 });
+
+            // ── Dimensions ──
+            const doorW = 2.0;       // door opening width
+            const doorH = 3.2;       // door opening height
+            const railDepth = 0.18;  // how deep the U-channel guide rail is (Z)
+            const railW = 0.09;      // side wall thickness of rail
+            const fasH = 0.52;       // fascia/housing height
+            const fasDepth = 0.28;   // fascia depth front-to-back
+
+            // ── FASCIA BOX (full-box housing, like reference image 3) ──
+            // Front face of fascia
+            const fascia = new THREE.Mesh(
+                new THREE.BoxGeometry(doorW + railW * 2 + 0.02, fasH, fasDepth),
+                housingMat
+            );
+            fascia.position.set(0, doorH / 2 + fasH / 2, -fasDepth / 2 + 0.04);
+            fascia.castShadow = true; group.add(fascia);
+
+            // Fascia top cap strip
+            const fasciaTop = new THREE.Mesh(
+                new THREE.BoxGeometry(doorW + railW * 2 + 0.02, 0.025, fasDepth),
+                frameMat
+            );
+            fasciaTop.position.set(0, doorH / 2 + fasH + 0.012, -fasDepth / 2 + 0.04);
+            group.add(fasciaTop);
+
+            // Fascia bottom lip
+            const fasciaLip = new THREE.Mesh(
+                new THREE.BoxGeometry(doorW + railW * 2 + 0.02, 0.03, 0.04),
+                frameMat
+            );
+            fasciaLip.position.set(0, doorH / 2 + 0.015, 0.02);
+            group.add(fasciaLip);
+
+            // Drum inside housing (visible cylinder)
+            const drumOuter = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.19, 0.19, doorW + 0.05, 40),
+                housingMat
+            );
+            drumOuter.rotation.z = Math.PI / 2;
+            drumOuter.position.set(0, doorH / 2 + fasH * 0.45, -fasDepth * 0.3);
+            drumOuter.castShadow = true; group.add(drumOuter);
+
+            const drumInner = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.07, 0.07, doorW + 0.1, 24),
+                drumInnerMat
+            );
+            drumInner.rotation.z = Math.PI / 2;
+            drumInner.position.copy(drumOuter.position);
+            group.add(drumInner);
+
+            // ── GUIDE RAILS (deep U-channel, matching reference) ──
+            // Each rail = back plate + two side walls forming a U
+            [-1, 1].forEach(side => {
+                const xOuter = side * (doorW / 2 + railW + railDepth / 2 + 0.01);
+                const xBack = side * (doorW / 2 + railW / 2);
+                const railH = doorH + fasH * 0.1;
+                const railY = -0.02;
+
+                // Back plate of U-channel
+                const backPlate = new THREE.Mesh(
+                    new THREE.BoxGeometry(railW, railH, railDepth),
+                    frameMat
+                );
+                backPlate.position.set(side * (doorW / 2 + railW / 2), railY, -railDepth / 2);
+                backPlate.castShadow = true; group.add(backPlate);
+
+                // Front flange of U-channel (faces viewer)
+                const frontFlange = new THREE.Mesh(
+                    new THREE.BoxGeometry(railW, railH, 0.02),
+                    frameMat
+                );
+                frontFlange.position.set(side * (doorW / 2 + railW / 2), railY, 0.01);
+                group.add(frontFlange);
+
+                // Inner wall of U-channel (creates channel depth)
+                const innerWall = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.015, railH, railDepth),
+                    frameMat
+                );
+                innerWall.position.set(side * (doorW / 2 - 0.008), railY, -railDepth / 2);
+                group.add(innerWall);
+
+                // Outer cover (closes the U)
+                const outerCover = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.015, railH, railDepth),
+                    frameMat
+                );
+                outerCover.position.set(side * (doorW / 2 + railW + 0.006), railY, -railDepth / 2);
+                group.add(outerCover);
+
+                // Mounting bolts (detail - little cylinders)
+                for (let b = 0; b < 5; b++) {
+                    const bolt = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.012, 0.012, 0.015, 8),
+                        drumInnerMat
+                    );
+                    bolt.rotation.z = Math.PI / 2 * side;
+                    bolt.position.set(side * (doorW / 2 + railW / 2), railY - railH / 2 + (b + 0.5) * (railH / 5), 0.02);
+                    group.add(bolt);
+                }
+            });
+
+            // ── BOTTOM RAIL / CURTAIN BOTTOM BAR ──
+            const bottomBar = new THREE.Mesh(
+                new THREE.BoxGeometry(doorW + 0.04, 0.06, 0.09),
+                frameMat
+            );
+            bottomBar.position.set(0, -doorH / 2, -0.01);
+            bottomBar.castShadow = true; group.add(bottomBar);
+
+            // Bottom rubber seal strip
+            const sealStrip = new THREE.Mesh(
+                new THREE.BoxGeometry(doorW + 0.04, 0.018, 0.04),
+                new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.95, metalness: 0 })
+            );
+            sealStrip.position.set(0, -doorH / 2 - 0.04, 0.01);
+            group.add(sealStrip);
+
+            // ── CURTAIN SLATS ──
+            const slatCount = 18;
+            const slatSpacing = doorH / slatCount;
+            const slatShape = makeSlatShape();
+            const extrudeSettings = {
+                depth: doorW - 0.02,
+                bevelEnabled: false,
+                steps: 1
+            };
+            const slatGeo = new THREE.ExtrudeGeometry(slatShape, extrudeSettings);
+            // Centre the extrusion on X
+            slatGeo.translate(-doorW / 2 + 0.01, 0, 0);
+            // Rotate so extrusion goes along X axis and face faces +Z
+            slatGeo.rotateY(Math.PI / 2);
+            slatGeo.rotateZ(Math.PI / 2);
+
+            // Use InstancedMesh for performance
+            const slats = new THREE.InstancedMesh(slatGeo, mat, slatCount);
+            slats.castShadow = true;
+            slats.receiveShadow = true;
+            const dummy = new THREE.Object3D();
+            const slatPositions = [];
+            for (let i = 0; i < slatCount; i++) {
+                const y = -doorH / 2 + slatSpacing * 0.5 + i * slatSpacing;
+                slatPositions.push(y);
+                dummy.position.set(0, y, 0);
+                dummy.rotation.set(0, 0, 0);
+                dummy.scale.set(1, 1, 1);
+                dummy.updateMatrix();
+                slats.setMatrixAt(i, dummy.matrix);
+            }
+            slats.instanceMatrix.needsUpdate = true;
+            group.add(slats);
+
+            // Slat shadow lines (thin dark strips between slats to emphasise depth)
+            const gapMat = new THREE.MeshStandardMaterial({ color: 0x0A0A0A, roughness: 0.9, metalness: 0 });
+            const gapGeo = new THREE.BoxGeometry(doorW + 0.0, 0.008, 0.008);
+            const gaps = new THREE.InstancedMesh(gapGeo, gapMat, slatCount);
+            for (let i = 0; i < slatCount; i++) {
+                dummy.position.set(0, slatPositions[i] - slatSpacing * 0.5 + 0.005, 0.04);
+                dummy.scale.set(1, 1, 1); dummy.rotation.set(0, 0, 0);
+                dummy.updateMatrix();
+                gaps.setMatrixAt(i, dummy.matrix);
+            }
+            gaps.instanceMatrix.needsUpdate = true;
+            group.add(gaps);
+
+            // ── FLOOR SHADOW PLANE ──
+            const floorMesh = new THREE.Mesh(
+                new THREE.PlaneGeometry(6, 3),
+                new THREE.MeshStandardMaterial({ color: 0xECEAE6, roughness: 1, metalness: 0 })
+            );
+            floorMesh.rotation.x = -Math.PI / 2;
+            floorMesh.position.set(0, -doorH / 2 - 0.07, -1);
+            floorMesh.receiveShadow = true;
+            group.add(floorMesh);
+
+            return { group, slats, slatPositions, slatSpacing, doorH, mat, matAlt, frameMat };
+        }
+
+        // =========================================================
+        // HERO THREE.JS
+        // =========================================================
+        (function () {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+            const { renderer, scene, camera } = makeScene(canvas);
+            camera.position.set(2.5, 0.8, 5);
+            camera.lookAt(0, 0, 0);
+            addLights(scene);
+
+            const { group, slats, mat } = makeDoor(scene, '#E8E4DE', 0.55, 0.15);
+            group.rotation.y = 0.18;
+            scene.add(group);
+
+            // Ambient bg plane
+            const bgPlane = new THREE.Mesh(
+                new THREE.PlaneGeometry(20, 12),
+                new THREE.MeshStandardMaterial({ color: 0xF5F4F2, roughness: 1 })
+            );
+            bgPlane.position.z = -3; bgPlane.receiveShadow = true; scene.add(bgPlane);
+
+            let t = 0; let scaleIn = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                t += 0.008;
+                scaleIn = Math.min(1, scaleIn + 0.015);
+                group.scale.setScalar(0.96 + 0.04 * scaleIn);
+                group.rotation.y = 0.18 + Math.sin(t * 0.3) * 0.04;
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                if (renderer.domElement.width !== W || renderer.domElement.height !== H) {
+                    renderer.setSize(W, H, false);
+                    camera.aspect = W / H; camera.updateProjectionMatrix();
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
+
+        // =========================================================
+        // STUDIO THREE.JS
+        // =========================================================
+        (function () {
+            const canvas = document.getElementById('studio-canvas');
+            if (!canvas) return;
+            const { renderer, scene, camera } = makeScene(canvas);
+            camera.position.set(0, 0.5, 5.5);
+            camera.lookAt(0, 0, 0);
+            addLights(scene);
+
+            let currentColor = colorOptions[0];
+            const doorObj = makeDoor(scene, currentColor.hex, currentColor.rough, currentColor.metal);
+            scene.add(doorObj.group);
+
+            let isOpen = false; let openAmt = 0;
+            let isDragging = false; let prevMouse = { x: 0, y: 0 };
+            let rotY = 0, rotX = 0.05;
+            let zoom = 5.5;
+
+            // Drag
+            canvas.addEventListener('mousedown', e => { isDragging = true; prevMouse = { x: e.clientX, y: e.clientY } });
+            window.addEventListener('mouseup', () => isDragging = false);
+            window.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
+                rotY += dx * 0.008; rotX += dy * 0.005;
+                rotX = Math.max(-0.5, Math.min(0.5, rotX));
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+            canvas.addEventListener('wheel', e => { zoom = Math.max(3, Math.min(8, zoom + e.deltaY * 0.005)); e.preventDefault(); }, { passive: false });
+
+            // Color swatches
+            const swatchContainer = document.getElementById('studio-swatches');
+            colorOptions.forEach((c, i) => {
+                const sw = document.createElement('div');
+                sw.className = 'color-swatch' + (i === 0 ? ' active' : '');
+                sw.style.background = c.hex;
+                sw.title = c.name;
+                sw.addEventListener('click', () => {
+                    document.querySelectorAll('#studio-swatches .color-swatch').forEach(s => s.classList.remove('active'));
+                    sw.classList.add('active');
+                    document.getElementById('studio-finish-label').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('studio-finish-label').textContent = c.name;
+                        document.getElementById('studio-finish-label').style.opacity = '1';
+                    }, 200);
+                    doorObj.mat.color.set(new THREE.Color(c.hex));
+                    doorObj.mat.roughness = c.rough;
+                    doorObj.mat.metalness = c.metal;
+                });
+                swatchContainer.appendChild(sw);
+            });
+
+            document.getElementById('btn-open-studio').addEventListener('click', function () {
+                isOpen = !isOpen;
+                this.textContent = isOpen ? 'Close Door' : 'Open Door';
+                this.classList.toggle('active-btn', isOpen);
+            });
+            document.getElementById('btn-reset-studio').addEventListener('click', () => { rotY = 0; rotX = 0.05; zoom = 5.5 });
+
+            let t = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                t += 0.016;
+                const targetOpen = isOpen ? 1 : 0;
+                openAmt += (targetOpen - openAmt) * 0.05;
+                doorObj.group.rotation.y = rotY;
+                doorObj.group.rotation.x = rotX;
+                camera.position.z = zoom;
+                // Animate slats
+                const dummy2 = new THREE.Object3D();
+                for (let i = 0; i < 20; i++) {
+                    const baseY = doorObj.slatPositions[i];
+                    const targetY = 1.62 + (i * 0.04) * openAmt;
+                    const y = baseY + (targetY - baseY) * openAmt;
+                    const scaleY = Math.max(0.05, 1 - openAmt * (i / 20));
+                    dummy2.position.set(0, y, 0.01);
+                    dummy2.scale.set(1, scaleY, 1);
+                    dummy2.updateMatrix();
+                    doorObj.slats.setMatrixAt(i, dummy2.matrix);
+                }
+                doorObj.slats.instanceMatrix.needsUpdate = true;
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                if (renderer.domElement.width !== W || renderer.domElement.height !== H) {
+                    renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix();
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
+
+        // =========================================================
+        // COLOR STORY
+        // =========================================================
+        (function () {
+            const preview = document.getElementById('color-preview');
+            const finishSwatches = document.getElementById('finish-swatches');
+            const finishName = document.getElementById('color-finish-name');
+
+            function renderPreview(c) {
+                preview.style.background = '';
+                if (c.name === 'Metallic Silver') preview.style.background = 'linear-gradient(135deg,#D0D0CC 0%,#A8A8A4 40%,#C8C8C4 70%,#E0E0DC 100%)';
+                else if (c.name === 'Wood Look') preview.style.background = 'repeating-linear-gradient(90deg,' + c.hex + ' 0px,' + c.hex + ' 20px,#7A6245 20px,#7A6245 22px,' + c.hex + ' 22px,' + c.hex + ' 44px)';
+                else if (c.name === 'Custom Color') preview.style.background = 'linear-gradient(135deg,#CC2929,#A02020)';
+                else preview.style.background = c.hex;
+                // Draw door slats on the preview using a canvas
+                preview.innerHTML = '';
+                const cv = document.createElement('canvas');
+                cv.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0';
+                preview.appendChild(cv);
+                const ctx = cv.getContext('2d');
+                function draw() {
+                    const W = cv.offsetWidth, H = cv.offsetHeight;
+                    cv.width = W; cv.height = H;
+                    // Door outline
+                    const dw = W * 0.55, dh = H * 0.78;
+                    const dx = (W - dw) / 2, dy = (H - dh) / 2;
+                    // Housing
+                    ctx.fillStyle = '#1A2332';
+                    ctx.fillRect(dx - 4, dy - 20, dw + 8, 22);
+                    // Rails
+                    ctx.fillStyle = '#2D2D2D';
+                    ctx.fillRect(dx - 8, dy, 10, dh);
+                    ctx.fillRect(dx + dw - 2, dy, 10, dh);
+                    // Slats
+                    const slatH = dh / 18;
+                    for (let i = 0; i < 18; i++) {
+                        const sy = dy + i * slatH;
+                        const col = new THREE.Color(c.hex);
+                        const r = Math.round(col.r * 255), g = Math.round(col.g * 255), b = Math.round(col.b * 255);
+                        ctx.fillStyle = i % 2 === 0 ? `rgb(${r},${g},${b})` : `rgb(${Math.round(r * 0.92)},${Math.round(g * 0.92)},${Math.round(b * 0.92)})`;
+                        ctx.fillRect(dx, sy, dw, slatH - 1);
+                    }
+                    // Bottom bar
+                    ctx.fillStyle = '#2D2D2D';
+                    ctx.fillRect(dx - 4, dy + dh - 2, dw + 8, 6);
+                }
+                draw();
+            }
+
+            colorOptions.forEach((c, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'finish-swatch-btn' + (i === 0 ? ' active' : '');
+                btn.innerHTML = `<div class="finish-swatch-circle" style="background:${c.name === 'Metallic Silver' ? 'linear-gradient(135deg,#E0E0DC,#A8A8A4,#D0D0CC)' : c.hex}"></div><span>${c.name.split(' ')[0]}</span>`;
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.finish-swatch-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    finishName.style.opacity = '0';
+                    setTimeout(() => { finishName.textContent = c.name; finishName.style.opacity = '1'; }, 250);
+                    renderPreview(c);
+                });
+                finishSwatches.appendChild(btn);
+            });
+            renderPreview(colorOptions[0]);
+        })();
+
+        // =========================================================
+        // MECHANISM THREE.JS + SCROLL
+        // =========================================================
+        (function () {
+            const canvas = document.getElementById('mechanism-canvas');
+            if (!canvas) return;
+            const { renderer, scene, camera } = makeScene(canvas);
+            camera.position.set(0, 0.5, 6);
+            camera.lookAt(0, 0, 0);
+            addLights(scene);
+            const doorObj = makeDoor(scene, '#E8E4DE', 0.55, 0.15);
+            scene.add(doorObj.group);
+            let openProgress = 0;
+            const track = document.getElementById('mechanism-track');
+            const stages = document.querySelectorAll('.mstage');
+
+            function updateMechScroll() {
+                if (!track) return;
+                const rect = track.getBoundingClientRect();
+                const total = track.offsetHeight - window.innerHeight;
+                const scrolled = -rect.top;
+                const progress = Math.max(0, Math.min(1, scrolled / total));
+                openProgress += (progress - openProgress) * 0.08;
+                const stageIdx = Math.floor(progress * 4);
+                stages.forEach((s, i) => s.classList.toggle('active-stage', i === stageIdx));
+            }
+
+            let t = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                t += 0.01;
+                updateMechScroll();
+                const dummy = new THREE.Object3D();
+                for (let i = 0; i < 20; i++) {
+                    const baseY = doorObj.slatPositions[i];
+                    const targetY = 1.62 + (i * 0.04) * openProgress;
+                    const y = baseY + (targetY - baseY) * openProgress;
+                    const scaleY = Math.max(0.05, 1 - openProgress * (i / 20));
+                    dummy.position.set(0, y, 0.01);
+                    dummy.scale.set(1, scaleY, 1);
+                    dummy.updateMatrix();
+                    doorObj.slats.setMatrixAt(i, dummy.matrix);
+                }
+                doorObj.slats.instanceMatrix.needsUpdate = true;
+                doorObj.group.rotation.y = Math.sin(t * 0.3) * 0.04;
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                if (renderer.domElement.width !== W || renderer.domElement.height !== H) {
+                    renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix();
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+            window.addEventListener('scroll', updateMechScroll);
+        })();
+
+        // =========================================================
+        // ENGINEERING / X-RAY Three.js
+        // =========================================================
+        (function () {
+            const canvas = document.getElementById('engineering-canvas');
+            if (!canvas) return;
+            const { renderer, scene, camera } = makeScene(canvas);
+            camera.position.set(0, 0.5, 7);
+            camera.lookAt(0, 0, 0);
+            addLights(scene);
+
+            const frameMat = new THREE.MeshStandardMaterial({ color: 0x2D2D2D, roughness: 0.6, metalness: 0.4, transparent: true, opacity: 0.85 });
+            const curtainMat = new THREE.MeshStandardMaterial({ color: 0xC8C4BE, roughness: 0.55, metalness: 0.15, transparent: true, opacity: 0.85 });
+            const motorMat = new THREE.MeshStandardMaterial({ color: 0x1A2332, roughness: 0.5, metalness: 0.6, transparent: true, opacity: 0.85 });
+            const sensorMat = new THREE.MeshStandardMaterial({ color: 0xCC2929, roughness: 0.4, metalness: 0.3, transparent: true, opacity: 0.85 });
+
+            const components = [];
+
+            // 0: Motor
+            const motorG = new THREE.Group();
+            const motorBox = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.3, 0.3), motorMat.clone());
+            motorBox.castShadow = true; motorG.add(motorBox);
+            motorG.position.set(0.7, 1.75, -0.1);
+            scene.add(motorG); components.push({ group: motorG, mat: motorMat, basePos: [0.7, 1.75, -0.1] });
+
+            // 1: Drum
+            const drumG = new THREE.Group();
+            const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 2.0, 24), motorMat.clone());
+            drum.rotation.z = Math.PI / 2; drumG.add(drum);
+            drumG.position.set(0, 1.75, 0);
+            scene.add(drumG); components.push({ group: drumG, mat: motorMat, basePos: [0, 1.75, 0] });
+
+            // 2: Curtain
+            const curtainG = new THREE.Group();
+            for (let i = 0; i < 12; i++) {
+                const sl = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.14, 0.04), curtainMat.clone());
+                sl.position.y = -1.6 + (i * 0.24); sl.castShadow = true; curtainG.add(sl);
+            }
+            scene.add(curtainG); components.push({ group: curtainG, mat: curtainMat, basePos: [0, 0, 0] });
+
+            // 3: Rails
+            const railG = new THREE.Group();
+            [-1.05, 1.05].forEach(x => {
+                const r = new THREE.Mesh(new THREE.BoxGeometry(0.07, 3.5, 0.12), frameMat.clone());
+                r.position.x = x; r.castShadow = true; railG.add(r);
+            });
+            scene.add(railG); components.push({ group: railG, mat: frameMat, basePos: [0, 0, 0] });
+
+            // 4: Sensor
+            const sensorG = new THREE.Group();
+            [-0.9, 0.9].forEach(x => {
+                const s = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.06), sensorMat.clone());
+                s.position.set(x, -1.75, 0.08); sensorG.add(s);
+            });
+            scene.add(sensorG); components.push({ group: sensorG, mat: sensorMat, basePos: [0, 0, 0] });
+
+            // 5: Manual override (spring)
+            const overrideG = new THREE.Group();
+            const spring = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.5, 12), motorMat.clone());
+            spring.position.set(-0.7, 1.75, -0.1); overrideG.add(spring);
+            scene.add(overrideG); components.push({ group: overrideG, mat: motorMat, basePos: [0, 0, 0] });
+
+            // 6: Brackets
+            const bracketG = new THREE.Group();
+            [[-1.05, 1.75, 0.1], [1.05, 1.75, 0.1]].forEach(([x, y, z]) => {
+                const b = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.18), frameMat.clone());
+                b.position.set(x, y, z); bracketG.add(b);
+            });
+            scene.add(bracketG); components.push({ group: bracketG, mat: frameMat, basePos: [0, 0, 0] });
+
+            let activeComp = 0;
+            const compItems = document.querySelectorAll('.comp-item');
+            compItems.forEach((item, i) => {
+                item.addEventListener('click', () => {
+                    compItems.forEach(c => c.classList.remove('active-comp'));
+                    item.classList.add('active-comp');
+                    activeComp = i;
+                });
+            });
+
+            let t = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                t += 0.005;
+                components.forEach((c, i) => {
+                    const isActive = i === activeComp;
+                    c.group.children.forEach(child => {
+                        if (child.material) {
+                            child.material.opacity += ((isActive ? 1.0 : 0.5) - child.material.opacity) * 0.08;
+                            const emissive = isActive ? 0.08 : 0;
+                            if (!child.material.emissive) child.material.emissive = new THREE.Color(0, 0, 0);
+                            child.material.emissive.lerp(new THREE.Color(0.1, 0.12, 0.18), emissive * 0.1);
+                        }
+                    });
+                });
+                const explode = 0.3;
+                components[0].group.position.set(0.7 + explode * 0.8, 1.75 + explode * 0.3, -0.1);
+                components[1].group.position.set(0, 1.75 + explode * 0.2, 0);
+                components[2].group.position.set(explode * 0.1, 0, 0);
+                components[3].group.position.set(0, 0, 0);
+                components[4].group.position.set(0, -explode * 0.4, 0);
+                components[5].group.position.set(-explode * 0.8, 1.75 + explode * 0.3, -0.1);
+                components[6].group.position.set(0, explode * 0.2, explode * 0.3);
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                if (renderer.domElement.width !== W || renderer.domElement.height !== H) {
+                    renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix();
+                }
+                scene.rotation.y = t;
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
+
+        // =========================================================
+        // AUTOMATION Three.js (motor detail)
+        // =========================================================
+        (function () {
+            const canvas = document.getElementById('automation-canvas');
+            if (!canvas) return;
+            const { renderer, scene, camera } = makeScene(canvas);
+            camera.position.set(0, 0.5, 5);
+            camera.lookAt(0, 0, 0);
+            addLights(scene);
+
+            const motorMat = new THREE.MeshStandardMaterial({ color: 0x1A2332, roughness: 0.5, metalness: 0.65 });
+            const drumMat = new THREE.MeshStandardMaterial({ color: 0x2D3848, roughness: 0.4, metalness: 0.7 });
+            const accentMat = new THREE.MeshStandardMaterial({ color: 0xCC2929, roughness: 0.4, metalness: 0.3 });
+
+            // Motor housing
+            const housing = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.5, 0.6), motorMat);
+            housing.castShadow = true; scene.add(housing);
+            // End caps
+            [-0.92, 0.92].forEach(x => {
+                const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.27, 0.08, 24), drumMat);
+                cap.rotation.z = Math.PI / 2; cap.position.x = x; cap.castShadow = true; scene.add(cap);
+            });
+            // Shaft
+            const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.4, 16), drumMat);
+            shaft.rotation.z = Math.PI / 2; shaft.position.set(0, 0, 0); scene.add(shaft);
+            // Red light indicator
+            const indicator = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), accentMat);
+            indicator.position.set(0.7, 0.28, 0.32); scene.add(indicator);
+            // Label line
+            const remote = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.5, 0.18), drumMat);
+            remote.position.set(-1.5, 0, 0); remote.castShadow = true; scene.add(remote);
+            const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.5, 8), new THREE.MeshStandardMaterial({ color: 0xC0C0C0, metalness: 0.8, roughness: 0.2 }));
+            antenna.position.set(-1.5, 0.5, 0); scene.add(antenna);
+
+            let t = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                t += 0.012;
+                shaft.rotation.x = t * 2;
+                indicator.material.emissive = new THREE.Color(Math.sin(t * 3) * 0.15, 0, 0);
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                if (renderer.domElement.width !== W || renderer.domElement.height !== H) {
+                    renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix();
+                }
+                scene.rotation.y = Math.sin(t * 0.4) * 0.3;
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
+    </script>
+</body>
+
+</html>

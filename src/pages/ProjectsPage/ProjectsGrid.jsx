@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 import imgResidential from '../../assets/project_residential_gate.png';
-import imgIndustrial from '../../assets/project_industrial_roller.png';
 import imgSolar from '../../assets/project_solar_install.png';
 import imgSteel from '../../assets/project_steel_fabrication.png';
 import imgDecking from '../../assets/project_luxury_decking.png';
@@ -18,13 +17,6 @@ const allProjects = [
     type: 'Gate Automation',
     desc: 'Integrated smart gate for luxury residence',
     image: imgResidential,
-  },
-  {
-    name: 'FTZ Roller Door Complex',
-    category: 'Industrial',
-    type: 'Roller Doors',
-    desc: 'High-security industrial roller system',
-    image: imgIndustrial,
   },
   {
     name: '150kW Rooftop Solar Array',
