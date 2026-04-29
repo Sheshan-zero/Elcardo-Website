@@ -1,1 +1,0 @@
-const s="/Elcardo-Website/assets/project_solar_install-D0TUT7tD.png",t="/Elcardo-Website/assets/project_industrial_roller-DMPlgtK3.png",e="/Elcardo-Website/assets/project_residential_gate-PXKBqic_.png";export{t as a,e as b,s as i};
