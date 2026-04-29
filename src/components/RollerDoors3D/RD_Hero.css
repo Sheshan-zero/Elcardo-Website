@@ -1,0 +1,139 @@
+/* ============================================================
+   HERO — Split Layout (Content Left, 3D Right)
+   ============================================================ */
+.rdh {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+}
+
+/* ─── Left Content ─── */
+.rdh-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px 80px 80px;
+  z-index: 2;
+}
+
+/* Badge */
+.rdh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--elcardo-off-white, #F5F4F2);
+  border: 1px solid rgba(26, 35, 50, 0.1);
+  border-radius: 100px;
+  padding: 6px 16px;
+  margin-bottom: 32px;
+  width: fit-content;
+}
+.rdh-badge span {
+  font-size: 0.78rem;
+  color: var(--elcardo-mid-grey, #6B7280);
+  font-family: var(--rd-font-mono, 'JetBrains Mono', monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.rdh-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--elcardo-red, #CC2929);
+  flex-shrink: 0;
+}
+
+/* Headline */
+.rdh-headline {
+  font-family: var(--rd-font-display, 'Playfair Display', serif);
+  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  font-weight: 500;
+  color: var(--elcardo-navy, #1A2332);
+  line-height: 1.0;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+}
+
+/* Body */
+.rdh-body {
+  font-family: var(--rd-font-body, 'DM Sans', sans-serif);
+  font-size: 1.15rem;
+  color: var(--elcardo-mid-grey, #6B7280);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 380px;
+}
+
+/* Buttons */
+.rdh-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Scroll hint */
+.rdh-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 40px;
+}
+.rdh-scroll-line {
+  width: 32px;
+  height: 1px;
+  background: var(--elcardo-mid-grey, #6B7280);
+}
+.rdh-scroll-hint span {
+  font-size: 0.75rem;
+  color: var(--elcardo-mid-grey, #6B7280);
+  font-family: var(--rd-font-mono, 'JetBrains Mono', monospace);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── Right 3D Canvas ─── */
+.rdh-canvas-wrap {
+  position: relative;
+  background: linear-gradient(135deg, #F8F7F5 0%, #EEECEA 100%);
+  overflow: hidden;
+}
+.rdh-canvas-lazy {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .rdh {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .rdh-content {
+    padding: 120px 48px 40px;
+    order: 1;
+  }
+  .rdh-canvas-wrap {
+    order: 2;
+    height: 50vh;
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rdh-content {
+    padding: 100px 24px 32px;
+  }
+  .rdh-headline {
+    font-size: clamp(2.8rem, 10vw, 4rem);
+  }
+  .rdh-actions {
+    flex-direction: column;
+  }
+  .rdh-scroll-hint {
+    display: none;
+  }
+}

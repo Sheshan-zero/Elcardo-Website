@@ -1,0 +1,100 @@
+/* ============================================================
+   CTA / QUOTE — Section 13 (Navy background)
+   ============================================================ */
+.rd-cta {
+  padding: 120px 0;
+  background: var(--elcardo-navy, #1A2332);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle pattern */
+.rd-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image:
+    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.rd-cta-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding, 6vw);
+  text-align: center;
+}
+
+.rd-cta-kicker {
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.rd-cta-headline {
+  font-family: var(--rd-font-display, serif);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--elcardo-white, #FFFFFF);
+  margin-bottom: 16px;
+}
+
+.rd-cta-sub {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.5);
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+
+/* Buttons row */
+.rd-cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+/* Contact row */
+.rd-cta-contact {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.rd-cta-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color .3s ease;
+}
+.rd-cta-contact-item:hover {
+  color: rgba(255,255,255,0.9);
+}
+.rd-cta-contact-item svg {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .rd-cta { padding: 80px 0; }
+  .rd-cta-buttons { flex-direction: column; align-items: center; }
+  .rd-cta-contact { flex-direction: column; align-items: center; gap: 16px; }
+}

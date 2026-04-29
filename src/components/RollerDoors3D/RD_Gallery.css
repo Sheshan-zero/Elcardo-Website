@@ -1,0 +1,97 @@
+/* ============================================================
+   REAL-WORLD APPLICATIONS — Horizontal Editorial Scroll
+   ============================================================ */
+.rd-gallery {
+  padding: 120px 0;
+  background: var(--elcardo-off-white, #F5F4F2);
+}
+.rd-gallery-header {
+  text-align: center;
+  padding: 0 var(--container-padding, 6vw);
+  margin-bottom: 48px;
+}
+
+/* Horizontal scroll */
+.rd-gallery-scroll {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 var(--container-padding, 6vw) 24px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.rd-gallery-scroll::-webkit-scrollbar { display: none; }
+
+/* Each card */
+.rd-gallery-card {
+  flex: 0 0 80vw;
+  max-width: 1000px;
+  height: 480px;
+  border-radius: var(--rd-radius-lg, 20px);
+  overflow: hidden;
+  position: relative;
+  scroll-snap-align: center;
+}
+
+/* Scene visual (gradient placeholder) */
+.rd-gallery-card-bg {
+  position: absolute;
+  inset: 0;
+}
+.rd-gallery-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(26,35,50,0.6) 100%
+  );
+}
+
+/* Labels */
+.rd-gallery-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.rd-gallery-card-location {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
+.rd-gallery-card-type {
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 100px;
+}
+
+/* Scroll hint */
+.rd-gallery-scroll-hint {
+  text-align: center;
+  margin-top: 24px;
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--elcardo-mid-grey, #6B7280);
+}
+
+@media (max-width: 768px) {
+  .rd-gallery { padding: 80px 0; }
+  .rd-gallery-card { flex: 0 0 90vw; height: 360px; }
+  .rd-gallery-card-info { padding: 20px; }
+}

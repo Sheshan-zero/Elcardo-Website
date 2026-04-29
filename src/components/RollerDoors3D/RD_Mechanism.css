@@ -1,0 +1,263 @@
+/* ============================================================
+   SCROLL-DRIVEN OPENING MECHANISM — Pinned Section
+   ============================================================ */
+.rdm {
+  height: 400vh;
+  position: relative;
+}
+
+.rdm-sticky {
+  position: sticky;
+  top: 120px;
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--elcardo-white, #FFFFFF);
+  padding: 40px var(--container-padding, 6vw) 32px;
+}
+
+.rdm-header {
+  text-align: center;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+/* ─── Main visual area ─── */
+.rdm-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* ─── Door Frame ─── */
+.rdm-door-frame {
+  position: relative;
+  width: 240px;
+  height: 340px;
+  flex-shrink: 0;
+}
+
+/* Drum housing */
+.rdm-drum {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 40px;
+  background: var(--elcardo-silver, #E8E8E8);
+  border-radius: 10px;
+  border: 1px solid rgba(26,35,50,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rdm-drum-inner {
+  width: 196px;
+  height: 30px;
+  background: #ddd;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rdm-coil {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid var(--elcardo-navy, #1A2332);
+  transition: transform 0.2s ease;
+}
+
+/* Guide Rails */
+.rdm-rail {
+  position: absolute;
+  top: -8px;
+  width: 8px;
+  height: calc(100% + 8px);
+  background: linear-gradient(180deg, #c8c8cc 0%, #a0a0a8 100%);
+  border-radius: 4px;
+}
+.rdm-rail--left { left: 0; }
+.rdm-rail--right { right: 0; }
+
+/* Curtain */
+.rdm-curtain {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: transform 0.15s ease-out;
+  transform-origin: top center;
+  overflow: hidden;
+}
+.rdm-curtain.rdm-blur {
+  filter: blur(0.5px);
+}
+
+.rdm-slat {
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(180deg, #d0d0d4 0%, #b8b8c0 100%);
+  border-radius: 2px;
+  border-bottom: 1px solid rgba(26,35,50,0.04);
+  flex-shrink: 0;
+}
+
+.rdm-bottom-bar {
+  position: absolute;
+  bottom: -2px;
+  left: 8px;
+  right: 8px;
+  height: 6px;
+  background: var(--elcardo-navy, #1A2332);
+  border-radius: 3px;
+  transition: opacity 0.3s ease;
+}
+
+/* Shadow plane */
+.rdm-shadow {
+  position: absolute;
+  bottom: -12px;
+  left: -30px;
+  right: -30px;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(26,35,50,0.08) 0%, transparent 70%);
+  transition: opacity 0.3s ease;
+}
+
+.rdm-floor {
+  position: absolute;
+  bottom: -6px;
+  left: -20px;
+  right: -20px;
+  height: 1px;
+  background: rgba(26,35,50,0.08);
+}
+
+/* ─── Callouts ─── */
+.rdm-callouts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.rdm-callout {
+  display: flex;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: var(--rd-radius-md, 12px);
+  border: 1px solid transparent;
+  background: transparent;
+  transition: all 0.5s var(--rd-ease, ease);
+  opacity: 0.25;
+}
+.rdm-callout.active {
+  opacity: 1;
+  background: var(--elcardo-off-white, #F5F4F2);
+  border-color: rgba(26,35,50,0.06);
+}
+
+.rdm-callout-num {
+  font-family: var(--rd-font-display, serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--elcardo-navy, #1A2332);
+  letter-spacing: -1px;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.rdm-callout-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--elcardo-mid-grey, #6B7280);
+  margin-bottom: 8px;
+}
+
+.rdm-callout-title {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--elcardo-navy, #1A2332);
+  margin-bottom: 4px;
+}
+
+.rdm-callout-desc {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 13px;
+  color: var(--elcardo-mid-grey, #6B7280);
+  line-height: 1.6;
+}
+
+/* ─── Progress ─── */
+.rdm-progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 500px;
+  flex-shrink: 0;
+  margin-top: 24px;
+}
+.rdm-progress-track {
+  flex: 1;
+  height: 2px;
+  background: rgba(26,35,50,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.rdm-progress-fill {
+  height: 100%;
+  background: var(--elcardo-navy, #1A2332);
+  border-radius: 2px;
+  transition: width 0.15s ease-out;
+}
+.rdm-progress-label {
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--elcardo-mid-grey, #6B7280);
+  letter-spacing: 1px;
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .rdm-visual {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .rdm-callouts {
+    max-width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .rdm-callout {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rdm { height: 300vh; }
+  .rdm-sticky { padding: 24px var(--container-padding, 24px) 20px; top: 100px; height: calc(100vh - 100px); }
+  .rdm-door-frame { width: 180px; height: 260px; }
+  .rdm-drum { width: 168px; height: 32px; }
+  .rdm-callouts { flex-direction: column; }
+  .rdm-callout { min-width: auto; }
+}

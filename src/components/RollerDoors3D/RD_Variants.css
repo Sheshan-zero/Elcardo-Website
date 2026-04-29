@@ -1,0 +1,102 @@
+/* ============================================================
+   PRODUCT VARIANTS — Section 9
+   ============================================================ */
+.rdvr {
+  padding: 120px 0;
+  background: var(--elcardo-white, #FFFFFF);
+}
+.rdvr-header {
+  text-align: center;
+  padding: 0 var(--container-padding, 6vw);
+  margin-bottom: 64px;
+}
+.rdvr-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding, 6vw);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Variant card */
+.rdvr-card {
+  background: var(--elcardo-off-white, #F5F4F2);
+  border-radius: var(--rd-radius-md, 12px);
+  overflow: hidden;
+  transition: all .4s var(--rd-ease, ease);
+  border: 1px solid transparent;
+}
+.rdvr-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--rd-shadow-xl, 0 24px 64px rgba(26,35,50,0.16));
+  border-color: rgba(26,35,50,0.04);
+}
+
+.rdvr-card-img-wrap {
+  height: 220px;
+  overflow: hidden;
+}
+.rdvr-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--rd-ease, ease);
+}
+.rdvr-card:hover .rdvr-card-img {
+  transform: scale(1.03);
+}
+
+.rdvr-card-body {
+  padding: 24px;
+}
+.rdvr-card-title {
+  font-family: var(--rd-font-display, serif);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--elcardo-navy, #1A2332);
+  margin-bottom: 8px;
+}
+.rdvr-card-desc {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 14px;
+  color: var(--elcardo-mid-grey, #6B7280);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.rdvr-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--elcardo-white, #FFFFFF);
+  border-radius: 100px;
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--elcardo-navy, #1A2332);
+}
+
+/* 3+2 grid layout — last 2 cards centered */
+@media (min-width: 1025px) {
+  .rdvr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* Center the last 2 cards */
+  .rdvr-card:nth-child(4) {
+    grid-column: 1 / 2;
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .rdvr-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .rdvr { padding: 80px 0; }
+  .rdvr-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+}

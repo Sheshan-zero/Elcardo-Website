@@ -1,0 +1,99 @@
+/* ============================================================
+   MOTOR & AUTOMATION — Section 7
+   ============================================================ */
+.rd-motor {
+  padding: 120px 0;
+  background: var(--elcardo-white, #FFFFFF);
+}
+.rd-motor-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding, 6vw);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* Content */
+.rd-motor-content {}
+
+.rd-motor-headline {
+  font-family: var(--rd-font-display, serif);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--elcardo-navy, #1A2332);
+  margin-bottom: 16px;
+}
+
+.rd-motor-desc {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--elcardo-mid-grey, #6B7280);
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+
+/* Feature blocks */
+.rd-motor-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.rd-motor-feat {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.rd-motor-feat-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--elcardo-off-white, #F5F4F2);
+  border-radius: 10px;
+  flex-shrink: 0;
+  color: var(--elcardo-navy, #1A2332);
+}
+.rd-motor-feat-title {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--elcardo-navy, #1A2332);
+  margin-bottom: 2px;
+}
+.rd-motor-feat-desc {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 13px;
+  color: var(--elcardo-mid-grey, #6B7280);
+  line-height: 1.5;
+}
+
+/* 3D Motor View */
+.rd-motor-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rd-motor-3d-wrap {
+  width: 100%;
+  height: 480px;
+  border-radius: var(--rd-radius-lg, 20px);
+  overflow: hidden;
+  background: linear-gradient(145deg, #F8F7F5 0%, #ECEAE7 100%);
+}
+
+@media (max-width: 1024px) {
+  .rd-motor-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .rd-motor-visual { order: -1; }
+}
+@media (max-width: 768px) {
+  .rd-motor { padding: 80px 0; }
+}

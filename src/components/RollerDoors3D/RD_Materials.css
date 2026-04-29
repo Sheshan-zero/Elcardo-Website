@@ -1,0 +1,136 @@
+/* ============================================================
+   MATERIALS & CONSTRUCTION — Enhanced Cards
+   ============================================================ */
+.rd-materials {
+  padding: 120px 0;
+  background: var(--elcardo-off-white, #F5F4F2);
+}
+.rd-materials-header {
+  text-align: center;
+  padding: 0 var(--container-padding, 6vw);
+  margin-bottom: 64px;
+}
+.rd-materials-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding, 6vw);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Material card */
+.rd-mat-card {
+  background: var(--elcardo-white, #FFFFFF);
+  border-radius: var(--rd-radius-md, 12px);
+  overflow: hidden;
+  transition: all .4s var(--rd-ease, ease);
+  border: 1px solid rgba(26,35,50,0.04);
+}
+.rd-mat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--rd-shadow-lg, 0 16px 48px rgba(26,35,50,0.12));
+}
+
+.rd-mat-card-img-wrap {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.rd-mat-card-visual {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.04);
+  transition: transform .8s var(--rd-ease, ease);
+}
+.rd-mat-card:hover .rd-mat-card-visual {
+  transform: scale(1.08);
+}
+
+/* Decorative slat pattern on gradient */
+.rd-mat-card-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 10px,
+      rgba(255,255,255,0.4) 10px,
+      rgba(255,255,255,0.4) 12px
+    );
+}
+
+/* Centered icon overlay */
+.rd-mat-card-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all .4s var(--rd-ease, ease);
+}
+.rd-mat-card:hover .rd-mat-card-icon-overlay {
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.rd-mat-card-body {
+  padding: 24px;
+}
+.rd-mat-card-name {
+  font-family: var(--rd-font-display, serif);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--elcardo-navy, #1A2332);
+  margin-bottom: 6px;
+}
+.rd-mat-card-desc {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 14px;
+  color: var(--elcardo-mid-grey, #6B7280);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+/* Stat badge */
+.rd-mat-card-stat {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  background: var(--elcardo-off-white, #F5F4F2);
+  border-radius: 100px;
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--elcardo-navy, #1A2332);
+}
+
+/* Last 2 cards in a 3-col grid */
+.rd-materials-grid .rd-mat-card:nth-child(4) {
+  grid-column: 1 / 2;
+}
+
+@media (max-width: 1024px) {
+  .rd-materials-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .rd-materials { padding: 80px 0; }
+  .rd-materials-grid { grid-template-columns: 1fr; }
+}
