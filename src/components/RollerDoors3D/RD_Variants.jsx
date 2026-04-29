@@ -12,78 +12,76 @@ const ease = [0.16, 1, 0.3, 1];
 const VARIANTS = [
   {
     name: 'Solid Roller Door',
-    desc: 'Full privacy and security with continuous interlocking slats.',
-    best: 'Best for secure residential garages.',
+    desc: 'Full privacy. Maximum security.',
+    best: 'Residential garages',
     image: solidImg,
   },
   {
     name: 'Slatted Roller Door',
-    desc: 'Ventilation gaps between slats for airflow while maintaining security.',
-    best: 'Best for parking structures and ventilation.',
+    desc: 'Ventilation without compromise.',
+    best: 'Commercial shopfronts',
     image: slattedImg,
   },
   {
     name: 'Perforated Roller Door',
-    desc: 'Punched micro-holes allow visibility and airflow through the curtain.',
-    best: 'Best for display areas and car parks.',
+    desc: 'Light in, visibility out.',
+    best: 'Showrooms, car parks',
     image: perforatedImg,
   },
   {
     name: 'Manual Roller Door',
-    desc: 'Spring-assisted manual operation with smooth counterbalance system.',
-    best: 'Best for low-traffic access points.',
+    desc: 'Simple, reliable, no power required.',
+    best: 'Low-frequency access',
     image: heroImg,
   },
   {
     name: 'Motorized Roller Door',
-    desc: 'Remote-controlled tubular motor for effortless daily operation.',
-    best: 'Best for high-traffic commercial use.',
+    desc: 'Automated daily access.',
+    best: 'High-frequency use',
     image: motorImg,
   },
 ];
 
-const RD_Variants = () => {
-  return (
-    <section className="rdvr" id="rd-variants">
-      <motion.div
-        className="rdvr-header"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease }}
-      >
-        <span className="rd-label" style={{ justifyContent: 'center' }}>Product Range</span>
-        <h2 className="rd-heading" style={{ textAlign: 'center' }}>
-          Choose your type.
-        </h2>
-        <p className="rd-body-text" style={{ textAlign: 'center', margin: '0 auto' }}>
-          Five distinct roller door configurations for every access need.
-        </p>
-      </motion.div>
+const RD_Variants = () => (
+  <section className="rdvr" id="rd-variants">
+    <motion.div
+      className="rdvr-header"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1, ease }}
+    >
+      <span className="rd-label" style={{ justifyContent: 'center' }}>Product Range</span>
+      <h2 className="rd-heading" style={{ textAlign: 'center' }}>
+        Choose your type.
+      </h2>
+      <p className="rd-body-text" style={{ textAlign: 'center', margin: '0 auto' }}>
+        Five distinct roller door configurations for every access need.
+      </p>
+    </motion.div>
 
-      <div className="rdvr-grid">
-        {VARIANTS.map((v, i) => (
-          <motion.div
-            key={v.name}
-            className="rdvr-card"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.8, delay: i * 0.08, ease }}
-          >
-            <div className="rdvr-card-img-wrap">
-              <img src={v.image} alt={v.name} className="rdvr-card-img" />
-            </div>
-            <div className="rdvr-card-body">
-              <h3 className="rdvr-card-title">{v.name}</h3>
-              <p className="rdvr-card-desc">{v.desc}</p>
-              <span className="rdvr-card-tag">{v.best}</span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
+    <div className="rdvr-grid">
+      {VARIANTS.map((v, i) => (
+        <motion.div
+          key={v.name}
+          className="rdvr-card"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.8, delay: i * 0.08, ease }}
+        >
+          <div className="rdvr-card-img-wrap">
+            <img src={v.image} alt={v.name} className="rdvr-card-img" loading="lazy" />
+          </div>
+          <div className="rdvr-card-body">
+            <h3 className="rdvr-card-title">{v.name}</h3>
+            <p className="rdvr-card-desc">{v.desc}</p>
+            <span className="rdvr-card-tag">Best for: {v.best}</span>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+);
 
 export default RD_Variants;

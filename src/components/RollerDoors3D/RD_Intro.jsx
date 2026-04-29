@@ -62,14 +62,17 @@ const RD_Intro = () => (
           <motion.div
             key={seg.title}
             className="rdi-card"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.8, delay: i * 0.12, ease }}
+            transition={{ duration: 0.8, delay: i * 0.1, ease }}
           >
             <div className="rdi-card-icon">{seg.icon}</div>
             <h3 className="rdi-card-title">{seg.title}</h3>
             <p className="rdi-card-desc">{seg.desc}</p>
+            <span className="rdi-card-link">
+              Learn more <span>→</span>
+            </span>
           </motion.div>
         ))}
       </div>

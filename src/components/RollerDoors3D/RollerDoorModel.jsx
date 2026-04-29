@@ -20,7 +20,7 @@ const HOUSING_D = 0.72;
 const MOTOR_R = 0.11;
 const MOTOR_L = 0.52;
 const BRACKET_T = 0.05;
-const FRAME_CLR = '#1e1e22';
+const FRAME_CLR = '#1A2332';
 
 /* ─── Material Presets ─── */
 function makeMaterials(hex = '#e0e0e4', finish = 'metallic') {
@@ -47,7 +47,7 @@ function makeMaterials(hex = '#e0e0e4', finish = 'metallic') {
       envMapIntensity: 1.4,
     }),
     motor: new THREE.MeshStandardMaterial({
-      color: '#041562',
+      color: '#1A2332',
       roughness: 0.30,
       metalness: 0.72,
       envMapIntensity: 1.6,
@@ -68,10 +68,10 @@ function makeMaterials(hex = '#e0e0e4', finish = 'metallic') {
       metalness: 0.05,
     }),
     sensor: new THREE.MeshStandardMaterial({
-      color: '#DA1212',
+      color: '#CC2929',
       roughness: 0.4,
       metalness: 0.3,
-      emissive: '#DA1212',
+      emissive: '#CC2929',
       emissiveIntensity: 0.15,
     }),
   };

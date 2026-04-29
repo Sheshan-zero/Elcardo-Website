@@ -1,169 +1,136 @@
 /* ============================================================
-   RD MATERIALS — Light Theme Swatch Selector
+   MATERIALS & CONSTRUCTION — Enhanced Cards
    ============================================================ */
 .rd-materials {
-  padding: 140px var(--container-padding, 48px);
-  background: var(--off-white, #F5F5F7);
+  padding: 120px 0;
+  background: var(--elcardo-off-white, #F5F4F2);
 }
-
 .rd-materials-header {
-  max-width: 800px;
-  margin: 0 auto 56px;
+  text-align: center;
+  padding: 0 var(--container-padding, 6vw);
+  margin-bottom: 64px;
 }
-
-.rd-materials-body {
-  max-width: 1100px;
+.rd-materials-grid {
+  max-width: 1200px;
   margin: 0 auto;
-}
-
-/* Swatches */
-.rd-materials-swatches {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 48px;
-  flex-wrap: wrap;
-}
-
-.rd-material-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #fff;
-  border: 2px solid transparent;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: var(--font-body);
-}
-
-.rd-material-swatch:hover {
-  border-color: var(--border-light);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-}
-
-.rd-material-swatch.active {
-  border-color: var(--primary-navy, #041562);
-  box-shadow: 0 4px 20px rgba(4,21,98,0.1);
-}
-
-.rd-swatch-color {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.08);
-}
-
-.rd-swatch-name {
-  font-size: 11px;
-  color: var(--mid-gray);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.rd-material-swatch.active .rd-swatch-name {
-  color: var(--text-primary);
-}
-
-/* Detail area */
-.rd-materials-detail {
+  padding: 0 var(--container-padding, 6vw);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
-.rd-material-preview {
-  border-radius: 24px;
+/* Material card */
+.rd-mat-card {
+  background: var(--elcardo-white, #FFFFFF);
+  border-radius: var(--rd-radius-md, 12px);
   overflow: hidden;
+  transition: all .4s var(--rd-ease, ease);
+  border: 1px solid rgba(26,35,50,0.04);
+}
+.rd-mat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--rd-shadow-lg, 0 16px 48px rgba(26,35,50,0.12));
 }
 
-.rd-material-preview-swatch {
-  width: 100%;
-  height: 360px;
-  border-radius: 24px;
+.rd-mat-card-img-wrap {
+  height: 200px;
+  overflow: hidden;
   position: relative;
-  overflow: hidden;
+}
+.rd-mat-card-visual {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.04);
+  transition: transform .8s var(--rd-ease, ease);
+}
+.rd-mat-card:hover .rd-mat-card-visual {
+  transform: scale(1.08);
 }
 
-.rd-material-slat-overlay {
+/* Decorative slat pattern on gradient */
+.rd-mat-card-pattern {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    180deg,
-    transparent 0px,
-    transparent 18px,
-    rgba(0,0,0,0.1) 18px,
-    rgba(0,0,0,0.1) 20px
-  );
+  opacity: 0.15;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 10px,
+      rgba(255,255,255,0.4) 10px,
+      rgba(255,255,255,0.4) 12px
+    );
 }
 
-.rd-material-preview-label {
-  text-align: center;
-  padding: 16px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--mid-gray);
-  background: #fff;
-  border: 1px solid var(--border-light);
-  border-top: none;
-  border-radius: 0 0 24px 24px;
-}
-
-/* Info */
-.rd-material-info-title {
-  font-family: var(--font-display, 'Playfair Display', serif);
-  font-size: clamp(24px, 2.5vw, 32px);
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-}
-
-.rd-material-info-desc {
-  font-size: 15px;
-  color: var(--mid-gray);
-  line-height: 1.7;
-  margin-bottom: 32px;
-}
-
-/* Property tags */
-.rd-material-properties {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.rd-material-prop {
+/* Centered icon overlay */
+.rd-mat-card-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--text-primary);
-  font-weight: 500;
+  justify-content: center;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all .4s var(--rd-ease, ease);
+}
+.rd-mat-card:hover .rd-mat-card-icon-overlay {
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
-.rd-material-prop svg {
-  color: var(--accent-red, #DA1212);
-  flex-shrink: 0;
+.rd-mat-card-body {
+  padding: 24px;
+}
+.rd-mat-card-name {
+  font-family: var(--rd-font-display, serif);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--elcardo-navy, #1A2332);
+  margin-bottom: 6px;
+}
+.rd-mat-card-desc {
+  font-family: var(--rd-font-body, sans-serif);
+  font-size: 14px;
+  color: var(--elcardo-mid-grey, #6B7280);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+/* Stat badge */
+.rd-mat-card-stat {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  background: var(--elcardo-off-white, #F5F4F2);
+  border-radius: 100px;
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--elcardo-navy, #1A2332);
+}
+
+/* Last 2 cards in a 3-col grid */
+.rd-materials-grid .rd-mat-card:nth-child(4) {
+  grid-column: 1 / 2;
 }
 
 @media (max-width: 1024px) {
-  .rd-materials-detail {
-    grid-template-columns: 1fr;
-  }
-  .rd-material-preview-swatch {
-    height: 240px;
-  }
+  .rd-materials-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 768px) {
-  .rd-materials {
-    padding: 100px var(--container-padding, 24px);
-  }
-  .rd-materials-swatches {
-    gap: 8px;
-  }
+  .rd-materials { padding: 80px 0; }
+  .rd-materials-grid { grid-template-columns: 1fr; }
 }

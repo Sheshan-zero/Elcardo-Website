@@ -10,14 +10,12 @@ import './RollerDoorsPage.css';
 const RD_Hero = lazy(() => import('../components/RollerDoors3D/RD_Hero'));
 const RD_Intro = lazy(() => import('../components/RollerDoors3D/RD_Intro'));
 const RD_Viewer3D = lazy(() => import('../components/RollerDoors3D/RD_Viewer3D'));
-const RD_ColorStory = lazy(() => import('../components/RollerDoors3D/RD_ColorStory'));
 const RD_Mechanism = lazy(() => import('../components/RollerDoors3D/RD_Mechanism'));
 const RD_Engineering = lazy(() => import('../components/RollerDoors3D/RD_Engineering'));
+const RD_Motor = lazy(() => import('../components/RollerDoors3D/RD_Motor'));
 const RD_Materials = lazy(() => import('../components/RollerDoors3D/RD_Materials'));
-const RD_FeatureChapters = lazy(() => import('../components/RollerDoors3D/RD_FeatureChapters'));
 const RD_Variants = lazy(() => import('../components/RollerDoors3D/RD_Variants'));
 const RD_Gallery = lazy(() => import('../components/RollerDoors3D/RD_Gallery'));
-const RD_Features = lazy(() => import('../components/RollerDoors3D/RD_Features'));
 const RD_Specs = lazy(() => import('../components/RollerDoors3D/RD_Specs'));
 const RD_CTA = lazy(() => import('../components/RollerDoors3D/RD_CTA'));
 
@@ -100,18 +98,37 @@ export default function RollerDoorsPage() {
         <ProductSubnav activeSection={activeSection} />
 
         <main className="rd-main">
+          {/* 1. Hero — Dark cinematic fullscreen */}
           <Suspense fallback={<SectionLoader />}><RD_Hero /></Suspense>
+
+          {/* 2. Intro — Category cards */}
           <Suspense fallback={<SectionLoader />}><RD_Intro /></Suspense>
+
+          {/* 3. 3D Studio — Interactive model + ALL finish colors */}
           <Suspense fallback={<SectionLoader />}><RD_Viewer3D /></Suspense>
-          <Suspense fallback={<SectionLoader />}><RD_ColorStory /></Suspense>
+
+          {/* 4. Mechanism — Scroll-driven door animation */}
           <Suspense fallback={<SectionLoader />}><RD_Mechanism /></Suspense>
+
+          {/* 5. Engineering — Cross-section exploded view */}
           <Suspense fallback={<SectionLoader />}><RD_Engineering /></Suspense>
+
+          {/* 6. Motor & Automation */}
+          <Suspense fallback={<SectionLoader />}><RD_Motor /></Suspense>
+
+          {/* 7. Materials & Finishes */}
           <Suspense fallback={<SectionLoader />}><RD_Materials /></Suspense>
-          <Suspense fallback={<SectionLoader />}><RD_FeatureChapters /></Suspense>
+
+          {/* 8. Variants */}
           <Suspense fallback={<SectionLoader />}><RD_Variants /></Suspense>
+
+          {/* 9. Gallery */}
           <Suspense fallback={<SectionLoader />}><RD_Gallery /></Suspense>
-          <Suspense fallback={<SectionLoader />}><RD_Features /></Suspense>
+
+          {/* 10. Specs */}
           <Suspense fallback={<SectionLoader />}><RD_Specs /></Suspense>
+
+          {/* 11. CTA */}
           <Suspense fallback={<SectionLoader />}><RD_CTA /></Suspense>
         </main>
 

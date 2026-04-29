@@ -1,5 +1,5 @@
 /* ============================================================
-   RD MECHANISM — Scroll-Driven Door Opening (Light Theme)
+   SCROLL-DRIVEN OPENING MECHANISM — Pinned Section
    ============================================================ */
 .rdm {
   height: 400vh;
@@ -8,13 +8,13 @@
 
 .rdm-sticky {
   position: sticky;
-  top: 116px;
-  height: calc(100vh - 116px);
+  top: 120px;
+  height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--off-white, #F5F5F7);
-  padding: 40px var(--container-padding, 48px) 32px;
+  background: var(--elcardo-white, #FFFFFF);
+  padding: 40px var(--container-padding, 6vw) 32px;
 }
 
 .rdm-header {
@@ -37,31 +37,31 @@
 /* ─── Door Frame ─── */
 .rdm-door-frame {
   position: relative;
-  width: 220px;
-  height: 320px;
+  width: 240px;
+  height: 340px;
   flex-shrink: 0;
 }
 
-/* Drum */
+/* Drum housing */
 .rdm-drum {
   position: absolute;
-  top: -24px;
+  top: -28px;
   left: 50%;
   transform: translateX(-50%);
-  width: 200px;
-  height: 36px;
-  background: #e8e8ed;
+  width: 220px;
+  height: 40px;
+  background: var(--elcardo-silver, #E8E8E8);
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(26,35,50,0.06);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .rdm-drum-inner {
-  width: 180px;
-  height: 28px;
+  width: 196px;
+  height: 30px;
   background: #ddd;
-  border-radius: 14px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,17 +70,17 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 3px solid var(--primary-navy, #041562);
+  border: 3px solid var(--elcardo-navy, #1A2332);
   transition: transform 0.2s ease;
 }
 
-/* Rails */
+/* Guide Rails */
 .rdm-rail {
   position: absolute;
   top: -8px;
   width: 8px;
   height: calc(100% + 8px);
-  background: linear-gradient(180deg, #d4d4d8 0%, #a1a1aa 100%);
+  background: linear-gradient(180deg, #c8c8cc 0%, #a0a0a8 100%);
   border-radius: 4px;
 }
 .rdm-rail--left { left: 0; }
@@ -89,9 +89,9 @@
 /* Curtain */
 .rdm-curtain {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
+  top: 14px;
+  left: 14px;
+  right: 14px;
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -100,13 +100,16 @@
   transform-origin: top center;
   overflow: hidden;
 }
+.rdm-curtain.rdm-blur {
+  filter: blur(0.5px);
+}
 
 .rdm-slat {
   width: 100%;
   height: 18px;
-  background: linear-gradient(180deg, #d4d4d8 0%, #c0c0c8 100%);
+  background: linear-gradient(180deg, #d0d0d4 0%, #b8b8c0 100%);
   border-radius: 2px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(26,35,50,0.04);
   flex-shrink: 0;
 }
 
@@ -116,8 +119,19 @@
   left: 8px;
   right: 8px;
   height: 6px;
-  background: var(--primary-navy, #041562);
+  background: var(--elcardo-navy, #1A2332);
   border-radius: 3px;
+  transition: opacity 0.3s ease;
+}
+
+/* Shadow plane */
+.rdm-shadow {
+  position: absolute;
+  bottom: -12px;
+  left: -30px;
+  right: -30px;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(26,35,50,0.08) 0%, transparent 70%);
   transition: opacity 0.3s ease;
 }
 
@@ -126,54 +140,64 @@
   bottom: -6px;
   left: -20px;
   right: -20px;
-  height: 2px;
-  background: rgba(0,0,0,0.08);
+  height: 1px;
+  background: rgba(26,35,50,0.08);
 }
 
 /* ─── Callouts ─── */
 .rdm-callouts {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   max-width: 400px;
 }
 
 .rdm-callout {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   padding: 20px 24px;
-  border-radius: 16px;
+  border-radius: var(--rd-radius-md, 12px);
   border: 1px solid transparent;
   background: transparent;
-  transition: all 0.5s var(--ease-out-expo);
-  opacity: 0.35;
+  transition: all 0.5s var(--rd-ease, ease);
+  opacity: 0.25;
 }
 .rdm-callout.active {
   opacity: 1;
-  background: #fff;
-  border-color: var(--border-light, rgba(0,0,0,0.08));
-  box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+  background: var(--elcardo-off-white, #F5F4F2);
+  border-color: rgba(26,35,50,0.06);
 }
 
 .rdm-callout-num {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent-red, #DA1212);
-  letter-spacing: 1px;
+  font-family: var(--rd-font-display, serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--elcardo-navy, #1A2332);
+  letter-spacing: -1px;
   flex-shrink: 0;
+  line-height: 1;
   margin-top: 2px;
 }
 
+.rdm-callout-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--elcardo-mid-grey, #6B7280);
+  margin-bottom: 8px;
+}
+
 .rdm-callout-title {
+  font-family: var(--rd-font-body, sans-serif);
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--elcardo-navy, #1A2332);
   margin-bottom: 4px;
 }
 
 .rdm-callout-desc {
+  font-family: var(--rd-font-body, sans-serif);
   font-size: 13px;
-  color: var(--mid-gray);
+  color: var(--elcardo-mid-grey, #6B7280);
   line-height: 1.6;
 }
 
@@ -189,22 +213,23 @@
 }
 .rdm-progress-track {
   flex: 1;
-  height: 3px;
-  background: rgba(0,0,0,0.06);
+  height: 2px;
+  background: rgba(26,35,50,0.06);
   border-radius: 2px;
   overflow: hidden;
 }
 .rdm-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary-navy) 0%, var(--accent-red) 100%);
+  background: var(--elcardo-navy, #1A2332);
   border-radius: 2px;
   transition: width 0.15s ease-out;
 }
 .rdm-progress-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--mid-gray);
-  letter-spacing: 0.5px;
+  font-family: var(--rd-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--elcardo-mid-grey, #6B7280);
+  letter-spacing: 1px;
   white-space: nowrap;
   min-width: 70px;
   text-align: right;
@@ -230,9 +255,9 @@
 
 @media (max-width: 768px) {
   .rdm { height: 300vh; }
-  .rdm-sticky { padding: 24px var(--container-padding) 20px; }
-  .rdm-door-frame { width: 160px; height: 240px; }
-  .rdm-drum { width: 150px; height: 28px; }
+  .rdm-sticky { padding: 24px var(--container-padding, 24px) 20px; top: 100px; height: calc(100vh - 100px); }
+  .rdm-door-frame { width: 180px; height: 260px; }
+  .rdm-drum { width: 168px; height: 32px; }
   .rdm-callouts { flex-direction: column; }
   .rdm-callout { min-width: auto; }
 }

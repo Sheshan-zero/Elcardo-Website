@@ -4,65 +4,84 @@ import installGarage from '../../assets/rg_install_garage.png';
 import installCommercial from '../../assets/rg_install_commercial.png';
 import installFactory from '../../assets/rg_install_factory.png';
 import installWarehouse from '../../assets/rg_install_warehouse.png';
-import storyFinished from '../../assets/story_roller_finished.png';
-import storyInstall from '../../assets/story_roller_install.png';
-import projectResidential from '../../assets/project_residential_gate.png';
-import projectCommercial from '../../assets/project_commercial_gate.png';
 import './RD_Gallery.css';
 
 const ease = [0.16, 1, 0.3, 1];
 
-const GALLERY = [
-  { id: 1, src: installGarage, caption: 'Residential Installation', category: 'Residential' },
-  { id: 2, src: installCommercial, caption: 'Commercial Entrance', category: 'Commercial' },
-  { id: 3, src: storyFinished, caption: 'Completed Project', category: 'Residential' },
-  { id: 4, src: installFactory, caption: 'Industrial Application', category: 'Industrial' },
-  { id: 5, src: projectResidential, caption: 'Gate & Door Combo', category: 'Residential' },
-  { id: 6, src: storyInstall, caption: 'On-Site Installation', category: 'Commercial' },
-  { id: 7, src: installWarehouse, caption: 'Warehouse Entry', category: 'Industrial' },
-  { id: 8, src: projectCommercial, caption: 'Commercial Security', category: 'Commercial' },
+const SCENES = [
+  {
+    image: installGarage,
+    location: 'Residential · Colombo',
+    type: 'Motorized Solid',
+    gradient: 'linear-gradient(135deg, #3b3024 0%, #6b5a45 50%, #a08c6e 100%)',
+  },
+  {
+    image: installCommercial,
+    location: 'Commercial · Kandy',
+    type: 'Slatted Shopfront',
+    gradient: 'linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #718096 100%)',
+  },
+  {
+    image: installFactory,
+    location: 'Industrial · Kelaniya',
+    type: 'Industrial Roller',
+    gradient: 'linear-gradient(135deg, #1a2332 0%, #2d3a4a 50%, #4a5a6a 100%)',
+  },
+  {
+    image: installWarehouse,
+    location: 'Boundary Wall · Negombo',
+    type: 'Motorized Perforated',
+    gradient: 'linear-gradient(135deg, #2c3e30 0%, #4a6050 50%, #6a8070 100%)',
+  },
 ];
 
-const RD_Gallery = () => {
-  return (
-    <section className="rd-gallery" id="rd-gallery">
-      <motion.div
-        className="rd-gallery-header"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease }}
-      >
-        <span className="rd-label" style={{ justifyContent: 'center' }}>Real Installations</span>
-        <h2 className="rd-title" style={{ textAlign: 'center' }}>
-          See the quality<br />
-          <span className="rd-title-dim">firsthand.</span>
-        </h2>
-        <p className="rd-desc" style={{ textAlign: 'center', margin: '0 auto' }}>
-          Projects delivered across Sri Lanka — from modern homes to industrial complexes.
-        </p>
-      </motion.div>
+const RD_Gallery = () => (
+  <section className="rd-gallery">
+    <motion.div
+      className="rd-gallery-header"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1, ease }}
+    >
+      <span className="rd-label" style={{ justifyContent: 'center' }}>Real Installations</span>
+      <h2 className="rd-heading" style={{ textAlign: 'center' }}>
+        See the quality firsthand.
+      </h2>
+      <p className="rd-body-text" style={{ textAlign: 'center', margin: '0 auto' }}>
+        Projects delivered across Sri Lanka — from modern homes to industrial complexes.
+      </p>
+    </motion.div>
 
-      <div className="rd-gallery-masonry">
-        {GALLERY.map((img, i) => (
-          <motion.div
-            key={img.id}
-            className={`rd-gallery-item ${i === 0 || i === 4 ? 'rd-gallery-item--tall' : ''}`}
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.8, delay: i * 0.06, ease }}
-          >
-            <img src={img.src} alt={img.caption} loading="lazy" />
-            <div className="rd-gallery-overlay">
-              <span className="rd-gallery-category">{img.category}</span>
-              <span className="rd-gallery-caption">{img.caption}</span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
+    <div className="rd-gallery-scroll">
+      {SCENES.map((scene, i) => (
+        <motion.div
+          key={i}
+          className="rd-gallery-card"
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.8, delay: i * 0.1, ease }}
+        >
+          <div
+            className="rd-gallery-card-bg"
+            style={{
+              backgroundImage: `url(${scene.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+          <div className="rd-gallery-card-overlay" />
+          <div className="rd-gallery-card-info">
+            <span className="rd-gallery-card-location">{scene.location}</span>
+            <span className="rd-gallery-card-type">{scene.type}</span>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+
+    <p className="rd-gallery-scroll-hint">← Scroll to explore →</p>
+  </section>
+);
 
 export default RD_Gallery;

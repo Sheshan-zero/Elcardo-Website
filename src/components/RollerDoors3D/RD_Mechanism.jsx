@@ -1,14 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import './RD_Mechanism.css';
 
-const ease = [0.16, 1, 0.3, 1];
-
 const STAGES = [
-  { threshold: 0, title: 'Vertical Rolling Movement', desc: 'Interlocking slats travel vertically within precision guide rails.' },
-  { threshold: 25, title: 'Space-Saving Access', desc: 'No swing radius required — the door rises straight up.' },
-  { threshold: 55, title: 'Smooth Guided Operation', desc: 'Anti-friction inserts eliminate lateral play for silent motion.' },
-  { threshold: 80, title: 'Motor-Ready System', desc: 'Tubular motor mounting with soft start/stop capability.' },
+  { threshold: 0, num: '01', title: 'Vertical Rolling Movement', desc: 'Interlocking slats travel vertically within precision guide rails.' },
+  { threshold: 25, num: '02', title: 'Space-Saving Access', desc: 'No swing radius required — the door rises straight up.' },
+  { threshold: 55, num: '03', title: 'Smooth Guided Operation', desc: 'Anti-friction inserts eliminate lateral play for silent motion.' },
+  { threshold: 80, num: '04', title: 'Motor-Ready System', desc: 'Tubular motor mounting with soft start/stop capability.' },
 ];
 
 const RD_Mechanism = () => {
@@ -27,13 +25,15 @@ const RD_Mechanism = () => {
     const clamped = Math.round(Math.min(100, Math.max(0, v)));
     setOpenPercent(clamped);
 
-    // determine active stage
     let stage = 0;
     for (let i = STAGES.length - 1; i >= 0; i--) {
       if (clamped >= STAGES[i].threshold) { stage = i; break; }
     }
     setActiveStage(stage);
   });
+
+  const isMidpoint = openPercent > 30 && openPercent < 70;
+  const shadowOpacity = 1 - (openPercent / 100) * 0.7;
 
   return (
     <section className="rdm" ref={containerRef} id="rd-mechanism">
@@ -48,28 +48,26 @@ const RD_Mechanism = () => {
         <div className="rdm-visual">
           {/* Door animation */}
           <div className="rdm-door-frame">
-            {/* Drum housing */}
             <div className="rdm-drum">
               <div className="rdm-drum-inner">
                 <div className="rdm-coil" style={{ transform: `scale(${1 + openPercent / 150})` }} />
               </div>
             </div>
 
-            {/* Guide rails */}
             <div className="rdm-rail rdm-rail--left" />
             <div className="rdm-rail rdm-rail--right" />
 
-            {/* Curtain */}
-            <div className="rdm-curtain" style={{ transform: `translateY(-${openPercent}%)` }}>
+            <div
+              className={`rdm-curtain ${isMidpoint ? 'rdm-blur' : ''}`}
+              style={{ transform: `translateY(-${openPercent}%)` }}
+            >
               {Array.from({ length: 16 }).map((_, i) => (
                 <div key={i} className="rdm-slat" />
               ))}
             </div>
 
-            {/* Bottom bar */}
             <div className="rdm-bottom-bar" style={{ opacity: openPercent < 5 ? 1 : 0 }} />
-
-            {/* Floor line */}
+            <div className="rdm-shadow" style={{ opacity: shadowOpacity }} />
             <div className="rdm-floor" />
           </div>
 
@@ -77,8 +75,9 @@ const RD_Mechanism = () => {
           <div className="rdm-callouts">
             {STAGES.map((stage, i) => (
               <div key={i} className={`rdm-callout ${activeStage === i ? 'active' : ''}`}>
-                <span className="rdm-callout-num">0{i + 1}</span>
+                <span className="rdm-callout-num">{stage.num}</span>
                 <div>
+                  <div className="rdm-callout-rule" />
                   <h4 className="rdm-callout-title">{stage.title}</h4>
                   <p className="rdm-callout-desc">{stage.desc}</p>
                 </div>

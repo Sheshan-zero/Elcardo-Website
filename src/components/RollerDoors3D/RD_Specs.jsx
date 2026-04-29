@@ -6,57 +6,45 @@ const ease = [0.16, 1, 0.3, 1];
 
 const SPEC_GROUPS = [
   {
-    id: 'general',
-    label: 'General',
+    id: 'overview',
+    label: 'Overview',
     specs: [
       { label: 'Operation Type', value: 'Manual / Motorized' },
       { label: 'Opening Style', value: 'Vertical Rolling' },
-      { label: 'Material Options', value: 'Steel / Aluminum / Color-Bond' },
-      { label: 'Design Options', value: 'Solid / Slatted / Perforated' },
-      { label: 'Applications', value: 'Residential / Commercial / Industrial' },
-      { label: 'Finish Options', value: 'Custom Colors (30+)' },
+      { label: 'Materials', value: 'Steel, Aluminium, Colorbond' },
+      { label: 'Design Options', value: 'Solid, Slatted, Perforated' },
+      { label: 'Applications', value: 'Residential, Commercial, Industrial' },
+      { label: 'Finish Options', value: 'Custom Colours Available' },
+      { label: 'Maintenance', value: 'Low Maintenance' },
+      { label: 'Automation', value: 'Remote Control Compatible' },
+    ],
+  },
+  {
+    id: 'automation',
+    label: 'Automation',
+    specs: [
+      { label: 'Motor Type', value: 'AC / DC Options' },
+      { label: 'Speed', value: '0.1–0.2 m/s' },
+      { label: 'Power', value: '240V AC / 24V DC' },
+      { label: 'Remote', value: 'Multi-channel RF' },
+      { label: 'Safety', value: 'Obstacle auto-reverse' },
+      { label: 'Battery Backup', value: 'Optional' },
     ],
   },
   {
     id: 'dimensions',
     label: 'Dimensions',
     specs: [
-      { label: 'Max Width', value: 'Up to 6,000mm' },
-      { label: 'Max Height', value: 'Up to 4,000mm' },
-      { label: 'Slat Thickness', value: '0.5mm – 0.8mm' },
-      { label: 'Slat Profile', value: 'Double-walled interlocking' },
-      { label: 'Guide Rail', value: '80mm extruded aluminum' },
-      { label: 'Housing Depth', value: '350mm – 500mm' },
-    ],
-  },
-  {
-    id: 'motor',
-    label: 'Motor System',
-    specs: [
-      { label: 'Motor Type', value: 'Tubular' },
-      { label: 'Torque', value: '120 Nm' },
-      { label: 'Speed', value: '24 RPM' },
-      { label: 'IP Rating', value: 'IP65' },
-      { label: 'Cycle Rating', value: '50,000+' },
-      { label: 'Remote Control', value: '433MHz RF (30m range)' },
-    ],
-  },
-  {
-    id: 'safety',
-    label: 'Safety & Maintenance',
-    specs: [
-      { label: 'Safety', value: 'Anti-lift locks + IR sensors' },
-      { label: 'Emergency', value: 'Manual chain override' },
-      { label: 'Brake System', value: 'Automatic on power loss' },
-      { label: 'Maintenance', value: 'Low — annual lubrication' },
-      { label: 'Warranty', value: 'Up to 10 years' },
-      { label: 'Automation', value: 'Remote control compatible' },
+      { label: 'Standard Widths', value: '1500–6000mm' },
+      { label: 'Standard Heights', value: '1800–4500mm' },
+      { label: 'Custom', value: 'Available on request' },
+      { label: 'Headroom', value: '300–450mm required' },
     ],
   },
 ];
 
 const RD_Specs = () => {
-  const [activeTab, setActiveTab] = useState('general');
+  const [activeTab, setActiveTab] = useState('overview');
   const activeGroup = SPEC_GROUPS.find((g) => g.id === activeTab);
 
   return (
