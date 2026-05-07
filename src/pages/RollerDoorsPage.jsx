@@ -170,10 +170,18 @@ function OverviewSection() {
   );
 }
 
+const WALL_COLORS = [
+  { name: 'Classic White', hex: '#F4F4F4' },
+  { name: 'Warm Beige', hex: '#D1C7B7' },
+  { name: 'Concrete Grey', hex: '#8B8C89' },
+  { name: 'Midnight Stone', hex: '#3A3A3A' },
+];
+
 /* ─── Studio Section ─── */
 function StudioSection() {
   const ref = useReveal();
   const [activeColor, setActiveColor] = useState(0);
+  const [activeWallColor, setActiveWallColor] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isExploded, setIsExploded] = useState(false);
   const [rotY, setRotY] = useState(0);
@@ -184,6 +192,8 @@ function StudioSection() {
   
   const c = { ...colorOptions[activeColor] };
   if (c.name === 'Custom Color') c.hex = customHex;
+
+  const wallHex = WALL_COLORS[activeWallColor].hex;
 
   const onPointerDown = useCallback(e => { dragging.current = true; prev.current = { x: e.clientX, y: e.clientY }; }, []);
   const onPointerUp = useCallback(() => { dragging.current = false; }, []);
@@ -201,9 +211,9 @@ function StudioSection() {
       <p className="section-body reveal reveal-delay-2">Drag to rotate, zoom to inspect. Select a finish to see it applied instantly.</p>
       <div className="rdp-studio-layout reveal reveal-delay-2">
         <div className="rdp-studio-canvas-wrap" onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerMove={onPointerMove} onPointerLeave={onPointerUp}>
-          <LazyCanvas gl={{ antialias: true, alpha: true }} dpr={[1, 1.5]} shadows camera={{ position: [0, 0.8, 7.5], fov: 40 }}>
+        <LazyCanvas gl={{ antialias: true, alpha: true }} dpr={[1, 1.5]} shadows camera={{ position: [0, 3.5, 16], fov: 50 }}>
             <SceneLights />
-            <RollerDoorScene colorHex={c.hex} roughness={c.rough} metalness={c.metal} openAmount={isOpen ? 1 : 0} rotationY={rotY} rotationX={rotX} exploded={isExploded} />
+            <RollerDoorScene colorHex={c.hex} roughness={c.rough} metalness={c.metal} openAmount={isOpen ? 1 : 0} rotationY={rotY} rotationX={rotX} exploded={isExploded} interactive={true} wallColorHex={wallHex} />
           </LazyCanvas>
           <div className="rdp-view-hint">Drag to rotate · Scroll to zoom</div>
         </div>
@@ -222,6 +232,16 @@ function StudioSection() {
               )}
             </div>
             <div className="rdp-finish-label">{c.name}</div>
+          </div>
+          <div className="rdp-ctrl-section">
+            <div className="rdp-ctrl-label">Wall Environment</div>
+            <div className="rdp-color-swatches" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              {WALL_COLORS.map((wc, i) => (
+                <div key={i} className={`rdp-color-swatch${activeWallColor === i ? ' active' : ''}`}
+                  style={{ background: wc.hex }} title={wc.name} onClick={() => setActiveWallColor(i)} />
+              ))}
+            </div>
+            <div className="rdp-finish-label">{WALL_COLORS[activeWallColor].name}</div>
           </div>
           <div className="rdp-ctrl-section">
             <div className="rdp-ctrl-label">Controls</div>

@@ -17,8 +17,16 @@ const COLORS = [
   { id: 'custom', name: 'Custom Color', hex: '#CC2929', finish: 'metallic', roughness: 0.4, metalness: 0.3, label: 'Match any architectural palette.' },
 ];
 
+const WALL_COLORS = [
+  { id: 'white', name: 'Classic White', hex: '#F4F4F4', label: 'Clean and bright.' },
+  { id: 'beige', name: 'Warm Beige', hex: '#D1C7B7', label: 'Earthy and welcoming.' },
+  { id: 'grey', name: 'Concrete Grey', hex: '#8B8C89', label: 'Modern industrial.' },
+  { id: 'dark', name: 'Midnight Stone', hex: '#3A3A3A', label: 'Bold and sophisticated.' },
+];
+
 const RD_Viewer3D = () => {
   const [color, setColor] = useState(COLORS[0]);
+  const [wallColor, setWallColor] = useState(WALL_COLORS[0]);
   const [customHex, setCustomHex] = useState('#CC2929');
   const [isOpen, setIsOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
@@ -64,10 +72,11 @@ const RD_Viewer3D = () => {
               style={{ background: 'transparent' }}
             >
               <RollerDoorModel
-                state="interactive"
+                interactive={true}
                 colorHex={activeHex}
                 finish={color.finish}
                 openProgress={isOpen ? 1 : 0}
+                wallColorHex={wallColor.hex}
               />
             </Canvas>
           </LazyCanvas>
@@ -127,6 +136,26 @@ const RD_Viewer3D = () => {
           </div>
 
           <div>
+            <h4 className="rdv-ctrl-label">Wall Environment</h4>
+            <div className="rdv-color-grid">
+              {WALL_COLORS.map((c) => (
+                <button
+                  key={c.id}
+                  className={`rdv-swatch ${wallColor.id === c.id ? 'active' : ''}`}
+                  onClick={() => setWallColor(c)}
+                  aria-label={c.name}
+                >
+                  <span
+                    className="rdv-swatch-dot"
+                    style={{ background: c.hex }}
+                  />
+                  <span className="rdv-swatch-name">{c.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
             <h4 className="rdv-ctrl-label">Operation</h4>
             <button
               className={`rdv-open-btn ${isOpen ? 'rdv-open-btn--close' : ''}`}
@@ -140,7 +169,7 @@ const RD_Viewer3D = () => {
           <div>
             <button
               className="rdv-reset-btn"
-              onClick={() => { setColor(COLORS[0]); setIsOpen(false); }}
+              onClick={() => { setColor(COLORS[0]); setWallColor(WALL_COLORS[0]); setIsOpen(false); }}
             >
               Reset View
             </button>
