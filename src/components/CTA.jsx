@@ -1,5 +1,6 @@
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import './CTA.css';
 
 export default function CTA() {
@@ -50,15 +51,15 @@ export default function CTA() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <a href="#" className="btn-red" data-cursor="expand">
+          <Link to="/contact" className="btn-red" data-cursor="expand">
             Contact Us
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </a>
-          <a href="#" className="btn-outline" data-cursor="expand">
+          </Link>
+          <Link to="/contact#contact-form" className="btn-outline" data-cursor="expand">
             Request a Consultation
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

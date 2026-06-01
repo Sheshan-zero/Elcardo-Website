@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useEffect, useCallback, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
+import { Environment, Sky } from '@react-three/drei';
 
 /* ───────────────────────────────────────────────
    COLOR DATA — shared across sections
@@ -72,8 +72,8 @@ export function RollerDoorScene({
   const drumGroupRef = useRef();
   const railsGroupRef = useRef();
 
-  const doorW = interactive ? 3.5 : 2.0;
-  const doorH = interactive ? 3.0 : 3.2;
+  const doorW = interactive ? 5.0 : 2.0;
+  const doorH = interactive ? 3.6 : 3.2;
   const slatCount = 18;
   const slatSpacing = doorH / slatCount;
   const railDepth = 0.18;
@@ -242,6 +242,9 @@ export function RollerDoorScene({
   
   // Target color refs for smooth lerping
   const targetColor = useMemo(() => new THREE.Color(), []);
+  const frameTarget = useMemo(() => new THREE.Color(), []);
+  const housingTarget = useMemo(() => new THREE.Color(), []);
+  const dummyObj = useMemo(() => new THREE.Object3D(), []);
   
   useEffect(() => {
     targetColor.set(colorHex);
@@ -255,10 +258,10 @@ export function RollerDoorScene({
     doorMat.roughness += (roughness - doorMat.roughness) * 0.08;
     doorMat.metalness += (metalness - doorMat.metalness) * 0.08;
     
-    const frameTarget = targetColor.clone().multiplyScalar(0.9);
+    frameTarget.copy(targetColor).multiplyScalar(0.9);
     frameMat.color.lerp(frameTarget, 0.08);
     
-    const housingTarget = targetColor.clone().multiplyScalar(0.95);
+    housingTarget.copy(targetColor).multiplyScalar(0.95);
     housingMat.color.lerp(housingTarget, 0.08);
 
     // Smoothly animate open & explode amounts
@@ -287,7 +290,7 @@ export function RollerDoorScene({
 
     // Animate slats (Realistic rolling mechanism)
     if (slatsRef.current) {
-      const dummy = new THREE.Object3D();
+      const dummy = dummyObj;
       const amt = openRef.current;
       const travel = amt * (doorH - 0.2); // Total distance the door opens
       const drumY = doorH / 2 + fasH * 0.45;
@@ -322,7 +325,7 @@ export function RollerDoorScene({
 
     // Animate gaps
     if (gapsRef.current) {
-      const dummy = new THREE.Object3D();
+      const dummy = dummyObj;
       const amt = openRef.current;
       const travel = amt * (doorH - 0.2);
       const drumY = doorH / 2 + fasH * 0.45;
@@ -517,203 +520,222 @@ export function RollerDoorScene({
         </mesh>
       )}
 
-      {/* ─── REALISTIC HOUSE FACADE & WALLS ─── */}
+      {/* ─── ARCHITECTURAL HOUSE EXTERIOR ─── */}
       {interactive && (() => {
-        const pH = doorH + 1.4;        // pillar height
-        const pW = 0.75;               // pillar width
-        const wallH = doorH + 0.6;     // boundary wall height
-        const houseDepth = 10;
-        const houseW = 18;
-        const houseH = 7;
-        const gY = -doorH / 2;         // ground Y
+        const gY = -doorH / 2;
+        const wallH = doorH; // Boundary wall matches door height
+        const wT = 0.50; // Wall thickness
+        
+        const pW = 0.8; // Pillar width
+        const pD = 0.6; // Pillar depth
+        const gX = doorW / 2 + pW / 2 + 0.1; // Center of pillar next to roller door
+
+        // Right side (Pedestrian gate)
+        const pedW = 1.6; // Pedestrian gate width
+        const pgX = gX + pW / 2 + pedW / 2; // Center of ped gate
+        const rpX = pgX + pedW / 2 + pW / 2; // Rightmost pillar
+
+        // Left side (Feature stone wall)
+        const lwW = 3.6; // Left stone wall width
+        const lwX = -gX - pW / 2 - lwW / 2; // Center of left wall
+        const lpX = lwX - lwW / 2 - pW / 2; // Leftmost pillar
+
+        // House facade dimensions
+        const houseW = (rpX + pW/2) - (lpX - pW/2);
+        const houseX = (rpX + lpX) / 2;
+        const hZ = -0.5; // House is just behind the wall
+
+        // Materials for the realistic design
+        const whiteRenderMat = new THREE.MeshStandardMaterial({ color: '#f4f4f4', roughness: 0.9, metalness: 0.05 });
+        const concreteMat = new THREE.MeshStandardMaterial({ color: '#8a8d8f', roughness: 0.8, metalness: 0.1 });
+        const darkMetalMat = new THREE.MeshStandardMaterial({ color: '#2b2c2d', roughness: 0.4, metalness: 0.6 });
+        const warmLightMat = new THREE.MeshStandardMaterial({ color: '#ffeab3', emissive: '#ffaa00', emissiveIntensity: 2.5 });
+        const glassMat = new THREE.MeshPhysicalMaterial({ color: '#050505', roughness: 0.1, metalness: 0.9, transparent: true, opacity: 0.8, clearcoat: 1.0 });
 
         return (
           <group>
-            {/* ── DRIVEWAY (tarmac + kerb lines) ── */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, gY - 0.01, 3]} receiveShadow material={drivewayMat}>
-              <planeGeometry args={[doorW + pW * 2 + 1, 12]} />
+            {/* ══ GROUND / STREET ══ */}
+            <mesh rotation={[-Math.PI/2,0,0]} position={[0, gY - 0.02, 10]} receiveShadow>
+              <planeGeometry args={[90, 20]} />
+              <meshStandardMaterial color="#1a1a1a" roughness={0.7} metalness={0.2} /> {/* Wet asphalt look */}
             </mesh>
-            {/* Wide ground plane */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, gY - 0.015, 0]} receiveShadow material={drivewayMat}>
-              <planeGeometry args={[40, 40]} />
+            <mesh rotation={[-Math.PI/2,0,0]} position={[0, gY - 0.005, 1.5]} receiveShadow>
+              <planeGeometry args={[90, 3]} />
+              <meshStandardMaterial color="#a0a0a0" roughness={0.9} /> {/* Sidewalk */}
+            </mesh>
+            <mesh position={[0, gY + 0.05, 3.0]} receiveShadow>
+              <boxGeometry args={[90, 0.1, 0.2]} />
+              <meshStandardMaterial color="#909090" roughness={0.86} /> {/* Kerb */}
             </mesh>
 
-            {/* ── BOUNDARY GATE PILLARS ── */}
-            {/* Left pillar */}
-            <group position={[-(doorW / 2) - pW / 2 - 0.12, gY + pH / 2 - 0.3, 0]}>
-              <mesh material={pillarMat} castShadow receiveShadow>
-                <boxGeometry args={[pW, pH, pW * 0.9]} />
+            {/* ══ CANOPY OVER ROLLER DOOR ══ */}
+            <mesh material={concreteMat} position={[0, doorH / 2 + 0.15, 0.2]} castShadow>
+              <boxGeometry args={[doorW + pW * 2 + 0.4, 0.3, 1.2]} />
+            </mesh>
+            {/* Under-canopy LED strip */}
+            <mesh position={[0, doorH / 2, 0.6]}>
+              <boxGeometry args={[doorW, 0.05, 0.05]} />
+              <meshStandardMaterial color="#ffe8a0" emissive="#ffcc44" emissiveIntensity={3} />
+            </mesh>
+
+            {/* ══ BOUNDARY WALL & PILLARS ══ */}
+            {/* Leftmost Pillar */}
+            <mesh material={whiteRenderMat} position={[lpX, gY + wallH / 2, 0]} castShadow receiveShadow>
+              <boxGeometry args={[pW, wallH, pD]} />
+            </mesh>
+            {/* Left Feature Stone Wall */}
+            <mesh material={concreteMat} position={[lwX, gY + (wallH - 0.4) / 2, 0]} castShadow receiveShadow>
+              <boxGeometry args={[lwW, wallH - 0.4, wT]} />
+            </mesh>
+            {/* Horizontal slatted vent above left stone wall */}
+            {Array.from({ length: 4 }).map((_, i) => (
+              <mesh key={`lvent${i}`} material={darkMetalMat} position={[lwX, gY + wallH - 0.35 + i * 0.1, 0]}>
+                <boxGeometry args={[lwW, 0.04, wT - 0.05]} />
               </mesh>
-              {/* Pillar cap */}
-              <mesh material={trimMat} position={[0, pH / 2 + 0.06, 0]} castShadow>
-                <boxGeometry args={[pW + 0.06, 0.12, pW * 0.9 + 0.06]} />
+            ))}
+
+            {/* Left Main Pillar (with 123) */}
+            <mesh material={whiteRenderMat} position={[-gX, gY + wallH / 2, 0]} castShadow receiveShadow>
+              <boxGeometry args={[pW, wallH, pD]} />
+            </mesh>
+            <mesh material={darkMetalMat} position={[-gX, gY + wallH - 0.6, pD / 2 + 0.01]}>
+              {/* Approximated 123 */}
+              <boxGeometry args={[0.3, 0.12, 0.02]} /> 
+            </mesh>
+            {/* Left Pillar Sconce */}
+            <mesh material={darkMetalMat} position={[-gX - 0.25, gY + wallH / 2 + 0.4, pD / 2 + 0.05]} castShadow>
+              <boxGeometry args={[0.08, 0.2, 0.1]} />
+            </mesh>
+            <mesh material={warmLightMat} position={[-gX - 0.25, gY + wallH / 2 + 0.25, pD / 2 + 0.05]}>
+              <coneGeometry args={[0.25, 0.5, 16]} />
+            </mesh>
+
+            {/* Right Main Pillar */}
+            <mesh material={whiteRenderMat} position={[gX, gY + wallH / 2, 0]} castShadow receiveShadow>
+              <boxGeometry args={[pW, wallH, pD]} />
+            </mesh>
+            {/* Right Main Pillar Sconce */}
+            <mesh material={darkMetalMat} position={[gX + 0.25, gY + wallH / 2 + 0.4, pD / 2 + 0.05]} castShadow>
+              <boxGeometry args={[0.08, 0.2, 0.1]} />
+            </mesh>
+            <mesh material={warmLightMat} position={[gX + 0.25, gY + wallH / 2 + 0.25, pD / 2 + 0.05]}>
+              <coneGeometry args={[0.25, 0.5, 16]} />
+            </mesh>
+
+            {/* Pedestrian Gate (Dark Horizontal Slats) */}
+            <group position={[pgX, gY + wallH / 2, 0]}>
+              <mesh material={darkMetalMat} castShadow>
+                <boxGeometry args={[pedW, wallH, 0.1]} />
               </mesh>
-              {/* Cap pyramid top */}
-              <mesh material={roofTileMat} position={[0, pH / 2 + 0.2, 0]} castShadow>
-                <coneGeometry args={[0.42, 0.32, 4]} />
-              </mesh>
-            </group>
-            {/* Right pillar */}
-            <group position={[(doorW / 2) + pW / 2 + 0.12, gY + pH / 2 - 0.3, 0]}>
-              <mesh material={pillarMat} castShadow receiveShadow>
-                <boxGeometry args={[pW, pH, pW * 0.9]} />
-              </mesh>
-              <mesh material={trimMat} position={[0, pH / 2 + 0.06, 0]} castShadow>
-                <boxGeometry args={[pW + 0.06, 0.12, pW * 0.9 + 0.06]} />
-              </mesh>
-              <mesh material={roofTileMat} position={[0, pH / 2 + 0.2, 0]} castShadow>
-                <coneGeometry args={[0.42, 0.32, 4]} />
-              </mesh>
+              {Array.from({ length: 20 }).map((_, i) => (
+                <mesh key={`pgs${i}`} material={new THREE.MeshStandardMaterial({color: '#151515'})} position={[0, -wallH/2 + 0.2 + i * 0.15, 0.051]}>
+                  <boxGeometry args={[pedW - 0.1, 0.03, 0.02]} />
+                </mesh>
+              ))}
             </group>
 
-            {/* ── BOUNDARY SIDE WALLS (user-colorable) ── */}
-            {/* Left wall */}
-            <group position={[-(doorW / 2) - pW - 3.5, gY + wallH / 2 - 0.2, 0]}>
-              <mesh material={wallMat} castShadow receiveShadow>
-                <boxGeometry args={[7, wallH, 0.38]} />
-              </mesh>
-              {/* Wall top coping */}
-              <mesh material={trimMat} position={[0, wallH / 2 + 0.05, 0]}>
-                <boxGeometry args={[7.05, 0.10, 0.44]} />
-              </mesh>
-            </group>
-            {/* Right wall */}
-            <group position={[(doorW / 2) + pW + 3.5, gY + wallH / 2 - 0.2, 0]}>
-              <mesh material={wallMat} castShadow receiveShadow>
-                <boxGeometry args={[7, wallH, 0.38]} />
-              </mesh>
-              <mesh material={trimMat} position={[0, wallH / 2 + 0.05, 0]}>
-                <boxGeometry args={[7.05, 0.10, 0.44]} />
-              </mesh>
-            </group>
+            {/* Rightmost Pillar */}
+            <mesh material={whiteRenderMat} position={[rpX, gY + wallH / 2, 0]} castShadow receiveShadow>
+              <boxGeometry args={[pW, wallH, pD]} />
+            </mesh>
 
-            {/* ── PREMIUM MODERN HOUSE ── */}
-            <group position={[0, gY, -2]}>
-              {/* Ground floor — dark stone cladding */}
-              <mesh material={stoneMat} position={[0, 1.5, -4]} castShadow receiveShadow>
-                <boxGeometry args={[14, 3.0, 8]} />
+
+            {/* ══ UPPER HOUSE FACADE ══ */}
+            <group position={[houseX, gY + wallH + 2.5, hZ]}>
+              {/* Left Dark Stone Section */}
+              <mesh material={concreteMat} position={[-houseW/2 + 2.5, 0, 0]} castShadow receiveShadow>
+                <boxGeometry args={[5, 5.0, 0.5]} />
               </mesh>
-              {/* First floor — white render */}
-              <mesh material={houseMat} position={[0, 4.2, -4]} castShadow receiveShadow>
-                <boxGeometry args={[14, 2.4, 8]} />
+              {/* Left Window */}
+              <mesh material={glassMat} position={[-houseW/2 + 2.5, 0, 0.26]}>
+                <boxGeometry args={[2.5, 3.5, 0.05]} />
               </mesh>
-              {/* Second floor — cantilevered */}
-              <mesh material={houseMat} position={[2, 7.0, -4]} castShadow receiveShadow>
-                <boxGeometry args={[10, 2.8, 7.5]} />
+              <mesh material={darkMetalMat} position={[-houseW/2 + 2.5, 0, 0.28]}>
+                <boxGeometry args={[2.6, 0.1, 0.06]} />
               </mesh>
-              {/* Flat roof slabs */}
-              <mesh material={darkMat} position={[0, 5.5, -4]} castShadow>
-                <boxGeometry args={[14.6, 0.22, 8.5]} />
+              <mesh material={darkMetalMat} position={[-houseW/2 + 2.5, 0, 0.28]}>
+                <boxGeometry args={[0.1, 3.6, 0.06]} />
               </mesh>
-              <mesh material={darkMat} position={[2, 8.5, -4]} castShadow>
-                <boxGeometry args={[10.6, 0.22, 8]} />
+
+              {/* Center White Projecting Box */}
+              <mesh material={whiteRenderMat} position={[0, 0.0, 0.3]} castShadow receiveShadow>
+                <boxGeometry args={[6.5, 5.4, 0.6]} />
               </mesh>
-              {/* Shadow gaps */}
-              <mesh material={darkMat} position={[0, 3.05, 0.06]}>
-                <boxGeometry args={[14.1, 0.1, 0.15]} />
-              </mesh>
-              {/* Canopy over gate */}
-              <mesh material={darkMat} position={[0, doorH + 0.3, 0.8]} castShadow>
-                <boxGeometry args={[doorW + 2, 0.18, 1.4]} />
-              </mesh>
-              {/* LED accent strip under canopy */}
-              <mesh position={[0, doorH + 0.18, 0.3]}>
-                <boxGeometry args={[doorW + 1.6, 0.04, 0.04]} />
-                <meshStandardMaterial color="#ffcc66" emissive="#ffcc66" emissiveIntensity={2} />
-              </mesh>
-              {/* LED strip between floors */}
-              <mesh position={[0, 5.38, 0.08]}>
-                <boxGeometry args={[14, 0.03, 0.03]} />
-                <meshStandardMaterial color="#ffcc66" emissive="#ffcc66" emissiveIntensity={1.5} />
-              </mesh>
-              {/* Accent cladding strip */}
-              <mesh material={roofTileMat} position={[-6.2, 4.2, 0.06]} castShadow>
-                <boxGeometry args={[1.2, 2.4, 0.14]} />
-              </mesh>
-              {/* Ground floor — full-height windows */}
-              {[-4.8, 4.8].map((x, i) => (
-                <group key={'gw'+i} position={[x, 1.5, 0.06]}>
-                  <mesh material={darkMat}><boxGeometry args={[2.8, 2.6, 0.12]} /></mesh>
-                  <mesh material={glazingMat} position={[0, 0, 0.07]}><boxGeometry args={[2.5, 2.3, 0.04]} /></mesh>
+              {/* 3 Narrow Windows */}
+              {[-1.8, 0, 1.8].map((x, i) => (
+                <group key={`win${i}`} position={[x, 0.0, 0.61]}>
+                  <mesh material={glassMat}>
+                    <boxGeometry args={[0.8, 4.0, 0.05]} />
+                  </mesh>
+                  <mesh material={darkMetalMat}>
+                    <boxGeometry args={[0.9, 4.1, 0.02]} />
+                  </mesh>
                 </group>
               ))}
-              {/* First floor — panoramic window left */}
-              <group position={[-4.2, 4.2, 0.06]}>
-                <mesh material={darkMat}><boxGeometry args={[4.2, 2.0, 0.12]} /></mesh>
-                <mesh material={glazingMat} position={[0, 0, 0.07]}><boxGeometry args={[3.9, 1.7, 0.04]} /></mesh>
-                {[-1.3, 0, 1.3].map((dx, i) => (
-                  <mesh key={i} material={darkMat} position={[dx, 0, 0.1]}><boxGeometry args={[0.06, 1.7, 0.04]} /></mesh>
-                ))}
+
+              {/* Right Dark Stone Section with Cutout */}
+              <mesh material={concreteMat} position={[houseW/2 - 2.5, 0, 0]} castShadow receiveShadow>
+                <boxGeometry args={[5, 5.0, 0.5]} />
+              </mesh>
+              
+              {/* Backlit Cutout Feature */}
+              <group position={[houseW/2 - 2.0, 0, 0.26]}>
+                {/* Backplate emitting warm light */}
+                <mesh material={warmLightMat} position={[0, 0, -0.05]}>
+                  <boxGeometry args={[1.8, 2.8, 0.02]} />
+                </mesh>
+                {/* Concrete cover plate */}
+                <mesh material={concreteMat} position={[0,0,0]}>
+                   <boxGeometry args={[2.0, 3.0, 0.04]} />
+                </mesh>
+                {/* Simulated glowing leaf cutouts */}
+                {Array.from({ length: 8 }).map((_, i) => {
+                  const angle = (i / 8) * Math.PI * 2;
+                  const dist = 0.45;
+                  return (
+                    <mesh key={`leaf${i}`} material={warmLightMat} position={[Math.cos(angle)*dist, Math.sin(angle)*dist, 0.03]} rotation={[0, 0, angle + Math.PI/2]}>
+                      <cylinderGeometry args={[0.08, 0.08, 0.6, 16]} />
+                    </mesh>
+                  );
+                })}
+                {/* Center glowing circle */}
+                <mesh position={[0, 0, 0.03]}>
+                  <sphereGeometry args={[0.15, 16, 16]} />
+                  <meshStandardMaterial color="#ffeab3" emissive="#ffaa00" emissiveIntensity={2.5} />
+                </mesh>
               </group>
-              {/* First floor — balcony glass railing */}
-              <group position={[-4.2, 3.05, 0.6]}>
-                <mesh material={glazingMat}><boxGeometry args={[4.2, 0.7, 0.05]} /></mesh>
-                <mesh material={darkMat} position={[0, 0.38, 0]}><boxGeometry args={[4.2, 0.06, 0.06]} /></mesh>
-                {[-2.1, 2.1].map((dx, i) => (
-                  <mesh key={i} material={darkMat} position={[dx, 0, 0]}><boxGeometry args={[0.06, 0.7, 0.06]} /></mesh>
-                ))}
-              </group>
-              {/* First floor window right */}
-              <group position={[4.8, 4.2, 0.06]}>
-                <mesh material={darkMat}><boxGeometry args={[3.2, 2.0, 0.12]} /></mesh>
-                <mesh material={glazingMat} position={[0, 0, 0.07]}><boxGeometry args={[2.9, 1.7, 0.04]} /></mesh>
-              </group>
-              {/* Second floor windows */}
-              <group position={[3.5, 7.0, 0.06]}>
-                <mesh material={darkMat}><boxGeometry args={[5.0, 2.2, 0.12]} /></mesh>
-                <mesh material={glazingMat} position={[0, 0, 0.07]}><boxGeometry args={[4.7, 1.9, 0.04]} /></mesh>
-                <mesh material={darkMat} position={[0, 0, 0.1]}><boxGeometry args={[0.06, 1.9, 0.04]} /></mesh>
-              </group>
-              <group position={[-1, 7.0, 0.06]}>
-                <mesh material={darkMat}><boxGeometry args={[1.8, 2.2, 0.12]} /></mesh>
-                <mesh material={glazingMat} position={[0, 0, 0.07]}><boxGeometry args={[1.5, 1.9, 0.04]} /></mesh>
-              </group>
-              {/* Entry recess */}
-              <mesh material={darkMat} position={[0, 1.5, 0.06]}>
-                <boxGeometry args={[doorW + 1.6, 3.0, 0.18]} />
+
+              {/* Roof / Eaves */}
+              <mesh material={concreteMat} position={[0, 2.7, 0.2]} castShadow>
+                <boxGeometry args={[houseW + 0.4, 0.4, 1.2]} />
+              </mesh>
+              <mesh material={darkMetalMat} position={[0, 3.1, 0.1]} castShadow>
+                <boxGeometry args={[houseW - 1.0, 0.2, 1.0]} />
+              </mesh>
+              <mesh material={new THREE.MeshStandardMaterial({color: '#6b543c'})} position={[0, 3.4, 0.2]} castShadow>
+                <boxGeometry args={[houseW - 2.0, 0.1, 1.4]} />
               </mesh>
             </group>
 
-            {/* ── TREES & LANDSCAPING ── */}
-            {/* Tree helper: trunk (cylinder) + canopy (sphere) */}
-            {[
-              { x: -9.5, z: 1, s: 1.0 },
-              { x: 10, z: 0.5, s: 1.2 },
-              { x: -12, z: -3, s: 0.8 },
-              { x: 13, z: -2, s: 0.9 },
-            ].map((t, i) => (
-              <group key={'tree'+i} position={[t.x, gY, t.z]}>
-                {/* Trunk */}
-                <mesh castShadow position={[0, 1.2 * t.s, 0]}>
-                  <cylinderGeometry args={[0.12 * t.s, 0.18 * t.s, 2.4 * t.s, 8]} />
-                  <meshStandardMaterial color="#4a3828" roughness={0.95} />
-                </mesh>
-                {/* Canopy layers */}
-                <mesh castShadow position={[0, 3.2 * t.s, 0]}>
-                  <sphereGeometry args={[1.6 * t.s, 12, 10]} />
-                  <meshStandardMaterial color="#2d5a1e" roughness={0.9} />
-                </mesh>
-                <mesh castShadow position={[0.3 * t.s, 3.8 * t.s, -0.2 * t.s]}>
-                  <sphereGeometry args={[1.2 * t.s, 10, 8]} />
-                  <meshStandardMaterial color="#3a6e28" roughness={0.85} />
-                </mesh>
-              </group>
-            ))}
-            {/* Small shrubs along the boundary walls */}
-            {[-6, -5, -4.2, 5, 5.8, 6.6].map((x, i) => (
-              <mesh key={'shrub'+i} position={[x, gY + 0.35, 0.6]} castShadow>
-                <sphereGeometry args={[0.4, 8, 6]} />
-                <meshStandardMaterial color="#2a5218" roughness={0.92} />
-              </mesh>
-            ))}
-            {/* Grass patches */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-9, gY + 0.01, 1]}>
-              <planeGeometry args={[4, 5]} />
-              <meshStandardMaterial color="#3a6830" roughness={0.98} />
+            {/* ── GARAGE INTERIOR (Dark void behind the door) ── */}
+            <mesh material={new THREE.MeshStandardMaterial({color: '#050505', roughness: 1.0})} position={[0, gY + wallH / 2, -3.0]}>
+              <boxGeometry args={[doorW + 0.2, wallH, 5.5]} />
             </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[10, gY + 0.01, 0.5]}>
-              <planeGeometry args={[5, 4]} />
-              <meshStandardMaterial color="#3a6830" roughness={0.98} />
+
+            {/* Subtle Sleek Planter Boxes (Replacing cartoony trees) */}
+            <mesh material={darkMetalMat} position={[lwX, gY + 0.3, 0.5]} castShadow>
+              <boxGeometry args={[lwW - 0.8, 0.6, 0.4]} />
+            </mesh>
+            {/* Simple abstract greenery strip */}
+            <mesh material={new THREE.MeshStandardMaterial({color: '#2d4c1e', roughness: 0.9})} position={[lwX, gY + 0.65, 0.5]} castShadow>
+              <boxGeometry args={[lwW - 1.0, 0.2, 0.3]} />
+            </mesh>
+
+            <mesh material={darkMetalMat} position={[rpX + 1.5, gY + 0.3, 0.5]} castShadow>
+              <boxGeometry args={[2.0, 0.6, 0.4]} />
+            </mesh>
+            <mesh material={new THREE.MeshStandardMaterial({color: '#2d4c1e', roughness: 0.9})} position={[rpX + 1.5, gY + 0.65, 0.5]} castShadow>
+              <boxGeometry args={[1.8, 0.2, 0.3]} />
             </mesh>
           </group>
         );
@@ -728,33 +750,38 @@ export function RollerDoorScene({
 export function SceneLights() {
   return (
     <>
+      {/* <SoftShadows size={25} samples={16} focus={0.5} /> */}
+      <Sky sunPosition={[8, 14, 6]} inclination={0.2} azimuth={0.25} rayleigh={0.6} turbidity={0.8} mieCoefficient={0.005} mieDirectionalG={0.8} />
+      
       {/* Sky-like ambient — cool blue-white overhead */}
-      <ambientLight intensity={0.55} color={0xd6e4f7} />
+      <ambientLight intensity={0.3} color={0xd6e4f7} />
       {/* Main sun — upper-right, warm golden */}
       <directionalLight
         position={[8, 14, 6]}
-        intensity={2.2}
+        intensity={3.0}
         color={0xfff4e0}
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-bias={-0.0005}
+        shadow-mapSize-width={4096}
+        shadow-mapSize-height={4096}
         shadow-camera-near={0.5}
-        shadow-camera-far={80}
-        shadow-camera-left={-20}
-        shadow-camera-right={20}
-        shadow-camera-top={20}
-        shadow-camera-bottom={-20}
+        shadow-camera-far={120}
+        shadow-camera-left={-35}
+        shadow-camera-right={35}
+        shadow-camera-top={30}
+        shadow-camera-bottom={-25}
       />
       {/* Hemisphere sky/ground — outdoor feel */}
-      <hemisphereLight args={[0x87ceeb, 0x8a7a6a, 0.5]} />
+      <hemisphereLight args={[0x87ceeb, 0x8a7a6a, 0.4]} />
       {/* Bounce fill from lower-left (light reflecting off driveway) */}
-      <directionalLight position={[-6, 1, 8]} intensity={0.55} color={0xfff0d8} />
+      <directionalLight position={[-6, 1, 8]} intensity={0.4} color={0xfff0d8} />
       {/* Soft front fill so the facade and gate face are visible */}
-      <directionalLight position={[0, 4, 12]} intensity={0.7} color={0xffffff} />
+      <directionalLight position={[0, 4, 12]} intensity={0.5} color={0xffffff} />
       {/* Subtle cool rim from behind */}
-      <directionalLight position={[-4, 6, -10]} intensity={0.3} color={0xc8daf0} />
+      <directionalLight position={[-4, 6, -10]} intensity={0.2} color={0xc8daf0} />
+      
       <React.Suspense fallback={null}>
-        <Environment preset="sunset" />
+        <Environment preset="city" environmentIntensity={1.2} />
       </React.Suspense>
     </>
   );

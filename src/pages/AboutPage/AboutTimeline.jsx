@@ -13,51 +13,51 @@ const ease = [0.16, 1, 0.3, 1];
 
 const milestones = [
   {
-    year: '2013',
-    name: 'Elcardo Industries',
-    desc: 'Founded with a singular vision — to engineer world-class industrial solutions from Sri Lanka.',
+    year: 'Early 1980s',
+    name: 'First Local Innovations',
+    desc: 'Founded with a singular vision — to produce every possible item locally. First in Sri Lanka to manufacture stainless steel exhaust pipes and crash bars for vehicles.',
     era: 'The Beginning',
     img: imgEngineering,
   },
   {
-    year: '2015',
-    name: 'Roller Gates Division',
-    desc: 'Pioneered high-security automated roller gate systems, establishing regional market leadership.',
+    year: '1985',
+    name: 'Elcardo Registered',
+    desc: 'Officially registered as a company, laying the foundation for what would become Sri Lanka\'s premier engineering and manufacturing group.',
     era: 'Foundation',
     img: imgGates,
   },
   {
-    year: '2017',
-    name: 'Pantry Cupboards',
-    desc: 'Expanded into precision-crafted modular kitchen and storage solutions for modern living.',
+    year: 'Early 1990s',
+    name: 'Automobile Accessories',
+    desc: 'Expanded into exclusive automobile accessories — supplying roof racks, bull bars, side steps, and cargo carriers for luxury vehicles across Sri Lanka.',
     era: 'Diversification',
     img: imgInnovation,
   },
   {
-    year: '2019',
-    name: 'Elme Battery',
-    desc: 'Entered automotive and industrial battery manufacturing, powering the nation\'s mobility.',
-    era: 'Energy',
+    year: '1990s+',
+    name: 'Construction & Stainless Steel',
+    desc: 'Launched Elcardo Steel producing SUS 202 and SUS 304 polished stainless steel tubes and pipes — serving hotels, hospitals, and commercial interiors.',
+    era: 'Diversification',
     img: imgBattery,
   },
   {
-    year: '2021',
-    name: 'Anilad Hotel',
-    desc: 'Ventured into premium hospitality — redefining luxury with eco-conscious resort experiences.',
-    era: 'Hospitality',
+    year: 'ISO 9001:2015',
+    name: 'Quality Recognition',
+    desc: 'Became the first roller door company in Sri Lanka to achieve ISO 9001:2015 status — reflecting consistent manufacturing quality and reliable after-sales service.',
+    era: 'Quality',
     img: imgHotel,
   },
   {
-    year: '2023',
-    name: 'Elme Cars',
-    desc: 'Launched bespoke automotive modifications and specialized vehicle engineering services.',
-    era: 'Future Mobility',
+    year: 'Today',
+    name: 'Island-Wide Network',
+    desc: 'Showrooms in Nawala, Nugegoda, Ratmalana, Kandy, Kurunagala, Matara, Negombo, and Jaffna, with agents in the Maldives and showrooms in Chennai and Coimbatore, India.',
+    era: 'Network',
     img: imgAuto,
   },
   {
-    year: '2025',
-    name: 'The Group Today',
-    desc: 'A multi-sector industrial group — building, powering, and shaping the future of Sri Lanka.',
+    year: 'Future',
+    name: 'Seven Subsidiaries. One Vision.',
+    desc: 'A diversified industrial group spanning access systems, solar energy, steel, pantry cupboards, WPC decking, automobile accessories, and hospitality — all manufactured locally.',
     era: 'The Group Today',
     img: imgSolar,
   },
@@ -211,7 +211,7 @@ export default function AboutTimeline() {
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.1, ease }}
         >
-          A Decade of <em>Building.</em>
+          Over Three Decades of <em>Building.</em>
         </motion.h2>
         <motion.p
           className="about-body"
@@ -220,7 +220,7 @@ export default function AboutTimeline() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2, ease }}
         >
-          From a single roller gate workshop to a diversified industrial group.
+          From a small Ratmalana workshop to factories, showrooms, and an island-wide branch network.
         </motion.p>
       </div>
 

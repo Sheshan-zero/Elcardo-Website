@@ -5,10 +5,10 @@ import { useInView } from 'react-intersection-observer';
 const ease = [0.16, 1, 0.3, 1];
 
 const hotlines = [
-  { label: 'Head Office Hotline', number: '+94 11 234 5678', tel: '+94112345678' },
-  { label: 'Sales Inquiries', number: '+94 11 234 5679', tel: '+94112345679' },
-  { label: 'Service & Repairs', number: '+94 11 234 5680', tel: '+94112345680' },
-  { label: 'Branch Inquiries', number: '+94 11 234 5681', tel: '+94112345681' },
+  { label: 'Head Office', number: '+94 11 280 5556', tel: '+94112805556' },
+  { label: 'WhatsApp', number: '+94 71 872 1616', tel: '+94718721616' },
+  { label: 'Service & Repairs', number: '0112 623 423', tel: '+94112623423' },
+  { label: 'Fax', number: '+94 11 280 5156', tel: '+94112805156' },
 ];
 
 export default function ContactHotlines() {

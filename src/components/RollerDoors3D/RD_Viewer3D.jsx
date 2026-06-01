@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import LazyCanvas from '../RollerGates3D/LazyCanvas';
-import RollerDoorModel from './RollerDoorModel';
+import RollerDoorModel, { SceneLights } from './RollerDoorModel';
 import './RD_Viewer3D.css';
 
 const ease = [0.16, 1, 0.3, 1];
@@ -23,6 +23,8 @@ const WALL_COLORS = [
   { id: 'grey', name: 'Concrete Grey', hex: '#8B8C89', label: 'Modern industrial.' },
   { id: 'dark', name: 'Midnight Stone', hex: '#3A3A3A', label: 'Bold and sophisticated.' },
 ];
+
+import { EffectComposer, Bloom, Vignette, SSAO } from '@react-three/postprocessing';
 
 const RD_Viewer3D = () => {
   const [color, setColor] = useState(COLORS[0]);
@@ -66,18 +68,26 @@ const RD_Viewer3D = () => {
         <div className="rdv-canvas-wrap">
           <LazyCanvas className="rdv-canvas-lazy" style={{ width: '100%', height: '100%' }} lightBg>
             <Canvas
-              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+              gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false }}
               shadows
-              dpr={[1, 1.5]}
-              style={{ background: 'transparent' }}
+              dpr={[1, 2]}
+              camera={{ position: [0, 2, 19], fov: 45 }}
+              style={{ background: '#d6e4f7' }}
             >
+              <SceneLights />
               <RollerDoorModel
                 interactive={true}
                 colorHex={activeHex}
-                finish={color.finish}
-                openProgress={isOpen ? 1 : 0}
+                roughness={color.roughness}
+                metalness={color.metalness}
+                openAmount={isOpen ? 1 : 0}
                 wallColorHex={wallColor.hex}
               />
+              <EffectComposer disableNormalPass multisampling={4}>
+                <SSAO radius={0.4} intensity={50} luminanceInfluence={0.5} color="black" />
+                <Bloom luminanceThreshold={0.8} luminanceSmoothing={0.9} height={300} intensity={1.5} />
+                <Vignette eskil={false} offset={0.1} darkness={1.1} />
+              </EffectComposer>
             </Canvas>
           </LazyCanvas>
           <div className="rdv-hint">Drag to rotate · Scroll to zoom</div>

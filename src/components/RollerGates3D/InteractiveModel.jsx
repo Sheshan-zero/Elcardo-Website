@@ -5,8 +5,24 @@ import { useSpring, animated } from '@react-spring/three';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
+/* ─── Configurator Arrays ─── */
+const GATE_COLORS = [
+  { name: 'Graphite Grey', hex: '#2b2b36', roughness: 0.15, metalness: 0.8 },
+  { name: 'Classic White', hex: '#E8E8E8', roughness: 0.2, metalness: 0.3 },
+  { name: 'Matte Black',   hex: '#111111', roughness: 0.5, metalness: 0.4 },
+  { name: 'Metallic Silver', hex: '#A8A8AA', roughness: 0.1, metalness: 0.9 },
+  { name: 'Woodland Brown',  hex: '#4A3728', roughness: 0.4, metalness: 0.2 },
+];
+
+const WALL_COLORS = [
+  { name: 'Dark Stone', hex: '#16161e' },
+  { name: 'Concrete', hex: '#8B8C89' },
+  { name: 'Warm Beige', hex: '#D1C7B7' },
+  { name: 'Classic White', hex: '#F4F4F4' },
+];
+
 /* ─── Detailed Gate ─── */
-function DetailedGate({ isOpen }) {
+function DetailedGate({ isOpen, gateColor }) {
   const slatCount = 14;
   const gateWidth = 3;
   const gateHeight = 4;
@@ -14,8 +30,8 @@ function DetailedGate({ isOpen }) {
   const slatHeight = (gateHeight - (slatCount - 1) * slatGap) / slatCount;
 
   const slatGeo = useMemo(() => new THREE.BoxGeometry(gateWidth - 0.2, slatHeight, 0.08), [gateWidth, slatHeight]);
-  const slatMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#2b2b36', roughness: 0.15, metalness: 0.8, envMapIntensity: 1.5 }), []);
-  const frameMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#16161e', roughness: 0.2, metalness: 0.9, envMapIntensity: 1.2 }), []);
+  const slatMat = useMemo(() => new THREE.MeshStandardMaterial({ color: gateColor.hex, roughness: gateColor.roughness, metalness: gateColor.metalness, envMapIntensity: 1.5 }), [gateColor]);
+  const frameMat = useMemo(() => new THREE.MeshStandardMaterial({ color: gateColor.hex, roughness: gateColor.roughness + 0.05, metalness: gateColor.metalness, envMapIntensity: 1.2 }), [gateColor]);
   const ledMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#DA1212', emissive: '#DA1212', emissiveIntensity: 2.0 }), []);
   const screenMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#00d4ff', transparent: true, opacity: 0.9 }), []);
 
@@ -172,7 +188,33 @@ function Hotspot({ position, title, description }) {
   );
 }
 
-function ModelScene({ isOpen }) {
+/* ─── Wall ─── */
+function Wall({ wallColorHex }) {
+  const mat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: wallColorHex,
+    roughness: 0.9,
+    metalness: 0.05,
+  }), [wallColorHex]);
+
+  return (
+    <group position={[0, 0, -0.05]}>
+      {/* Left Wall */}
+      <mesh material={mat} position={[-4.12, 0, 0]} receiveShadow>
+        <boxGeometry args={[5, 6, 0.5]} />
+      </mesh>
+      {/* Right Wall */}
+      <mesh material={mat} position={[4.12, 0, 0]} receiveShadow>
+        <boxGeometry args={[5, 6, 0.5]} />
+      </mesh>
+      {/* Top Wall */}
+      <mesh material={mat} position={[0, 2.62, 0]} receiveShadow>
+        <boxGeometry args={[3.24, 1, 0.5]} />
+      </mesh>
+    </group>
+  );
+}
+
+function ModelScene({ isOpen, gateColor, wallColorHex }) {
   return (
     <>
       {/* Moved camera back and increased FOV slightly to ensure full 4-unit high gate fits */}
@@ -185,7 +227,8 @@ function ModelScene({ isOpen }) {
       <spotLight position={[0, 6, 4]} angle={0.6} penumbra={0.8} intensity={2.5} color="#fff" />
       <Environment preset="city" />
       
-      <DetailedGate isOpen={isOpen} />
+      <DetailedGate isOpen={isOpen} gateColor={gateColor} />
+      <Wall wallColorHex={wallColorHex} />
       
       {/* Adjusted hotspots to be inside the visible frame range. gateHeight=4 => y from -2 to +2 */}
       <Hotspot position={[0, 1.8, 0.2]} title="Tubular Motor" description="High-torque motor with thermal protection inside the coil box." />
@@ -222,6 +265,12 @@ export default function InteractiveModel() {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  const [gateColorIdx, setGateColorIdx] = useState(0);
+  const [wallColorIdx, setWallColorIdx] = useState(0);
+
+  const gc = GATE_COLORS[gateColorIdx];
+  const wc = WALL_COLORS[wallColorIdx];
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -254,8 +303,61 @@ export default function InteractiveModel() {
           frameloop="demand"
         >
           <RenderController isVisible={isVisible} />
-          <Suspense fallback={null}><ModelScene isOpen={isOpen} /></Suspense>
+          <Suspense fallback={null}><ModelScene isOpen={isOpen} gateColor={gc} wallColorHex={wc.hex} /></Suspense>
         </Canvas>
+
+        {/* Color Configurator Overlay */}
+        <div style={{
+          position: 'absolute', top: '24px', left: '24px',
+          background: 'rgba(20,20,30,0.85)', backdropFilter: 'blur(12px)',
+          padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)',
+          display: 'flex', flexDirection: 'column', gap: '24px', zIndex: 10
+        }}>
+          {/* Gate Color */}
+          <div>
+            <div style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#8A8F98', marginBottom: '12px' }}>Gate Finish</div>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+              {GATE_COLORS.map((c, i) => (
+                <button
+                  key={i}
+                  onClick={() => setGateColorIdx(i)}
+                  style={{
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    background: c.hex, border: gateColorIdx === i ? '2px solid #DA1212' : '2px solid transparent',
+                    cursor: 'pointer', transition: 'all 0.2s', padding: 0
+                  }}
+                  title={c.name}
+                  aria-label={c.name}
+                />
+              ))}
+            </div>
+            <div style={{ fontSize: '14px', color: '#fff', fontWeight: '500' }}>{gc.name}</div>
+          </div>
+
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+
+          {/* Wall Color */}
+          <div>
+            <div style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#8A8F98', marginBottom: '12px' }}>Wall Color</div>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+              {WALL_COLORS.map((c, i) => (
+                <button
+                  key={i}
+                  onClick={() => setWallColorIdx(i)}
+                  style={{
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    background: c.hex, border: wallColorIdx === i ? '2px solid #DA1212' : '2px solid transparent',
+                    cursor: 'pointer', transition: 'all 0.2s', padding: 0
+                  }}
+                  title={c.name}
+                  aria-label={c.name}
+                />
+              ))}
+            </div>
+            <div style={{ fontSize: '14px', color: '#fff', fontWeight: '500' }}>{wc.name}</div>
+          </div>
+        </div>
+
         <button className="rg-lift-toggle" onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'Close Gate' : 'Lift Gate'}</button>
       </div>
     </section>

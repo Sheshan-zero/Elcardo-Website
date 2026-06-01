@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import '../../components/Companies/CompaniesHero.css';
+import { branches } from './sriLankaPath';
 
 const ease = [0.16, 1, 0.3, 1];
 const basePath = import.meta.env.BASE_URL || '/';
@@ -87,7 +88,7 @@ export default function ContactHero() {
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1, ease }}
         >
-          One network. Six locations. Trusted industrial support nationwide.
+          One network. Head office, factory, and branches supporting customers nationwide.
         </motion.p>
 
         {/* Expanding divider */}
@@ -102,21 +103,21 @@ export default function ContactHero() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1, duration: 0.8, ease }}
           >
-            <span className="cph-stat-num" style={{fontSize: 'clamp(20px, 2.5vw, 32px)', whiteSpace: 'nowrap'}}>+94 11 234 5678</span>
+            <span className="cph-stat-num" style={{fontSize: 'clamp(20px, 2.5vw, 32px)', whiteSpace: 'nowrap'}}>+94 11 280 5556</span>
             <span className="cph-stat-label">Call Us</span>
           </motion.div>
           <motion.div className="cph-stat"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.8, ease }}
           >
-            <span className="cph-stat-num" style={{fontSize: 'clamp(16px, 2vw, 32px)', whiteSpace: 'nowrap'}}>info@elcardoindustries.lk</span>
+            <span className="cph-stat-num" style={{fontSize: 'clamp(16px, 2vw, 32px)', whiteSpace: 'nowrap'}}>info@elcardo.com</span>
             <span className="cph-stat-label">Email</span>
           </motion.div>
           <motion.div className="cph-stat"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.3, duration: 0.8, ease }}
           >
-            <span className="cph-stat-num" style={{fontSize: '32px'}}>6</span>
+            <span className="cph-stat-num" style={{fontSize: '32px'}}>{branches.length}</span>
             <span className="cph-stat-label">Locations Island-wide</span>
           </motion.div>
         </div>

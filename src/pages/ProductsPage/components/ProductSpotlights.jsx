@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './ProductSpotlights.css';
 
 import imgRollerGate from '../../../assets/product_roller_gate.png';
 import imgSolar from '../../../assets/product_solar.png';
-import imgBattery from '../../../assets/product_battery.png';
+import imgPantry from '../../../assets/product_battery.png';
 import imgSteel from '../../../assets/product_steel.png';
 import imgRoofing from '../../../assets/product_roofing.png';
 import imgWood from '../../../assets/product_wood.png';
@@ -13,59 +14,59 @@ const ease = [0.16, 1, 0.3, 1];
 
 const SPOTLIGHTS = [
   {
-    id: 'roller-gates',
+    id: 'roller-shutters',
     number: '01',
     kicker: 'Security & Architecture',
-    title: 'Roller Gates',
-    subtitle: 'Seamless motion. Impenetrable security.',
-    desc: 'Engineered with high-tensile steel profiles and precision automated control systems for residential and commercial applications.',
+    title: 'Roller Shutters',
+    subtitle: 'Commercial and industrial shutter systems.',
+    desc: 'Elcardo roller shutter doors use zinc-coated slats, flat curve profiles, motorized or manual operation, and hard rubber beading to reduce rough movement.',
     image: imgRollerGate,
     specs: [
-      { label: 'Material', value: 'High-Tensile Steel' },
-      { label: 'Profile', value: '0.8mm Slat' },
-      { label: 'Drive', value: '24V Automated' },
+      { label: 'Material', value: 'Zinc Alum' },
+      { label: 'Speed', value: '20cm/sec' },
+      { label: 'Warranty', value: '10Y Panels' },
     ],
   },
   {
-    id: 'solar',
+    id: 'solar-systems',
     number: '02',
     kicker: 'Energy Solutions',
     title: 'Solar Systems',
-    subtitle: 'Harnessing precision photovoltaic power.',
-    desc: 'Cutting-edge solar panel arrays mounted on aerospace-grade structural frames with maximum efficiency cell technology.',
+    subtitle: 'Residential and commercial solar planning.',
+    desc: 'Elcardo Elsolar supports home and business solar projects with consultation focused on energy savings, site suitability, and return on investment.',
     image: imgSolar,
     specs: [
-      { label: 'Efficiency', value: '22%+ Cell' },
-      { label: 'Frame', value: 'Anodized Al' },
-      { label: 'Warranty', value: '25 Years' },
+      { label: 'Use', value: 'Home / Biz' },
+      { label: 'Review', value: 'ROI' },
+      { label: 'Basis', value: 'Site Plan' },
     ],
   },
   {
-    id: 'batteries',
+    id: 'pantry-systems',
     number: '03',
-    kicker: 'Power Storage',
-    title: 'Battery Solutions',
-    subtitle: 'Intelligent energy storage systems.',
-    desc: 'Advanced lithium battery storage systems with smart monitoring, designed for seamless integration with solar infrastructure.',
-    image: imgBattery,
+    kicker: 'Interiors',
+    title: 'Kitchen & Pantry Systems',
+    subtitle: 'Customized stainless steel and ECO board pantry systems.',
+    desc: 'Designed and fabricated for homes, hotels, hospitals, and commercial kitchens, with granite, glass, exhaust canopies, and work table options.',
+    image: imgPantry,
     specs: [
-      { label: 'Chemistry', value: 'LiFePO4' },
-      { label: 'Cycles', value: '6000+' },
-      { label: 'Monitor', value: 'IoT Enabled' },
+      { label: 'Material', value: 'SS / ECO' },
+      { label: 'Fit', value: 'Custom' },
+      { label: 'Options', value: 'Granite' },
     ],
   },
   {
-    id: 'steel',
+    id: 'ss-fabrication',
     number: '04',
     kicker: 'Industrial Fabrication',
-    title: 'Steel & Fabrication',
-    subtitle: 'Structural integrity at its core.',
-    desc: 'Precision CNC-cut steel beams, custom frameworks, and industrial piping designed for extreme environments.',
+    title: 'SS Fabrication',
+    subtitle: 'Custom stainless steel work for kitchens and interiors.',
+    desc: 'Elcardo designs and fabricates exhaust canopies, food trolleys, tables, cupboards, chafing dishes, kitchen tables, and custom stainless steel items.',
     image: imgSteel,
     specs: [
-      { label: 'Grade', value: 'Cold-Rolled' },
-      { label: 'Tolerance', value: 'CLASS A' },
-      { label: 'Coating', value: 'AZ150 Zinc' },
+      { label: 'Items', value: 'Custom' },
+      { label: 'Finish', value: 'SS' },
+      { label: 'Scope', value: 'Kitchen' },
     ],
   },
   {
@@ -74,26 +75,26 @@ const SPOTLIGHTS = [
     kicker: 'Architectural Protection',
     title: 'Roofing Systems',
     subtitle: 'Multi-layered performance protection.',
-    desc: 'High-performance metal roofing systems resisting all weather conditions with an uncompromising industrial aesthetic.',
+    desc: 'High-performance Zinc-Aluminium roofing systems with AZ150 coating and Grade 550 tensile strength for tropical and coastal environments.',
     image: imgRoofing,
     specs: [
       { label: 'Material', value: 'Zinc-Alum' },
-      { label: 'Profile', value: 'Standing Seam' },
-      { label: 'Wind', value: '180 km/h' },
+      { label: 'Coating', value: 'AZ150' },
+      { label: 'Grade', value: '550 N/mm²' },
     ],
   },
   {
-    id: 'wood',
+    id: 'wpc-decking',
     number: '06',
     kicker: 'Outdoor Living',
-    title: 'Wood Decking',
-    subtitle: 'Natural warmth. Engineered durability.',
-    desc: 'Premium composite and natural wood decking solutions for modern outdoor spaces with UV and moisture resistance.',
+    title: 'WPC Decking',
+    subtitle: 'Wooden flooring with a composite material base.',
+    desc: 'Elcardo WPC uses recycled wood or bamboo fiber, plastic, and additives to create a natural timber alternative for flooring, decking, staircases, and handrails.',
     image: imgWood,
     specs: [
-      { label: 'Material', value: 'WPC Composite' },
-      { label: 'UV', value: 'Stabilized' },
-      { label: 'Life', value: '30+ Years' },
+      { label: 'Material', value: 'WPC' },
+      { label: 'Use', value: 'Flooring' },
+      { label: 'Benefit', value: 'Recycled' },
     ],
   },
 ];
@@ -134,12 +135,12 @@ const SpotlightSection = ({ item, index }) => {
             ))}
           </div>
 
-          <a href="#contact" className="ps-cta-link">
+          <Link to={`/products/${item.id}`} className="ps-cta-link">
             Explore Details
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 4l4 4-4 4" />
             </svg>
-          </a>
+          </Link>
         </motion.div>
 
         {/* Image Side */}

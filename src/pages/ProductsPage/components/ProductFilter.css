@@ -3,7 +3,7 @@
    ============================================================ */
 .pf-bar {
   position: sticky;
-  top: 0;
+  top: 64px;
   z-index: 100;
   padding: 0 var(--container-padding, 6vw);
   background: rgba(245, 245, 247, 0.92);
@@ -72,6 +72,9 @@
 
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
+  .pf-bar {
+    top: 72px;
+  }
   .pf-inner {
     padding: 14px 0;
     gap: 16px;

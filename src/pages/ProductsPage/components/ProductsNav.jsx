@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import './ProductsNav.css';
 
 const CATEGORIES = [
-  { id: 'roller-gates', label: 'Roller Gates' },
-  { id: 'solar', label: 'Solar Solutions' },
-  { id: 'batteries', label: 'Batteries' },
-  { id: 'steel', label: 'Steel & Fabrication' },
-  { id: 'roofing', label: 'Roofing' },
-  { id: 'wood', label: 'Wood Decking' },
+  { id: 'roller-shutters', label: 'Roller Shutters' },
+  { id: 'solar-systems',  label: 'Solar Systems' },
+  { id: 'pantry-systems', label: 'Pantry Systems' },
+  { id: 'ss-fabrication', label: 'SS Fabrication' },
+  { id: 'roofing',        label: 'Roofing' },
+  { id: 'wpc-decking',    label: 'WPC Decking' },
 ];
 
 const ease = [0.16, 1, 0.3, 1];

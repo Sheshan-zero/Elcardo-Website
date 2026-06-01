@@ -25,7 +25,7 @@
   justify-content: center;
   align-items: flex-start;
   text-align: left;
-  padding: 0 clamp(40px, 5vw, 80px);
+  padding: 0 clamp(40px, 5vw, 80px) 0 clamp(120px, 12vw, 180px);
   position: relative;
   z-index: 2;
 }
@@ -67,6 +67,7 @@
 .scs__headline em {
   font-style: italic;
   color: var(--mid-gray);
+  display: block;
 }
 
 .scs__descriptor {

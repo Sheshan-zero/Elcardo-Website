@@ -1,0 +1,486 @@
+/* ════════════════════════════════════════════
+   PRODUCT PAGE — pp-* helpers used inside .rdp
+   All base styles come from RollerDoorsPage.css
+   and RollerGatesPage.css via import.
+   ════════════════════════════════════════════ */
+
+/* ── Hero badge row ── */
+.pp-hero-badges-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pp-hero-badge-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pp-badge-num {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  color: #f0f4f8;
+  line-height: 1;
+}
+
+.pp-badge-lbl {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(200, 215, 230, 0.45);
+}
+
+/* ── rd-variants-grid auto-fill override ── */
+.rd-variants-grid--auto {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* ── System / Style card preview boxes ── */
+.pp-system-preview,
+.pp-style-preview {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.06) 0%, rgba(26, 35, 50, 0.03) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.pp-system-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+  background: rgba(218, 18, 18, 0.08);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(218, 18, 18, 0.15);
+}
+
+.pp-use-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* ── Material card preview ── */
+.pp-mat-preview {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--mat-bg, #e8e8ec) 80%, transparent),
+    color-mix(in srgb, var(--mat-accent, #041562) 12%, var(--mat-bg, #e8e8ec))
+  );
+}
+
+.pp-mat-slats {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  justify-content: center;
+}
+
+.pp-mat-slat {
+  height: 7px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--mat-accent, rgba(4, 21, 98, 0.4)) 60%, transparent),
+    color-mix(in srgb, var(--mat-accent, rgba(4, 21, 98, 0.2)) 30%, transparent)
+  );
+  opacity: 0.55;
+}
+
+.pp-mat-code {
+  position: relative;
+  z-index: 2;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mat-accent, var(--near-black, #0a0a0f));
+  opacity: 0.7;
+}
+
+.pp-mat-features {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pp-mat-features li {
+  font-size: 13px;
+  color: var(--mid-gray, #8a8f98);
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+
+.pp-mat-features li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-red, #DA1212);
+}
+
+/* ── PVC mesh preview ── */
+.pp-pvc-preview {
+  width: 100%;
+  min-height: 280px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--pvc-bg, #3A8040);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+.pp-pvc-mesh-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 10px,
+      var(--pvc-wire, rgba(58, 128, 64, 0.8)) 10px,
+      var(--pvc-wire, rgba(58, 128, 64, 0.8)) 11px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 10px,
+      var(--pvc-wire, rgba(58, 128, 64, 0.8)) 10px,
+      var(--pvc-wire, rgba(58, 128, 64, 0.8)) 11px
+    );
+  opacity: 0.45;
+}
+
+.pp-pvc-preview-label {
+  position: relative;
+  z-index: 2;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ── Advantages visual panel ── */
+.pp-adv-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.pp-adv-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--adv-accent, #041562) 12%, #f5f5f7) 0%,
+    color-mix(in srgb, var(--adv-accent, #041562) 6%, #ebebef) 100%
+  );
+}
+
+/* ─────────────────────────────────────────────
+   MATERIALS & FINISHES 3D SECTION
+   ───────────────────────────────────────────── */
+
+.pp-mf-section {
+  background: #08080f;
+  padding: 120px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pp-mf-section::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(218, 18, 18, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pp-mf-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.pp-mf-header {
+  margin-bottom: 72px;
+}
+
+.pp-mf-body {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.7;
+  max-width: 440px;
+  margin-top: 20px;
+}
+
+.pp-mf-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 56px;
+  align-items: start;
+}
+
+.pp-mf-canvas-wrap {
+  position: relative;
+  height: 540px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0c0c14;
+}
+
+.pp-mf-hint {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.pp-mf-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 16px;
+}
+
+.pp-mf-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pp-mf-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.pp-mf-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.pp-mf-tab.active {
+  background: rgba(218, 18, 18, 0.14);
+  border-color: rgba(218, 18, 18, 0.4);
+  color: #fff;
+}
+
+.pp-mf-tab-count {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+.pp-mf-tab.active .pp-mf-tab-count {
+  background: rgba(218, 18, 18, 0.22);
+}
+
+.pp-mf-ctrl-label {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.pp-mf-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 28px);
+  gap: 9px;
+}
+
+.pp-mf-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.18s, border-color 0.18s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.pp-mf-swatch:hover {
+  transform: scale(1.14);
+}
+
+.pp-mf-swatch.active {
+  border-color: rgba(255, 255, 255, 0.85);
+  transform: scale(1.22);
+}
+
+.pp-mf-selected {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pp-mf-sel-bar {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.pp-mf-sel-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pp-mf-sel-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.pp-mf-sel-hex {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.32);
+  letter-spacing: 0.09em;
+}
+
+.pp-mf-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.pp-mf-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pp-mf-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-red, #DA1212);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.pp-mf-badge-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.4;
+}
+
+.pp-mf-badge-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.28);
+  margin-top: 2px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .pp-mf-content {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .pp-mf-canvas-wrap {
+    height: 400px;
+  }
+
+  .pp-mf-inner {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pp-hero-badges-row {
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .rd-variants-grid--auto {
+    grid-template-columns: 1fr;
+  }
+
+  .pp-mf-section {
+    padding: 80px 0 0;
+  }
+
+  .pp-mf-canvas-wrap {
+    height: 320px;
+  }
+
+  .pp-mf-header {
+    margin-bottom: 48px;
+  }
+}

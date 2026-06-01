@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { branches } from './sriLankaPath';
 
 const ease = [0.16, 1, 0.3, 1];
 
@@ -22,7 +23,7 @@ export default function ContactQuickStrip() {
           </svg>
           <div className="contact-quick-label">Call Us</div>
           <div className="contact-quick-value">
-            <a href="tel:+94112345678">+94 11 234 5678</a>
+            <a href="tel:+94112805556">+94 11 280 5556</a>
           </div>
           <div className="contact-quick-value" style={{ fontSize: '13px', marginTop: '4px' }}>
             Speak with our team directly
@@ -37,7 +38,7 @@ export default function ContactQuickStrip() {
           </svg>
           <div className="contact-quick-label">Email Us</div>
           <div className="contact-quick-value">
-            <a href="mailto:info@elcardoindustries.lk">info@elcardoindustries.lk</a>
+            <a href="mailto:info@elcardo.com">info@elcardo.com</a>
           </div>
           <div className="contact-quick-value" style={{ fontSize: '13px', marginTop: '4px' }}>
             Send us a message anytime
@@ -52,7 +53,7 @@ export default function ContactQuickStrip() {
           </svg>
           <div className="contact-quick-label">Visit a Branch</div>
           <div className="contact-quick-value">
-            6 locations island-wide
+            {branches.length} locations island-wide
           </div>
           <a href="#contact-map" className="contact-quick-link" data-cursor="expand">
             Find nearest branch

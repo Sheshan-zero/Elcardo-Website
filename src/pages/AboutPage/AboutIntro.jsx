@@ -76,19 +76,19 @@ const introBlocks = [
   {
     title: 'Precision',
     number: 'A01',
-    text: 'Every product we build is engineered to exacting standards — from mechanism to finish.',
+    text: 'Every roller door, shutter, gate, steel product, and pantry system is built around product quality and reliable after-sales service.',
     icon: <PrecisionIcon />
   },
   {
     title: 'Innovation',
     number: 'A02',
-    text: 'We don\'t follow industries. We build them — finding opportunity where others see limitation.',
+    text: 'From locally fabricated crash bars to stainless steel exhaust systems and Australian-technology roller doors, Elcardo has grown through local manufacturing.',
     icon: <InnovationIcon />
   },
   {
     title: 'Trust',
     number: 'A03',
-    text: 'Over a decade of delivery. Clients across Sri Lanka rely on us because we honour every commitment.',
+    text: 'Clients across Sri Lanka rely on Elcardo for ISO-recognized manufacturing, branch access, and service support.',
     icon: <TrustIcon />
   },
 ];
@@ -114,8 +114,8 @@ export default function AboutIntro() {
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.1, ease }}
           >
-            We started with one idea —<br/>to engineer what others couldn't.<br/>
-            Today, we power industries.
+            From a Ratmalana workshop to an island-wide industrial group.<br/>
+            Today, Elcardo manufactures, supplies, and services across Sri Lanka.
           </motion.h2>
         </div>
 

@@ -65,7 +65,7 @@ const ProductsHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2, ease }}
         >
-          From access systems to energy and construction — 5&nbsp;divisions, 13+&nbsp;products, engineered for scale.
+          From roller doors to roofing, steel, solar, and pantry systems — 6&nbsp;divisions, 20+&nbsp;products, engineered for scale.
         </motion.p>
       </motion.div>
 

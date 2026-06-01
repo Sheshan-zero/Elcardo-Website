@@ -16,9 +16,10 @@ export default function SmoothScroll({ children }) {
     lenisRef.current = lenis;
 
     // Synchronize Lenis with GSAP's ticker to fix ScrollTrigger jitter
-    gsap.ticker.add((time) => {
+    const raf = (time) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(raf);
 
     gsap.ticker.lagSmoothing(0);
 
@@ -39,7 +40,7 @@ export default function SmoothScroll({ children }) {
           if (target) {
             lenis.scrollTo(target, { offset: -68 });
           }
-        } catch (err) {
+        } catch {
           // Ignore invalid query selector errors
         }
       }
@@ -49,6 +50,7 @@ export default function SmoothScroll({ children }) {
 
     return () => {
       document.removeEventListener('click', handleAnchorClick);
+      gsap.ticker.remove(raf);
       lenis.destroy();
     };
   }, []);

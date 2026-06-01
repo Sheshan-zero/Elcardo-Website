@@ -1,127 +1,146 @@
 import imgRollerGates from '../assets/company_roller_gates.png';
 import imgSolar from '../assets/company_solar.png';
-import imgBattery from '../assets/company_battery.png';
+import imgSteel from '../assets/company_battery.png';
 import imgHotel from '../assets/company_hotel.png';
 import imgPantry from '../assets/company_pantry.png';
 import imgAutomotive from '../assets/company_automotive.png';
 
 /* ============================================================
-   COMPANIES DATA — Corporate Brand Theme
+   COMPANIES DATA - Corporate Brand Theme
    ============================================================ */
 
 export const companies = [
   {
-    id: 'roller-gates',
+    id: 'industries',
     index: '01',
-    name: 'Elcardo Roller Gates',
+    name: 'Elcardo Industries',
     sector: 'Engineering & Access Systems',
     description:
-      'We manufacture industrial-grade automated gate systems, roller shutters, and advanced entry automation solutions engineered for commercial and industrial-scale facilities.',
+      'The ISO-recognized pioneer in Sri Lankan roller doors and roller shutters, manufacturing access systems with Australian technology and state-of-the-art machinery.',
     image: imgRollerGates,
     ctaLink: '/roller-gates',
     stats: {
-      metric1: '500+',
-      label1: 'Installations',
-      metric2: '24/7',
-      label2: 'Support',
+      metric1: 'ISO',
+      label1: '9001:2015',
+      metric2: '1985',
+      label2: 'Registered',
     },
     theme: {
       accent: 'var(--primary-navy)',
     },
   },
   {
-    id: 'solar',
+    id: 'elsolar',
     index: '02',
-    name: 'Elcardo Solar',
+    name: 'Elcardo Elsolar',
     sector: 'Renewable Energy',
     description:
-      'Delivering end-to-end solar energy solutions—from residential rooftop systems to utility-scale commercial solar installations driving Sri Lanka toward a sustainable future.',
+      'Residential and commercial solar power solutions that help customers reduce electricity costs, improve property value, and lock in long-term energy savings.',
     image: imgSolar,
     ctaLink: '#',
     stats: {
-      metric1: '50MW+',
-      label1: 'Generated',
-      metric2: '10 Yrs',
-      label2: 'Warranty',
+      metric1: 'Solar',
+      label1: 'Systems',
+      metric2: 'ROI',
+      label2: 'Focused',
     },
     theme: {
       accent: 'var(--accent-red)',
     },
   },
   {
-    id: 'battery',
+    id: 'elwood',
     index: '03',
-    name: 'Elme Battery',
-    sector: 'Clean Technology',
+    name: 'Elcardo Elwood',
+    sector: 'Wood Plastic & Flooring',
     description:
-      'Developing advanced energy storage systems engineered for reliability, longevity, and sustainable performance in both residential and industrial applications.',
-    image: imgBattery,
+      'Manufacturing wood-plastic and architectural flooring products for durable, low-maintenance residential and commercial finishes.',
+    image: imgSteel,
     ctaLink: '#',
     stats: {
-      metric1: '98%',
-      label1: 'Efficiency',
-      metric2: '5 Yrs',
-      label2: 'Lifespan',
+      metric1: 'WPC',
+      label1: 'Products',
+      metric2: 'Custom',
+      label2: 'Finishes',
     },
     theme: {
       accent: 'var(--mid-blue)',
     },
   },
   {
-    id: 'hotels',
+    id: 'steel',
     index: '04',
-    name: 'Anilad Hotels',
-    sector: 'Hospitality',
+    name: 'Elcardo Steel',
+    sector: 'Steel Products',
     description:
-      'A curated portfolio of luxury and boutique hotels delivering world-class hospitality, blending modern elegance with authentic Sri Lankan warmth.',
-    image: imgHotel,
+      'Producing high-quality SUS 202 and 304 grit 600 polished stainless steel tubes, pipes, and steel products for construction and fabrication.',
+    image: imgSteel,
     ctaLink: '#',
     stats: {
-      metric1: '3',
-      label1: 'Properties',
-      metric2: '5-Star',
-      label2: 'Service',
+      metric1: 'SUS',
+      label1: '202 / 304',
+      metric2: 'Grit 600',
+      label2: 'Polish',
     },
     theme: {
-      accent: 'var(--primary-navy)',
+      accent: 'var(--mid-blue)',
+    },
+  },
+  {
+    id: 'trading',
+    index: '05',
+    name: 'Elcardo Trading',
+    sector: 'Automobile Accessories',
+    description:
+      'Importing and supplying exclusive automobile accessories that upgrade the value, function, and appearance of luxury vehicles.',
+    image: imgAutomotive,
+    ctaLink: '#',
+    stats: {
+      metric1: 'Auto',
+      label1: 'Accessories',
+      metric2: 'Premium',
+      label2: 'Imports',
+    },
+    theme: {
+      accent: 'var(--accent-red)',
     },
   },
   {
     id: 'pantry',
-    index: '05',
-    name: 'Elcardo Pantry',
+    index: '06',
+    name: 'Elcardo Kitchen & Pantry Cupboards',
     sector: 'Interiors & Functional Spaces',
     description:
-      'Designing and manufacturing premium functional interior solutions, specializing in modern pantry systems crafted for sophisticated residential and commercial environments.',
+      'Designing and fabricating customized kitchen appliances, pantry cupboards, exhaust canopies, food trolleys, kitchen tables, and stainless steel fixtures.',
     image: imgPantry,
     ctaLink: '#',
     stats: {
-      metric1: 'Premium',
-      label1: 'Finishes',
-      metric2: 'Custom',
-      label2: 'Design',
+      metric1: 'Custom',
+      label1: 'Pantries',
+      metric2: 'SS',
+      label2: 'Fabrication',
     },
     theme: {
       accent: 'var(--mid-gray)',
     },
   },
   {
-    id: 'automotive',
-    index: '06',
-    name: 'Vehicle Modification',
-    sector: 'Automotive Performance',
+    id: 'hotels',
+    index: '07',
+    name: 'Anilad Kandy',
+    sector: 'Hospitality',
     description:
-      'Providing bespoke vehicle customization, advanced performance engineering, and robust commercial fleet solutions tailored strictly to client specifications.',
-    image: imgAutomotive,
+      'A hotel in picturesque Kandy, offering comfortable accommodation for travellers exploring the city.',
+    image: imgHotel,
     ctaLink: '#',
     stats: {
-      metric1: '1000+',
-      label1: 'Vehicles',
-      metric2: 'ISO',
-      label2: 'Certified',
+      metric1: 'Kandy',
+      label1: 'Location',
+      metric2: 'Hotel',
+      label2: 'Stay',
     },
     theme: {
-      accent: 'var(--accent-red)',
+      accent: 'var(--primary-navy)',
     },
   },
 ];
@@ -129,37 +148,37 @@ export const companies = [
 export const featuredProjects = [
   {
     id: 'proj-1',
-    company: 'Elcardo Roller Gates',
-    title: 'Colombo Port City — Secure Access Infrastructure',
+    company: 'Elcardo Industries',
+    title: 'Industrial Roller Door & Access Infrastructure',
     category: 'Industrial Automation',
-    location: 'Colombo, Sri Lanka',
+    location: 'Sri Lanka',
     image: imgRollerGates,
     featured: true,
   },
   {
     id: 'proj-2',
-    company: 'Elcardo Solar',
-    title: '2.5MW Commercial Solar Farm',
+    company: 'Elcardo Elsolar',
+    title: 'Residential and Commercial Solar Installations',
     category: 'Renewable Energy',
-    location: 'Hambantota, Sri Lanka',
+    location: 'Sri Lanka',
     image: imgSolar,
     featured: false,
   },
   {
     id: 'proj-3',
-    company: 'Elme Battery',
-    title: 'Industrial Grid Storage System',
-    category: 'Energy Storage',
-    location: 'Kandy, Sri Lanka',
-    image: imgBattery,
+    company: 'Elcardo Steel',
+    title: 'Stainless Steel Tubes, Pipes, and Construction Products',
+    category: 'Steel Products',
+    location: 'Sri Lanka',
+    image: imgSteel,
     featured: false,
   },
   {
     id: 'proj-4',
-    company: 'Anilad Hotels',
-    title: 'Boutique Resort — Southern Coast',
-    category: 'Luxury Hospitality',
-    location: 'Galle, Sri Lanka',
+    company: 'Anilad Kandy',
+    title: 'Comfort Accommodation in Kandy',
+    category: 'Hospitality',
+    location: 'Kandy, Sri Lanka',
     image: imgHotel,
     featured: false,
   },

@@ -36,7 +36,7 @@ export default function ContactHeadOffice() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease }}
           >
-            For general inquiries, partnerships, or corporate communications — reach out to our headquarters directly.
+            For product inquiries, quotations, partnerships, or corporate communications - reach out to our Nawala headquarters directly.
           </motion.p>
         </div>
 
@@ -50,8 +50,8 @@ export default function ContactHeadOffice() {
           <div className="contact-hq-detail-group">
             <div className="contact-hq-detail-label">Address</div>
             <div className="contact-hq-detail-value">
-              No. 42, Industrial Zone,<br />
-              Peliyagoda, Colombo,<br />
+              No. 42, Narahenpita Road,<br />
+              Nawala,<br />
               Sri Lanka
             </div>
           </div>
@@ -59,14 +59,19 @@ export default function ContactHeadOffice() {
           <div className="contact-hq-detail-group">
             <div className="contact-hq-detail-label">Hotline</div>
             <div className="contact-hq-detail-value">
-              <a href="tel:+94112345678">+94 11 234 5678</a>
+              <a href="tel:+94112805556">+94 11 280 5556</a>
             </div>
+          </div>
+
+          <div className="contact-hq-detail-group">
+            <div className="contact-hq-detail-label">Fax</div>
+            <div className="contact-hq-detail-value">+94 11 280 5156</div>
           </div>
 
           <div className="contact-hq-detail-group">
             <div className="contact-hq-detail-label">Email</div>
             <div className="contact-hq-detail-value">
-              <a href="mailto:info@elcardoindustries.lk">info@elcardoindustries.lk</a>
+              <a href="mailto:info@elcardo.com">info@elcardo.com</a>
             </div>
           </div>
 

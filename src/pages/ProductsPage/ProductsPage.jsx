@@ -3,6 +3,7 @@ import SmoothScroll from '../../components/SmoothScroll';
 import CustomCursor from '../../components/CustomCursor';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { FILTER_TABS } from '../../data/productsData';
 import './ProductsPage.css';
 
 const ProductsHero = lazy(() => import('./components/ProductsHero'));
@@ -48,7 +49,7 @@ const ProductsPage = () => {
         <Suspense fallback={<SectionLoader />}>
           <ProductsHero />
           <DivisionSelector onSelectDivision={handleDivisionSelect} />
-          <ProductFilter activeFilter={activeFilter} onFilterChange={handleFilterChange} />
+          <ProductFilter activeFilter={activeFilter} onFilterChange={handleFilterChange} tabs={FILTER_TABS} />
           <ProductGrid activeFilter={activeFilter} ref={gridRef} />
           <ProductsCTA />
         </Suspense>

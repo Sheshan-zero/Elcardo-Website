@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { PRODUCTS, DIVISIONS } from '../../../data/productsData';
+import { PRODUCTS, DIVISIONS as CATEGORIES } from '../../../data/productsData';
 import ProductCard from './ProductCard';
 import './ProductGrid.css';
 
@@ -11,7 +11,7 @@ const ProductGrid = React.forwardRef(({ activeFilter }, ref) => {
     ? PRODUCTS
     : PRODUCTS.filter((p) => p.division === activeFilter);
 
-  const activeDivision = DIVISIONS.find((d) => d.id === activeFilter);
+  const activeDivision = CATEGORIES.find((d) => d.id === activeFilter);
 
   return (
     <section className="pg-section" id="product-grid" ref={ref}>

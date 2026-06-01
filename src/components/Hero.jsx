@@ -5,15 +5,15 @@ import heroImg1 from '../assets/hero_engineering.png';
 import heroImg2 from '../assets/hero_solar_field.png';
 import heroImg3 from '../assets/hero_luxury_hotel.png';
 import heroImg4 from '../assets/company_automotive.png';
-import heroImg5 from '../assets/company_battery.png';
+import heroImg5 from '../assets/company_pantry.png';
 import './Hero.css';
 
 const heroSlides = [
   { img: heroImg1, subtitle: 'Engineering Excellence' },
   { img: heroImg2, subtitle: 'Renewable Energy' },
-  { img: heroImg3, subtitle: 'Luxury Hospitality' },
-  { img: heroImg4, subtitle: 'Automotive Innovation' },
-  { img: heroImg5, subtitle: 'Battery Technology' },
+  { img: heroImg3, subtitle: 'Anilad Kandy' },
+  { img: heroImg4, subtitle: 'Automobile Accessories' },
+  { img: heroImg5, subtitle: 'Kitchen & Pantry Systems' },
 ];
 
 export default function Hero() {
@@ -96,7 +96,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
           >
             <div className="hero-eyebrow-line" />
-            <span>Sri Lanka's Industrial Group — Est. 2013</span>
+            <span>Sri Lanka's Premier Engineering Company · ISO 9001:2015 · Est. 1985</span>
           </motion.div>
 
           <motion.h1
@@ -116,8 +116,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            A diversified group delivering engineering, renewable energy,
-            automotive innovation, and hospitality solutions across Sri Lanka.
+            Seven subsidiaries. One vision — to produce every possible item locally.
+            Roller doors, shutters, gates, solar, steel, pantry systems, WPC decking, automobile accessories, and hospitality across Sri Lanka.
           </motion.p>
 
           <motion.div

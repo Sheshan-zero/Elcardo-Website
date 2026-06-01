@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
 import { companies } from '../../data/companiesData';
 import './EcosystemStorytelling.css';
 
@@ -15,69 +16,87 @@ import storyRollerFinished from '../../assets/story_roller_finished.png';
 import storySolarFarm from '../../assets/story_solar_farm.png';
 import storySolarDetail from '../../assets/story_solar_detail.png';
 import imgSolar from '../../assets/company_solar.png';
-import imgBattery from '../../assets/company_battery.png';
 import imgHotel from '../../assets/company_hotel.png';
+import imgHotelLuxury from '../../assets/hero_luxury_hotel.png';
 import imgPantry from '../../assets/company_pantry.png';
 import imgAutomotive from '../../assets/company_automotive.png';
+import imgAutoInnovation from '../../assets/innovation_automotive.png';
+import imgProdWpc from '../../assets/prod_wpc_decking.png';
+import imgProdWood from '../../assets/product_wood.png';
+import imgProjectDecking from '../../assets/project_luxury_decking.png';
+import imgProdPipes from '../../assets/prod_pipes_tubes.png';
+import imgProdSsFab from '../../assets/prod_ss_fabrication.png';
+import imgProjectSteel from '../../assets/project_steel_fabrication.png';
+import imgCinematicSteel from '../../assets/about_cinematic_steel.png';
+import imgProdPantry from '../../assets/prod_pantry_systems.png';
+import imgSolarHero from '../../assets/hero_solar_field.png';
+import imgRollerGates from '../../assets/company_roller_gates.png';
 
 /* ─── Constants ─── */
 const EASE = [0.16, 1, 0.3, 1];
-const COMPANIES_COUNT = companies.length; // 6 now
+const COMPANIES_COUNT = companies.length;
 
 /* ─── Company node names (short) ─── */
-const NODE_NAMES = ['Roller', 'Solar', 'Battery', 'Anilad', 'Pantry', 'Vehicle'];
+const NODE_NAMES = ['Industries', 'Elsolar', 'Elwood', 'Steel', 'Trading', 'Pantry', 'Hotels'];
 
-/* ─── Narrative Text per phase ─── */
+/* ─── Editorial headline per phase — tells the story of each company ─── */
 const NARRATIVE_TEXT = [
-  "Our foundation",         
-  "Expanding into energy",  
-  "Powering mobility",      
-  "Entering hospitality",   
-  "Refining interiors",     
-  "Driving forward",        
+  "The pioneer of Sri Lanka's access systems.",
+  "Turning sunlight into long-term savings.",
+  "Outdoor spaces built to outlast timber.",
+  "Stainless steel, finished to perfection.",
+  "Exclusive accessories for discerning drivers.",
+  "Where kitchens become showpieces.",
+  "Rest and restore in Kandy's hills.",
 ];
 
-/* ─── Story cards data per company ─── */
+/* ─── Story cards data per company — 4 real product/project images each ─── */
 const STORY_CARDS = [
   [
-    { img: storyRollerHome, caption: 'Residential Gates' },
-    { img: storyRollerDetail, caption: 'Custom Solutions' },
-    { img: storyRollerInstall, caption: 'Industrial Access' },
-    { img: storyRollerFinished, caption: 'Premium Security' },
+    { img: storyRollerHome,    caption: 'Residential access systems' },
+    { img: storyRollerDetail,  caption: 'Australian-technology shutters' },
+    { img: storyRollerInstall, caption: 'Industrial roller doors' },
+    { img: storyRollerFinished,caption: 'ISO 9001:2015 certified' },
   ],
   [
-    { img: storySolarFarm, caption: 'Solar Farm — Grid-Scale' },
-    { img: storySolarDetail, caption: 'Photovoltaic — Tech' },
-    { img: imgSolar, caption: 'Rooftop — Residential' },
-    { img: storySolarFarm, caption: 'Commercial — Clean' },
+    { img: storySolarFarm,  caption: 'Commercial solar farms' },
+    { img: storySolarDetail,caption: 'High-efficiency PV cells' },
+    { img: imgSolar,        caption: 'Residential rooftop systems' },
+    { img: imgSolarHero,    caption: 'Grid-scale clean energy' },
   ],
   [
-    { img: imgBattery, caption: 'Advanced — Storage' },
-    { img: storySolarDetail, caption: 'Cell — Innovation' },
-    { img: imgBattery, caption: 'Industrial — Grid' },
-    { img: storyRollerDetail, caption: 'Engineering — Precision' },
+    { img: imgProdWpc,      caption: 'WPC composite decking' },
+    { img: imgProjectDecking,caption: 'Luxury outdoor builds' },
+    { img: imgProdWood,     caption: 'Architectural cladding' },
+    { img: imgProdWpc,      caption: 'Low-maintenance flooring' },
   ],
   [
-    { img: imgHotel, caption: 'Boutique — Luxury' },
-    { img: imgHotel, caption: 'Interior — Curated' },
-    { img: storyRollerHome, caption: 'Architecture — Premium' },
-    { img: imgHotel, caption: 'Hospitality — Experience' },
+    { img: imgProdPipes,    caption: 'SUS 202 & 304 tubes' },
+    { img: imgProdSsFab,    caption: 'Grit 600 mirror polish' },
+    { img: imgCinematicSteel,caption: 'Custom fabrication runs' },
+    { img: imgProjectSteel, caption: 'Construction-grade supply' },
   ],
   [
-    { img: imgPantry, caption: 'Functional — Solutions' },
-    { img: imgHotel, caption: 'Premium — Cabinetry' },
-    { img: imgPantry, caption: 'Modern — Pantries' },
-    { img: storyRollerDetail, caption: 'Design — Precision' },
+    { img: imgAutomotive,     caption: 'Luxury vehicle upgrades' },
+    { img: imgAutoInnovation, caption: 'Bespoke modification kits' },
+    { img: imgAutomotive,     caption: 'Exclusive imported parts' },
+    { img: imgAutoInnovation, caption: 'Premium auto accessories' },
   ],
   [
-    { img: imgAutomotive, caption: 'Performance — Custom' },
-    { img: imgAutomotive, caption: 'Modification — Bespoke' },
-    { img: storyRollerInstall, caption: 'Workshop — Process' },
-    { img: imgAutomotive, caption: 'Fleet — Solutions' },
+    { img: imgPantry,     caption: 'Custom pantry cupboards' },
+    { img: imgProdPantry, caption: 'Stainless steel fixtures' },
+    { img: imgPantry,     caption: 'Commercial kitchen builds' },
+    { img: imgProdPantry, caption: 'Food-grade fabrication' },
+  ],
+  [
+    { img: imgHotel,       caption: 'Boutique stay in Kandy' },
+    { img: imgHotelLuxury, caption: 'Hill-country comfort' },
+    { img: imgHotel,       caption: 'Close to Temple of Tooth' },
+    { img: imgHotelLuxury, caption: 'Warm Sri Lankan hospitality' },
   ],
 ];
 
-/* ─── Circular layout positions (normalized 0-1) ─── */
+/* ─── Circular layout positions (normalized 0–1) ─── */
 const HEXAGON_POSITIONS = NODE_NAMES.map((_, i) => {
   const angle = (-Math.PI / 2) + (i * (2 * Math.PI) / COMPANIES_COUNT);
   return {
@@ -86,38 +105,34 @@ const HEXAGON_POSITIONS = NODE_NAMES.map((_, i) => {
   };
 });
 
-/* ─── Grouped-left positions when a node is active (5 inactive nodes) ─── */
+/* ─── Grouped-left positions when a node is active (6 inactive nodes) ─── */
 const GROUPED_LEFT_POSITIONS = [
-  { x: 0.10, y: 0.20 },
-  { x: 0.06, y: 0.35 },
-  { x: 0.10, y: 0.50 },
-  { x: 0.06, y: 0.65 },
-  { x: 0.10, y: 0.80 },
+  { x: 0.08, y: 0.18 },
+  { x: 0.04, y: 0.30 },
+  { x: 0.08, y: 0.42 },
+  { x: 0.04, y: 0.54 },
+  { x: 0.08, y: 0.66 },
+  { x: 0.04, y: 0.79 },
 ];
 
-/* ─── Card layout positions (around center active node) ─── */
+/* ─── Card layout positions (around active node, right side) ─── */
 const CARD_POSITIONS = [
-  { x: 0.60, y: 0.14 },
-  { x: 0.78, y: 0.36 },
-  { x: 0.72, y: 0.60 },
-  { x: 0.50, y: 0.72 },
+  { x: 0.70, y: 0.15 },
+  { x: 0.85, y: 0.32 },
+  { x: 0.85, y: 0.50 },
+  { x: 0.70, y: 0.62 },
 ];
 
-/* ─── Wobble values for cards ─── */
+/* ─── Wobble entrance values for cards ─── */
 const WOBBLE_CONFIGS = [
-  { x: -12, y: 8, rot: -3 },
-  { x: 10, y: -6, rot: 4 },
-  { x: -8, y: -10, rot: -2 },
-  { x: 14, y: 6, rot: 3 },
+  { x: -12, y: 8,  rot: -3 },
+  { x: 10,  y: -6, rot:  4 },
+  { x: -8,  y: -10,rot: -2 },
+  { x: 14,  y: 6,  rot:  3 },
 ];
 
-function lerp(a, b, t) {
-  return a + (b - a) * t;
-}
-
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
+function lerp(a, b, t) { return a + (b - a) * t; }
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
 /* ============================================================
    MAIN COMPONENT
@@ -128,87 +143,78 @@ export default function EcosystemStorytelling() {
   const [dims, setDims] = useState({ w: 1400, h: 900 });
   const hasAutoScrolledRef = useRef(false);
 
-  // Store scroll-derived values in refs to avoid 60fps re-renders
-  const scrollProgressRef = useRef(0);
   const [currentPhase, setCurrentPhase] = useState(-1);
   const [phaseProgress, setPhaseProgress] = useState(0);
+  // Refs for change-detection so gsap ticker doesn't setState every frame at rest
+  const prevPhaseRef = useRef(-1);
+  const prevProgressRef = useRef(0);
 
   const OVERVIEW_END = 0.12;
   const OUTRO_BUFFER = 0.04;
   const NODE_WIDTH = (1.0 - OVERVIEW_END - OUTRO_BUFFER) / COMPANIES_COUNT;
   const NODES_START = OVERVIEW_END;
 
+  // ResizeObserver keeps canvas dims accurate without layout thrash
   useEffect(() => {
-    const update = () => {
-      if (canvasRef.current) {
-        const rect = canvasRef.current.getBoundingClientRect();
-        setDims({ w: rect.width, h: rect.height });
-      }
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    if (!canvasRef.current) return;
+    const ro = new ResizeObserver(entries => {
+      const { width, height } = entries[0].contentRect;
+      setDims({ w: width, h: height });
+    });
+    ro.observe(canvasRef.current);
+    return () => ro.disconnect();
   }, []);
 
+  // Use gsap.ticker so updates are in sync with Lenis's own RAF loop
   useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const sectionHeight = containerRef.current.scrollHeight;
-            const viewportH = window.innerHeight;
-            const scrolled = -rect.top;
-            const totalScrollable = sectionHeight - viewportH;
-            const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
-            scrollProgressRef.current = progress;
+    const tick = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const sectionHeight = containerRef.current.scrollHeight;
+      const viewportH = window.innerHeight;
+      const scrolled = -rect.top;
+      const totalScrollable = sectionHeight - viewportH;
+      const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
 
-            // Only derive phase & phaseProgress — setState only when they change
-            let newPhase = -1;
-            let newPhaseProgress = 0;
-
-            if (progress < OVERVIEW_END) {
-              newPhase = -1;
-              newPhaseProgress = progress / OVERVIEW_END;
-            } else {
-              const v = progress - NODES_START;
-              newPhase = Math.min(Math.floor(v / NODE_WIDTH), COMPANIES_COUNT - 1);
-              newPhaseProgress = (v - newPhase * NODE_WIDTH) / NODE_WIDTH;
-            }
-
-            // Always update phaseProgress for smooth animation
-            setPhaseProgress(newPhaseProgress);
-            setCurrentPhase((prev) => prev !== newPhase ? newPhase : prev);
-
-            // Auto-scroll logic
-            if (progress >= 0.97 && !hasAutoScrolledRef.current && containerRef.current) {
-              hasAutoScrolledRef.current = true;
-              setTimeout(() => {
-                if (containerRef.current) {
-                  const sectionBottom = containerRef.current.getBoundingClientRect().bottom + window.scrollY;
-                  smoothScrollTo(sectionBottom + 10, AUTO_SCROLL_DURATION);
-                }
-              }, AUTO_SCROLL_DELAY);
-            }
-            if (progress < 0.5) {
-              hasAutoScrolledRef.current = false;
-            }
-          }
-          ticking = false;
-        });
-        ticking = true;
+      let newPhase = -1;
+      let newPhaseProgress = 0;
+      if (progress < OVERVIEW_END) {
+        newPhase = -1;
+        newPhaseProgress = progress / OVERVIEW_END;
+      } else {
+        const v = progress - NODES_START;
+        newPhase = Math.min(Math.floor(v / NODE_WIDTH), COMPANIES_COUNT - 1);
+        newPhaseProgress = (v - newPhase * NODE_WIDTH) / NODE_WIDTH;
       }
+
+      // Only re-render when something meaningfully changed
+      const phaseChanged = newPhase !== prevPhaseRef.current;
+      const progressChanged = Math.abs(newPhaseProgress - prevProgressRef.current) > 0.002;
+      if (phaseChanged || progressChanged) {
+        prevPhaseRef.current = newPhase;
+        prevProgressRef.current = newPhaseProgress;
+        setPhaseProgress(newPhaseProgress);
+        if (phaseChanged) setCurrentPhase(newPhase);
+      }
+
+      if (progress >= 0.97 && !hasAutoScrolledRef.current && containerRef.current) {
+        hasAutoScrolledRef.current = true;
+        setTimeout(() => {
+          if (containerRef.current) {
+            const sectionBottom = containerRef.current.getBoundingClientRect().bottom + window.scrollY;
+            smoothScrollTo(sectionBottom + 10, AUTO_SCROLL_DURATION);
+          }
+        }, AUTO_SCROLL_DELAY);
+      }
+      if (progress < 0.5) hasAutoScrolledRef.current = false;
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    gsap.ticker.add(tick);
+    return () => gsap.ticker.remove(tick);
   }, [OVERVIEW_END, NODES_START, NODE_WIDTH]);
 
   const getNodePosition = useCallback((nodeIndex) => {
-    if (currentPhase === -1) {
-      return HEXAGON_POSITIONS[nodeIndex];
-    }
+    if (currentPhase === -1) return HEXAGON_POSITIONS[nodeIndex];
     if (nodeIndex === currentPhase) {
       const fromPos = HEXAGON_POSITIONS[nodeIndex];
       const toPos = { x: 0.36, y: 0.48 };
@@ -221,7 +227,6 @@ export default function EcosystemStorytelling() {
     }
     const groupIndex = inactiveNodes.indexOf(nodeIndex);
     if (groupIndex === -1) return HEXAGON_POSITIONS[nodeIndex];
-
     const fromPos = HEXAGON_POSITIONS[nodeIndex];
     const toPos = GROUPED_LEFT_POSITIONS[groupIndex];
     const t = easeOutCubic(Math.min(phaseProgress / 0.25, 1));
@@ -238,7 +243,6 @@ export default function EcosystemStorytelling() {
     const fadeInEnd = 0.32 + stagger;
     const fadeOut = 0.78;
     const fadeOutEnd = 0.95;
-
     if (phaseProgress < fadeIn) return 0;
     if (phaseProgress > fadeOutEnd) return 0;
     if (phaseProgress >= fadeOut) return Math.max(0, 1 - (phaseProgress - fadeOut) / (fadeOutEnd - fadeOut));
@@ -249,7 +253,6 @@ export default function EcosystemStorytelling() {
   const overviewOpacity = currentPhase === -1 ? Math.min(phaseProgress * 2.5, 1) : 0;
   const showCenter = currentPhase === -1;
   const narrativeOpacity = currentPhase >= 0 && phaseProgress > 0.05 && phaseProgress < 0.95 ? 1 : 0;
-
   const companyInfoOpacity = currentPhase >= 0
     ? Math.min(Math.max((phaseProgress - 0.15) / 0.1, 0), 1, Math.max((0.92 - phaseProgress) / 0.08, 0))
     : 0;
@@ -261,22 +264,25 @@ export default function EcosystemStorytelling() {
       <div className="eco-story__sticky">
         <div className="eco-story__canvas" ref={canvasRef}>
 
-          {/* ─── Header — Overview Only ─── */}
+          {/* ─── Header — overview phase only ─── */}
           <div className="eco-story__header" style={{ opacity: overviewOpacity, transition: 'opacity 0.6s ease' }}>
             <span className="eco-story__kicker">
               <span className="eco-story__kicker-line" />
               The Ecosystem
             </span>
             <h2 className="eco-story__title">
-              A growing network of companies.
+              Seven companies.<br /><em>One connected group.</em>
             </h2>
+            <p className="eco-story__subtitle">
+              Scroll to explore each subsidiary and what it stands for.
+            </p>
           </div>
 
-          {/* ─── Dynamic Narrative Overlay — Appears during Active Node ─── */}
+          {/* ─── Editorial narrative — appears when a node is active ─── */}
           {currentPhase >= 0 && (
             <div className="eco-story__narrative" style={{ opacity: narrativeOpacity, transition: 'opacity 0.6s ease' }}>
               <AnimatePresence mode="wait">
-                <motion.h2 
+                <motion.h2
                   key={currentPhase}
                   className="eco-story__title"
                   initial={{ opacity: 0, y: 16 }}
@@ -306,11 +312,10 @@ export default function EcosystemStorytelling() {
               const cx = dims.w * 0.5;
               const cy = dims.h * 0.5;
               const np = HEXAGON_POSITIONS[i];
-              const nx = dims.w * np.x;
-              const ny = dims.h * np.y;
               return (
                 <line key={`ov-${i}`}
-                  x1={cx} y1={cy} x2={nx} y2={ny}
+                  x1={cx} y1={cy}
+                  x2={dims.w * np.x} y2={dims.h * np.y}
                   className="eco-pulse-line"
                   style={{ opacity: overviewOpacity * 0.4 }}
                 />
@@ -319,16 +324,18 @@ export default function EcosystemStorytelling() {
 
             {currentPhase >= 0 && CARD_POSITIONS.map((cp, ci) => {
               const ap = getNodePosition(currentPhase);
-              const ax = dims.w * ap.x;
-              const ay = dims.h * ap.y;
-              const cx = dims.w * cp.x;
-              const cy = dims.h * cp.y;
               const op = getCardOpacity(ci);
               if (op <= 0) return null;
               return (
                 <g key={`cl-${ci}`} style={{ opacity: op }}>
-                  <line x1={ax} y1={ay} x2={cx} y2={cy} className="eco-pulse-line" />
-                  <line x1={ax} y1={ay} x2={cx} y2={cy}
+                  <line
+                    x1={dims.w * ap.x} y1={dims.h * ap.y}
+                    x2={dims.w * cp.x} y2={dims.h * cp.y}
+                    className="eco-pulse-line"
+                  />
+                  <line
+                    x1={dims.w * ap.x} y1={dims.h * ap.y}
+                    x2={dims.w * cp.x} y2={dims.h * cp.y}
                     className={`eco-pulse-glow eco-pulse-glow--delay-${ci}`}
                     filter="url(#pulseGlow)"
                   />
@@ -381,7 +388,6 @@ export default function EcosystemStorytelling() {
             const pos = getNodePosition(i);
             const isActive = currentPhase === i;
             const isDimmed = currentPhase >= 0 && !isActive;
-
             return (
               <div
                 key={`node-${i}`}
@@ -391,7 +397,7 @@ export default function EcosystemStorytelling() {
                   left: `${pos.x * 100}%`,
                   top: `${pos.y * 100}%`,
                   transform: 'translate(-50%, -50%)',
-                  transition: 'left 2.2s cubic-bezier(0.16, 1, 0.3, 1), top 2.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease, filter 1.2s ease',
+                  transition: 'left 2.2s cubic-bezier(0.16,1,0.3,1), top 2.2s cubic-bezier(0.16,1,0.3,1), opacity 1.2s ease, filter 1.2s ease',
                 }}
               >
                 <div className="eco-node__circle">
@@ -422,7 +428,6 @@ export default function EcosystemStorytelling() {
                 if (op <= 0.02) return null;
                 const cp = CARD_POSITIONS[ci];
                 const wb = WOBBLE_CONFIGS[ci];
-
                 return (
                   <div
                     key={`card-wrap-${currentPhase}-${ci}`}
@@ -436,28 +441,10 @@ export default function EcosystemStorytelling() {
                   >
                     <motion.div
                       className="eco-story-card"
-                      initial={{
-                        opacity: 0,
-                        scale: 0.92,
-                        y: 24,
-                        rotate: wb.rot,
-                      }}
-                      animate={{
-                        opacity: op,
-                        scale: op > 0.5 ? 1 : 0.96,
-                        y: 0,
-                        rotate: 0,
-                      }}
-                      exit={{
-                        opacity: 0,
-                        scale: 0.94,
-                        y: -12,
-                      }}
-                      transition={{
-                        duration: 1.4,
-                        ease: EASE,
-                        delay: ci * 0.12,
-                      }}
+                      initial={{ opacity: 0, scale: 0.92, y: 24, rotate: wb.rot }}
+                      animate={{ opacity: op, scale: op > 0.5 ? 1 : 0.96, y: 0, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.94, y: -12 }}
+                      transition={{ duration: 1.4, ease: EASE, delay: ci * 0.12 }}
                     >
                       <div className="eco-story-card__inner">
                         <img src={card.img} alt={card.caption} className="eco-story-card__image" loading="lazy" />
@@ -470,7 +457,7 @@ export default function EcosystemStorytelling() {
             </AnimatePresence>
           </div>
 
-          {/* ─── Company info at bottom ─── */}
+          {/* ─── Company info overlay at bottom ─── */}
           <AnimatePresence mode="wait">
             {currentPhase >= 0 && companyInfoOpacity > 0.01 && (
               <motion.div
@@ -481,12 +468,15 @@ export default function EcosystemStorytelling() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.8, ease: EASE }}
               >
-                <h3 className="eco-story__company-name">
-                  {companies[currentPhase]?.name}
-                </h3>
                 <span className="eco-story__company-sector">
                   {companies[currentPhase]?.sector}
                 </span>
+                <h3 className="eco-story__company-name">
+                  {companies[currentPhase]?.name}
+                </h3>
+                <p className="eco-story__company-desc">
+                  {companies[currentPhase]?.description}
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -519,9 +509,7 @@ function smoothScrollTo(targetY, duration) {
     const elapsed = timestamp - startTime;
     const progress = Math.min(elapsed / duration, 1);
     window.scrollTo(0, startY + diff * easeInOutCubic(progress));
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    }
+    if (progress < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }

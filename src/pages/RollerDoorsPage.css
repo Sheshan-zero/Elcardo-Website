@@ -99,6 +99,76 @@
 .rdp-subnav a.active { color: var(--red); border-bottom-color: var(--red); }
 
 /* ===================== HERO ===================== */
+.rdp-model-hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.86fr) minmax(520px, 1.14fr);
+  align-items: stretch;
+  padding: 0 !important;
+  background:
+    radial-gradient(circle at 72% 20%, rgba(255, 255, 255, 0.96) 0, rgba(255, 255, 255, 0) 34%),
+    linear-gradient(135deg, #f8f7f5 0%, #ece8e2 48%, #d5d1cc 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.rdp-model-hero__content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 48px 88px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.rdp-model-hero__kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 20px;
+}
+
+.rdp-model-hero__title {
+  font-size: clamp(3.4rem, 6.6vw, 6.5rem);
+  color: var(--navy);
+  line-height: 0.96;
+  margin-bottom: 28px;
+  letter-spacing: 0;
+}
+
+.rdp-model-hero__title span {
+  color: rgba(26, 35, 50, 0.48);
+}
+
+.rdp-model-hero__body {
+  font-size: 1.12rem;
+  color: var(--mid-grey);
+  line-height: 1.75;
+  max-width: 450px;
+  margin-bottom: 38px;
+}
+
+.rdp-model-hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rdp-model-hero__canvas {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.rdp-model-hero__canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
 .rdp-hero {
   padding: 0; min-height: 92vh;
   display: grid; grid-template-columns: 1fr 1fr;
@@ -174,28 +244,193 @@
 .rdp-overview-stat .label { font-size: .8rem; color: var(--mid-grey); }
 .rdp-overview-icon { width: 48px; height: 48px; margin-bottom: 24px; opacity: .8; }
 
-/* ===================== 3D STUDIO ===================== */
-.rdp-studio { background: var(--white); }
-.rdp-studio-layout {
-  display: grid; grid-template-columns: 1fr 320px;
-  gap: 40px; margin-top: 56px; align-items: start;
+/* ===================== HOUSE MODEL ===================== */
+.rdp-house-model {
+  background: var(--white);
+  padding: 100px 0 0 0 !important;
 }
-.rdp-studio-canvas-wrap {
+.rdp-house-viewport {
   position: relative;
-  background: linear-gradient(145deg,#F8F7F5,#ECEAE7);
-  border-radius: 12px; overflow: hidden; height: 520px;
+  width: 100%;
+  height: 640px;
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    #a8c6e0 0%,
+    #c2d8e8 30%,
+    #d8e8f0 58%,
+    #dfe8e0 80%,
+    #c8c4b8 100%);
+  margin-top: 48px;
 }
-.rdp-studio-canvas-wrap canvas { width: 100% !important; height: 100% !important; }
-.rdp-studio-controls { display: flex; flex-direction: column; gap: 20px; }
-.rdp-ctrl-section {
-  background: var(--off-white); border-radius: 8px;
-  padding: 24px; border: 1px solid var(--border);
+.rdp-house-viewport canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
-.rdp-ctrl-label {
-  font-size: .75rem; color: var(--mid-grey);
+
+/* ===================== 3D STUDIO ===================== */
+.rdp-studio {
+  background: var(--off-white);
+  padding: 100px 0 0 0 !important;
+}
+.rdp-studio-header {
+  padding: 0 64px;
+  margin-bottom: 52px;
+}
+
+/* Full-width 3D viewport */
+.rdp-studio-viewport {
+  position: relative;
+  height: 720px;
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    #7aaac8 0%, #b4d0e0 28%,
+    #dce8ef 52%, #c8c0b0 72%,
+    #b0a898 100%);
+  touch-action: none;
+}
+.rdp-studio-viewport canvas { width: 100% !important; height: 100% !important; display: block; }
+.rdp-viewport-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 22px;
+  background: rgba(10, 14, 22, 0.5);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 100px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.72);
   font-family: 'JetBrains Mono', monospace;
-  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 16px;
+  letter-spacing: 0.07em;
+  pointer-events: none;
+  white-space: nowrap;
 }
+
+/* Horizontal configurator bar */
+.rdp-configurator {
+  display: flex;
+  align-items: stretch;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 64px;
+  min-height: 140px;
+}
+.rdp-cfg-panel {
+  flex: 1;
+  padding: 36px 32px 36px 0;
+  min-width: 0;
+}
+.rdp-cfg-panel:first-child { padding-left: 0; }
+.rdp-cfg-panel--controls {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.rdp-cfg-divider {
+  width: 1px;
+  background: var(--border);
+  margin: 28px 32px 28px 0;
+  flex-shrink: 0;
+}
+.rdp-cfg-label {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mid-grey);
+  margin-bottom: 18px;
+}
+.rdp-cfg-swatches {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.rdp-cfg-swatch {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.14);
+  outline: none;
+  position: relative;
+}
+.rdp-cfg-swatch:hover { transform: scale(1.1); }
+.rdp-cfg-swatch.active {
+  transform: scale(1.18);
+  border-color: var(--navy);
+  box-shadow: 0 0 0 4px rgba(26,35,50,0.12), 0 4px 14px rgba(0,0,0,0.18);
+}
+.rdp-cfg-swatch.active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  opacity: 0.5;
+}
+.rdp-cfg-name {
+  margin-top: 14px;
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--navy);
+  min-height: 26px;
+}
+.rdp-cfg-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.rdp-cfg-color-input {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  cursor: pointer;
+  background: transparent;
+}
+.rdp-cfg-picker-hint {
+  font-size: 12px;
+  color: var(--mid-grey);
+  font-family: 'JetBrains Mono', monospace;
+}
+.rdp-cfg-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rdp-cfg-btn {
+  padding: 12px 22px;
+  border: 1px solid var(--border);
+  background: var(--off-white);
+  color: var(--navy);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.rdp-cfg-btn:hover, .rdp-cfg-btn.active {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+
+/* Legacy classes kept for Finishes section */
 .rdp-color-swatches { display: flex; flex-wrap: wrap; gap: 10px; }
 .rdp-color-swatch {
   width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
@@ -209,17 +444,7 @@
 .rdp-color-swatch.active::after { border-color: var(--navy); }
 .rdp-finish-label {
   font-family: 'Playfair Display', serif; font-size: 1.1rem;
-  color: var(--navy); margin-top: 12px; min-height: 28px; transition: opacity .3s;
-}
-.rdp-ctrl-buttons { display: flex; flex-direction: column; gap: 10px; }
-.rdp-ctrl-btn {
-  background: var(--white); border: 1px solid var(--border);
-  color: var(--navy); padding: 11px 20px; border-radius: 4px;
-  font-family: 'DM Sans', sans-serif; font-size: .88rem;
-  cursor: pointer; transition: all .2s; text-align: left;
-}
-.rdp-ctrl-btn:hover, .rdp-ctrl-btn.active-btn {
-  background: var(--navy); color: white; border-color: var(--navy);
+  color: var(--navy); margin-top: 12px; min-height: 28px;
 }
 .rdp-view-hint {
   font-size: .78rem; color: var(--mid-grey); text-align: center;
@@ -488,20 +713,231 @@
   transform: translateY(-2px);
 }
 
+/* ===================== VARIANT GRID 7-ITEM ===================== */
+.rd-variants-grid--7 {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* ===================== COLORS SECTION ===================== */
+.rd-colors {
+  padding: 140px var(--container-padding, 48px) !important;
+  background: #fff;
+}
+.rd-colors-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+}
+.rd-colors-body {
+  font-size: 15px;
+  color: var(--mid-gray, #8A8F98);
+  line-height: 1.7;
+  margin-top: 20px;
+  max-width: 420px;
+}
+.rd-colors-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 40px;
+}
+.rd-colors-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 14px;
+  color: var(--mid-gray, #8A8F98);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rd-colors-tab:hover { background: var(--off-white, #f5f5f7); color: var(--near-black, #0a0a0f); }
+.rd-colors-tab.active { background: var(--near-black, #0a0a0f); color: #fff; }
+.rd-colors-tab-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  opacity: 0.55;
+}
+.rd-colors-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.rd-colors-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s;
+}
+.rd-colors-swatch:hover { transform: scale(1.1); }
+.rd-colors-swatch.active { transform: scale(1.18); }
+.rd-colors-swatch-dot {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.14);
+  transition: box-shadow 0.2s;
+}
+.rd-colors-swatch.active .rd-colors-swatch-dot {
+  box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--near-black, #0a0a0f) !important;
+}
+.rd-colors-swatch span {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--mid-gray, #8A8F98);
+  letter-spacing: 0.05em;
+}
+.rd-colors-selected {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: var(--off-white, #f5f5f7);
+  border-radius: 14px;
+}
+.rd-colors-preview-bar {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.rd-colors-selected-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rd-colors-code {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--mid-gray, #8A8F98);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.rd-colors-name {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 22px;
+  color: var(--near-black, #0a0a0f);
+  font-weight: 500;
+}
+.rd-colors-cat {
+  font-size: 12px;
+  color: var(--mid-gray, #8A8F98);
+}
+
+/* ===================== COMPONENTS SECTION ===================== */
+.rd-components {
+  padding: 140px var(--container-padding, 48px) !important;
+  background: var(--off-white, #f5f5f7);
+}
+.rd-components-inner { max-width: 1200px; margin: 0 auto; }
+.rd-components-header { margin-bottom: 64px; }
+.rd-components-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  border-top: 1px solid var(--border-light, rgba(0,0,0,0.06));
+  border-left: 1px solid var(--border-light, rgba(0,0,0,0.06));
+}
+.rd-component-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 28px 24px;
+  border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
+  border-right: 1px solid var(--border-light, rgba(0,0,0,0.06));
+  transition: background 0.2s;
+}
+.rd-component-item:hover { background: #fff; }
+.rd-component-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent-red, #DA1212);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.rd-component-name {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--near-black, #0a0a0f);
+  margin-bottom: 6px;
+}
+.rd-component-desc {
+  font-size: 13px;
+  color: var(--mid-gray, #8A8F98);
+  line-height: 1.6;
+}
+
 /* ===================== RESPONSIVE ===================== */
+@media (max-width: 1200px) {
+  .rdp-configurator { padding: 0 32px; }
+  .rdp-studio-header { padding: 0 32px; }
+}
 @media (max-width: 1024px) {
+  .rd-colors-inner { grid-template-columns: 1fr; gap: 48px; }
+  .rdp-model-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .rdp-model-hero__content {
+    min-height: auto;
+    padding: 112px 32px 24px;
+  }
+  .rdp-model-hero__canvas {
+    min-height: 520px;
+    height: 58vh;
+  }
   .rdp-hero { grid-template-columns: 1fr; min-height: auto; }
   .rdp-hero-canvas-wrap { height: 400px; }
   .rdp-hero-content { padding: 60px 32px; }
-  .rdp-studio-layout { grid-template-columns: 1fr; }
   .rdp-overview-grid { grid-template-columns: 1fr 1fr; }
   .rd-variants-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
   .rd-feat-block, .rd-feat-block--reverse { grid-template-columns: 1fr; min-height: auto; direction: ltr; }
   .rd-feat-visual { min-height: 50vh; }
   .rd-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .rd-stat-card:nth-child(2)::after { display: none; }
+  /* Studio responsive */
+  .rdp-studio-viewport { height: 560px; }
+  .rdp-configurator { flex-wrap: wrap; }
+  .rdp-cfg-panel { flex: 1 1 220px; }
+  .rdp-cfg-divider { display: none; }
 }
 @media (max-width: 768px) {
+  .rd-colors-tabs { flex-direction: row; flex-wrap: wrap; }
+  .rd-colors-tab { flex: 1 1 auto; justify-content: center; }
+  .rd-colors-tab-count { display: none; }
+  .rd-components-grid { grid-template-columns: 1fr; }
+  .rdp-model-hero__content {
+    padding: 104px 24px 28px;
+  }
+  .rdp-model-hero__title {
+    font-size: clamp(3rem, 15vw, 4.6rem);
+  }
+  .rdp-model-hero__body {
+    font-size: 1rem;
+  }
+  .rdp-model-hero__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .rdp-model-hero__canvas {
+    min-height: 430px;
+    height: 58vh;
+  }
   .rdp section { padding: 60px 24px; }
   .rdp-overview-grid { grid-template-columns: 1fr; }
   .rdp-subnav { padding: 0 20px; top: 56px; }
@@ -509,5 +945,178 @@
   .rd-stats-grid { grid-template-columns: 1fr 1fr; }
   .rd-cta-buttons { flex-direction: column; align-items: center; }
   .rd-btn-primary, .rd-btn-outline { width: 100%; max-width: 300px; text-align: center; justify-content: center; }
+  /* Studio responsive */
+  .rdp-studio-viewport { height: 440px; }
+  .rdp-studio-header { padding: 0 24px; }
+  .rdp-configurator { padding: 0 24px; flex-direction: column; }
+  .rdp-cfg-panel { padding: 24px 0; }
+  .rdp-cfg-swatch { width: 40px; height: 40px; }
+  .rdp-cfg-btns { flex-direction: column; }
+  .rdp-cfg-btn { width: 100%; }
+}
+
+/* ============================================================
+   SUPERHOUSE CONFIGURATOR SECTION
+   ============================================================ */
+.rdp-superhouse {
+  background: #0a0a10;
+  padding: 120px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Subtle radial ambient glow in background */
+.rdp-superhouse::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse at center, rgba(218,18,18,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.rdp-sh-header {
+  text-align: center;
+  padding: 0 48px 72px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Canvas wrap ── */
+.rdp-sh-canvas-wrap {
+  position: relative;
+  height: 78vh;
+  min-height: 580px;
+  max-height: 860px;
+}
+
+/* ── Floating glass controls panel ── */
+.rdp-sh-controls {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 20px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;
+  z-index: 10;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+.rdp-sh-ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.rdp-sh-ctrl-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 12px;
+}
+
+.rdp-sh-swatches {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  max-width: 320px;
+  margin-bottom: 10px;
+}
+
+.rdp-sh-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-expo, cubic-bezier(0.16,1,0.3,1)),
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+  flex-shrink: 0;
+  outline: none;
+  padding: 0;
+}
+
+.rdp-sh-swatch:hover {
+  transform: scale(1.18);
+}
+
+.rdp-sh-swatch.active {
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.22);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+.rdp-sh-color-input {
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rdp-sh-selected-name {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  min-height: 18px;
+}
+
+.rdp-sh-divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.10);
+  align-self: stretch;
+  margin: 0 4px;
+}
+
+/* ── Drag hint ── */
+.rdp-sh-hint {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.30);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .rdp-superhouse { padding: 80px 0 0; }
+  .rdp-sh-header { padding: 0 24px 48px; }
+  .rdp-sh-canvas-wrap { height: 60vh; min-height: 420px; }
+
+  .rdp-sh-controls {
+    flex-direction: column;
+    gap: 20px;
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    transform: none;
+    padding: 20px 24px;
+    border-radius: 16px;
+  }
+
+  .rdp-sh-divider { width: 100%; height: 1px; align-self: auto; }
+  .rdp-sh-swatches { max-width: 100%; }
 }
 

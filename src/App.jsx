@@ -23,6 +23,7 @@ const RollerDoorsPage = lazy(() => import('./pages/RollerDoorsPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage/AboutPage'));
 const CompaniesPage = lazy(() => import('./pages/CompaniesPage/CompaniesPage'));
 const ProductsPage = lazy(() => import('./pages/ProductsPage/ProductsPage'));
+const ProductPage = lazy(() => import('./pages/ProductPage/ProductPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage/ProjectsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage/ContactPage'));
 
@@ -105,6 +106,7 @@ function App() {
         <Route path="/roller-gates" element={<RollerGatesPage />} />
         <Route path="/roller-doors" element={<RollerDoorsPage />} />
         <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/:slug" element={<ProductPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>

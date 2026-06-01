@@ -38,7 +38,7 @@
 /* ─── Front Face ─── */
 .pc-front {
   position: relative;
-  padding: 0 clamp(16px, 2.5vw, 40px);
+  padding: 0 clamp(24px, 3vw, 48px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -75,8 +75,8 @@
   letter-spacing: -3px;
   color: var(--near-black, #0A0A0F);
   position: absolute;
-  left: clamp(16px, 2.5vw, 40px);
-  top: 45%;
+  left: clamp(24px, 3vw, 48px);
+  top: 50%;
   transform: translateY(-50%) translateY(12px);
   z-index: 10;
   opacity: 0;
@@ -92,7 +92,7 @@
   transform: translateY(-50%);
 }
 
-/* ─── Image ─── */
+/* ─── Image / Deco wrap ─── */
 .pc-image-wrap {
   position: relative;
   width: 100%;
@@ -136,6 +136,99 @@
   width: 68%;
 }
 
+/* ─── API-driven deco visual (replaces product image) ─── */
+.pc-image-wrap--deco {
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 0 clamp(16px, 2.5vw, 40px) 16px;
+  align-items: flex-end;
+}
+
+.pc-deco-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--card-accent, #041562) 14%, #f4f4f6) 0%,
+    color-mix(in srgb, var(--card-accent, #041562) 6%, #eaeaee) 60%,
+    color-mix(in srgb, var(--card-accent, #041562) 20%, #e2e2e8) 100%
+  );
+  transition: background 0.6s ease;
+}
+
+.pc-card:hover .pc-deco-bg {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--card-accent, #041562) 22%, #f0f0f4) 0%,
+    color-mix(in srgb, var(--card-accent, #041562) 10%, #e4e4ea) 60%,
+    color-mix(in srgb, var(--card-accent, #041562) 28%, #d8d8e2) 100%
+  );
+}
+
+/* Decorative rings */
+.pc-deco-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--card-accent, #041562) 22%, transparent);
+  transition: opacity 0.5s ease, transform 0.6s var(--ease-out-expo);
+}
+.pc-deco-ring--1 {
+  width: 160px; height: 160px;
+  top: 50%; left: 55%;
+  transform: translate(-50%, -50%);
+}
+.pc-deco-ring--2 {
+  width: 240px; height: 240px;
+  top: 50%; left: 55%;
+  transform: translate(-50%, -50%);
+  border-color: color-mix(in srgb, var(--card-accent, #041562) 10%, transparent);
+}
+.pc-card:hover .pc-deco-ring--1 {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.pc-card:hover .pc-deco-ring--2 {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Large index number */
+.pc-deco-num {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(56px, 7vw, 88px);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--card-accent, #041562);
+  opacity: 0.12;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  user-select: none;
+}
+.pc-card:hover .pc-deco-num {
+  opacity: 0.18;
+}
+
+.pc-deco-label {
+  position: relative;
+  z-index: 2;
+  align-self: flex-end;
+  padding: 14px 18px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--card-accent, #041562);
+  opacity: 0.55;
+  transition: opacity 0.4s ease;
+}
+.pc-card:hover .pc-deco-label {
+  opacity: 0.8;
+}
+
 /* ─── Info Row ─── */
 .pc-info-row {
   display: flex;
@@ -145,7 +238,7 @@
   margin-top: auto;
   min-width: 0;
   flex-wrap: wrap;
-  padding: 0 clamp(16px, 2.5vw, 40px);
+  padding: 0 clamp(24px, 3vw, 48px);
 }
 
 .pc-name {
@@ -219,7 +312,7 @@
   font-weight: 400;
   line-height: 1.65;
   color: var(--mid-gray, #8A8F98);
-  padding: 0 clamp(16px, 2.5vw, 40px) 40px;
+  padding: 0 clamp(24px, 3vw, 48px) 40px;
   max-width: 340px;
 }
 
@@ -394,7 +487,7 @@
   .pc-description { padding: 0 8px 32px; }
   .pc-detail-inner { padding: 24px 8px 28px; }
   .pc-big-title {
-    font-size: 32px;
+    font-size: 36px;
     letter-spacing: -2px;
     left: 8px;
   }

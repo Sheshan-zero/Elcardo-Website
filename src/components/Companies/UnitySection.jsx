@@ -37,8 +37,8 @@ export default function UnitySection() {
           transition={{ duration: 1.2, ease: EASE }}
         >
           <h2 className="cns__headline">
-            One Group.<br />
-            <em>Multiple Disciplines.</em>
+            <span style={{ display: 'block' }}>One Group.</span>
+            <em style={{ display: 'block' }}>Multiple Disciplines.</em>
           </h2>
           <p className="cns__subtext">
             Connected by engineering, built for growth.

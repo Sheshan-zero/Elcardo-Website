@@ -38,7 +38,7 @@ export default function AboutVision() {
           viewport={{ once: true }}
           transition={{ duration: 1.2, delay: 0.3, ease }}
         >
-          We don't build for today. We engineer for generations — creating industries that outlast us, structures that define skylines, and solutions that power progress.
+          To be a recognized contributor and earn foreign exchange by producing every possible item locally.
         </motion.blockquote>
 
         <motion.div
@@ -49,7 +49,7 @@ export default function AboutVision() {
           transition={{ duration: 0.8, delay: 0.6, ease }}
         >
           <span>Elcardo Industries</span>
-          <span>Founding Vision</span>
+          <span>Vision</span>
         </motion.div>
       </motion.div>
     </section>

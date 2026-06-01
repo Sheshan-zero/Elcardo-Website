@@ -7,33 +7,38 @@ import './StickyCompanyStory.css';
 const COMPANY_STORIES = [
   {
     headline: 'Elcardo\nIndustries.',
-    descriptor: 'Precision access solutions.',
+    descriptor: 'ISO-certified roller doors, shutters, and gates with Australian technology.',
     kicker: 'Engineering',
   },
   {
-    headline: 'Elme\nSolar.',
-    descriptor: 'Sustainable energy solutions.',
+    headline: 'Elcardo\nElsolar.',
+    descriptor: 'Residential and commercial solar energy solutions.',
     kicker: 'Renewable Energy',
   },
   {
-    headline: 'Elme\nBattery.',
-    descriptor: 'Reliable automotive power.',
-    kicker: 'Clean Technology',
+    headline: 'Elcardo\nElwood.',
+    descriptor: 'WPC composite decking, flooring, and architectural timber alternatives.',
+    kicker: 'Wood & Decking',
   },
   {
-    headline: 'Anilad\nHotel.',
-    descriptor: 'Modern hospitality experience.',
-    kicker: 'Boutique Hotels',
+    headline: 'Elcardo\nSteel.',
+    descriptor: 'SUS 202 and 304 polished stainless steel pipes, tubes, and fabrication.',
+    kicker: 'Steel Products',
   },
   {
-    headline: 'Elcardo\nPantry.',
-    descriptor: 'Functional interior solutions.',
+    headline: 'Elcardo\nTrading.',
+    descriptor: 'Exclusive automobile accessories for luxury vehicles.',
+    kicker: 'Automotive',
+  },
+  {
+    headline: 'Kitchen &\nPantry.',
+    descriptor: 'Customized pantry cupboards and stainless steel kitchen fixtures.',
     kicker: 'Interiors',
   },
   {
-    headline: 'Elme\nCars.',
-    descriptor: 'Automotive innovation.',
-    kicker: 'Performance',
+    headline: 'Anilad\nKandy.',
+    descriptor: 'Comfortable accommodation in the hill capital of Kandy.',
+    kicker: 'Hospitality',
   },
 ];
 
@@ -100,9 +105,8 @@ export default function StickyCompanyStory() {
               </span>
               <h2 className="scs__headline">
                 {story.headline.split('\n').map((line, i) => (
-                  <span key={i}>
+                  <span key={i} style={{ display: 'block' }}>
                     {i === 1 ? <em>{line}</em> : line}
-                    {i === 0 && <br />}
                   </span>
                 ))}
               </h2>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ProductCard.css';
 
@@ -8,7 +9,6 @@ const ProductCard = ({ product, index }) => {
   const [expanded, setExpanded] = useState(false);
   const detailRef = useRef(null);
 
-  // Scroll expanded detail into view
   useEffect(() => {
     if (expanded && detailRef.current) {
       setTimeout(() => {
@@ -16,6 +16,27 @@ const ProductCard = ({ product, index }) => {
       }, 100);
     }
   }, [expanded]);
+
+  const systems = product.types || [];
+  const advantages = product.features || [];
+  const applications = product.useCases || [];
+  const img = product.image;
+  const tag = product.category || product.division;
+
+  // Format big title (split into 2 lines roughly)
+  const words = product.title.split(' ');
+  let bigTitleLines = [product.title];
+  if (words.length > 1) {
+    if (words.length === 2) {
+      bigTitleLines = words;
+    } else {
+      const half = Math.ceil(words.length / 2);
+      bigTitleLines = [
+        words.slice(0, half).join(' '),
+        words.slice(half).join(' ')
+      ];
+    }
+  }
 
   return (
     <motion.article
@@ -28,42 +49,49 @@ const ProductCard = ({ product, index }) => {
     >
       {/* ── Main card face ── */}
       <div className="pc-front" onClick={() => setExpanded(!expanded)}>
-        {/* Division tag */}
-        <span className="pc-tag">{product.division}</span>
+        <span className="pc-tag">{tag}</span>
 
-        {/* Oversized hover name */}
-        <span className="pc-big-title">{product.title}</span>
+        <div className="pc-big-title">
+          {bigTitleLines.map((line, i) => (
+            <span key={i}>
+              {line}
+              {i < bigTitleLines.length - 1 && <br />}
+            </span>
+          ))}
+        </div>
 
         {/* Product image */}
         <div className="pc-image-wrap">
-          <img src={product.image} alt={product.title} loading="lazy" className="pc-image" />
+          <img
+            className="pc-image"
+            src={img}
+            alt={product.title}
+            loading="lazy"
+            decoding="async"
+          />
           <div className="pc-ground-shadow" />
         </div>
 
-        {/* Info row */}
         <div className="pc-info-row">
           <span className="pc-name">{product.title}</span>
           <span className="pc-badge">
             <span className="pc-badge-dot" />
-            {product.types.length} Variants
+            {systems.length > 0 ? `${systems.length} Types` : 'Datasheet · PDF'}
           </span>
-          {/* Download icon */}
-          <a
-            href={product.brochureLink}
+          <div
             className="pc-download"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            aria-label="Download brochure"
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded(!expanded);
+            }}
+            aria-label={`View ${product.title}`}
           >
             <svg viewBox="0 0 20 20" fill="none">
-              <path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M5 10h10M11 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </div>
         </div>
 
-        {/* Short description */}
         <p className="pc-description">{product.description}</p>
       </div>
 
@@ -79,7 +107,6 @@ const ProductCard = ({ product, index }) => {
             transition={{ duration: 0.5, ease }}
           >
             <div className="pc-detail-inner">
-              {/* Close button */}
               <button
                 className="pc-detail-close"
                 onClick={(e) => { e.stopPropagation(); setExpanded(false); }}
@@ -90,54 +117,51 @@ const ProductCard = ({ product, index }) => {
                 </svg>
               </button>
 
-              {/* Types */}
-              <div className="pc-detail-block">
-                <span className="pc-detail-label">Types & Variants</span>
-                <div className="pc-detail-chips">
-                  {product.types.map((t) => (
-                    <span key={t} className="pc-chip">{t}</span>
-                  ))}
+              {systems.length > 0 && (
+                <div className="pc-detail-block">
+                  <span className="pc-detail-label">Types & Variants</span>
+                  <div className="pc-detail-chips">
+                    {systems.map((s, i) => (
+                      <span key={i} className="pc-chip">{s}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Features */}
-              <div className="pc-detail-block">
-                <span className="pc-detail-label">Features</span>
-                <ul className="pc-detail-features">
-                  {product.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Use Cases */}
-              <div className="pc-detail-block">
-                <span className="pc-detail-label">Applications</span>
-                <div className="pc-detail-chips">
-                  {product.useCases.map((u) => (
-                    <span key={u} className="pc-chip pc-chip--muted">{u}</span>
-                  ))}
+              {advantages.length > 0 && (
+                <div className="pc-detail-block">
+                  <span className="pc-detail-label">Key Features</span>
+                  <ul className="pc-detail-features">
+                    {advantages.map((f, i) => <li key={i}>{f}</li>)}
+                  </ul>
                 </div>
-              </div>
+              )}
 
-              {/* CTA row */}
+              {applications.length > 0 && (
+                <div className="pc-detail-block">
+                  <span className="pc-detail-label">Applications</span>
+                  <div className="pc-detail-chips">
+                    {applications.map((u, i) => (
+                      <span key={i} className="pc-chip pc-chip--muted">{u}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="pc-detail-cta">
-                <a
-                  href={product.brochureLink}
+                <Link
+                  to={`/products/${product.id}`}
                   className="pc-cta-primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 2v9M4 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  Download Brochure
-                </a>
-                <a href="/contact" className="pc-cta-secondary" onClick={(e) => e.stopPropagation()}>
-                  Request Quote →
-                </a>
+                  View Product
+                </Link>
+                <Link to="/contact" className="pc-cta-secondary" onClick={(e) => e.stopPropagation()}>
+                  Request Quote
+                </Link>
               </div>
             </div>
           </motion.div>

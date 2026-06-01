@@ -2,14 +2,12 @@
    ECOSYSTEM STORYTELLING — Scroll-Driven Premium Experience
    ============================================================ */
 
-/* ─── Outer wrapper: tall enough for all scroll phases ─── */
 .eco-story {
   position: relative;
   width: 100%;
   background: #ffffff;
 }
 
-/* ─── Sticky viewport ─── */
 .eco-story__sticky {
   position: sticky;
   top: 0;
@@ -22,7 +20,6 @@
   background: #ffffff;
 }
 
-/* ─── Canvas container ─── */
 .eco-story__canvas {
   position: relative;
   width: 100%;
@@ -31,7 +28,7 @@
   margin: 0 auto;
 }
 
-/* ─── SVG layer for connection lines ─── */
+/* ─── SVG connection lines ─── */
 .eco-story__svg {
   position: absolute;
   top: 0;
@@ -95,7 +92,7 @@
     0 0 0 1px rgba(4, 21, 98, 0.04);
 }
 
-/* ─── Node icon (index number inside circle) ─── */
+/* ─── Node icon (index number) ─── */
 .eco-node__icon {
   font-family: var(--font-body);
   font-size: 12px;
@@ -213,22 +210,12 @@
   line-height: 1.4;
 }
 
-/* ─── Neon Pulse Connection Lines ─── */
+/* ─── Pulse connection lines ─── */
 @keyframes pulseTravel {
-  0% {
-    stroke-dashoffset: 300;
-    opacity: 0;
-  }
-  8% {
-    opacity: 0.7;
-  }
-  85% {
-    opacity: 0.2;
-  }
-  100% {
-    stroke-dashoffset: -300;
-    opacity: 0;
-  }
+  0%   { stroke-dashoffset: 300; opacity: 0; }
+  8%   { opacity: 0.7; }
+  85%  { opacity: 0.2; }
+  100% { stroke-dashoffset: -300; opacity: 0; }
 }
 
 .eco-pulse-line {
@@ -251,7 +238,7 @@
 .eco-pulse-glow--delay-2 { animation-delay: 2.0s; }
 .eco-pulse-glow--delay-3 { animation-delay: 3.0s; }
 
-/* ─── Phase indicator ─── */
+/* ─── Phase indicator (right edge) ─── */
 .eco-story__phase-indicator {
   position: absolute;
   right: 36px;
@@ -277,7 +264,7 @@
   box-shadow: 0 0 10px rgba(4, 21, 98, 0.2);
 }
 
-/* ─── Section header ─── */
+/* ─── Section header (overview phase) ─── */
 .eco-story__header {
   position: absolute;
   top: 7vh;
@@ -286,7 +273,8 @@
   text-align: center;
   z-index: 10;
   pointer-events: none;
-  transition: opacity 0.7s ease;
+  width: 90%;
+  max-width: 640px;
 }
 
 .eco-story__kicker {
@@ -320,38 +308,50 @@
 
 .eco-story__title em {
   font-style: italic;
-  color: var(--mid-gray, #8A8F98);
+  color: #041562;
 }
 
 .eco-story__subtitle {
-  font-size: clamp(14px, 1.2vw, 16px);
-  color: rgba(4, 21, 98, 0.6);
+  font-size: clamp(13px, 1.1vw, 15px);
+  color: rgba(4, 21, 98, 0.55);
   line-height: 1.6;
-  max-width: 440px;
-  margin: 0 auto;
+  margin-top: 8px;
 }
 
-/* ─── Dynamic Narrative (Active Phases) ─── */
+/* ─── Editorial narrative (active phases, top center) ─── */
 .eco-story__narrative {
   position: absolute;
-  top: 10%;
+  top: 8vh;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   z-index: 15;
   pointer-events: none;
+  width: 90%;
+  max-width: 580px;
 }
 
-/* ─── Active company info overlay ─── */
+/* ─── Company info overlay (bottom center) ─── */
 .eco-story__company-info {
   position: absolute;
-  bottom: 7vh;
+  bottom: 6vh;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   z-index: 10;
   pointer-events: none;
-  white-space: nowrap;
+  width: 90%;
+  max-width: 560px;
+}
+
+.eco-story__company-sector {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-red, #DA1212);
+  margin-bottom: 6px;
 }
 
 .eco-story__company-name {
@@ -359,15 +359,16 @@
   font-size: clamp(20px, 2.2vw, 32px);
   font-weight: 400;
   color: #041562;
-  margin-bottom: 4px;
+  margin: 0 0 8px;
 }
 
-.eco-story__company-sector {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--accent-red, #DA1212);
+.eco-story__company-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(4, 21, 98, 0.6);
+  max-width: 480px;
+  margin: 0 auto;
+  white-space: normal;
 }
 
 /* ─── Responsive ─── */
@@ -388,6 +389,7 @@
   .eco-story__phase-indicator { right: 16px; }
   .eco-story__header { top: 4vh; }
   .eco-story__company-info { bottom: 4vh; }
+  .eco-story__company-desc { font-size: 12px; max-width: 340px; }
 }
 
 @media (max-width: 600px) {
@@ -400,4 +402,5 @@
   .eco-node__icon { font-size: 9px; }
   .eco-story__phase-indicator { right: 10px; gap: 8px; }
   .eco-story__phase-dot { width: 5px; height: 5px; }
+  .eco-story__company-desc { display: none; }
 }

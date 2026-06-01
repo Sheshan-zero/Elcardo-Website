@@ -6,6 +6,8 @@ import CustomCursor from '../components/CustomCursor';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { RollerDoorScene, SceneLights, colorOptions } from '../components/RollerDoors3D/RollerDoorModel';
+import SuperhouseModel, { GATE_COLORS, WALL_PRESETS } from '../components/RollerDoors3D/SuperhouseViewer';
+import { OrbitControls, Environment } from '@react-three/drei';
 import './RollerDoorsPage.css';
 import './RollerGatesPage.css'; // Import for shared Apple-style hero classes
 
@@ -256,6 +258,128 @@ function StudioSection() {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Superhouse Configurator Section ─── */
+function SuperhouseSection() {
+  const ref = useReveal();
+  const [activeDoor, setActiveDoor]   = useState(0);
+  const [activeWall, setActiveWall]   = useState(0);
+  const [customHex, setCustomHex]     = useState('#cc2929');
+
+  const door = GATE_COLORS[activeDoor];
+  const wall = WALL_PRESETS[activeWall];
+  const doorHex = door.id === 'custom' ? customHex : door.hex;
+
+  return (
+    <section id="superhouse" className="rdp-superhouse" ref={ref}>
+      {/* ── Header ── */}
+      <div className="rdp-sh-header reveal">
+        <div className="rd-label" style={{ justifyContent: 'center', color: 'rgba(255,255,255,0.5)', borderColor: 'rgba(255,255,255,0.15)' }}>
+          <span>Live Configurator</span>
+        </div>
+        <h2 className="rd-section-heading" style={{ color: '#fff', textAlign: 'center', marginTop: '16px' }}>
+          Visualise it<br />
+          <span className="rd-heading-italic">on your home.</span>
+        </h2>
+        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.55)', fontSize: '17px', lineHeight: '1.7', maxWidth: '520px', margin: '20px auto 0' }}>
+          Select your door finish and exterior wall colour. The model updates in real time.
+        </p>
+      </div>
+
+      {/* ── Canvas ── */}
+      <div className="rdp-sh-canvas-wrap">
+        <LazyCanvas
+          gl={{ antialias: true, alpha: false, toneMapping: 3 /* ACESFilmic */ }}
+          dpr={[1, 1.5]}
+          shadows
+          camera={{ position: [6, 2.5, 11], fov: 42 }}
+          style={{ background: '#0d0d14' }}
+        >
+          <ambientLight intensity={0.6} color="#d6e4f7" />
+          <directionalLight position={[8, 12, 8]} intensity={2.2} color="#fff4e0" castShadow
+            shadow-mapSize={[2048, 2048]} shadow-camera-far={60} shadow-camera-left={-15} shadow-camera-right={15} shadow-camera-top={15} shadow-camera-bottom={-15} />
+          <directionalLight position={[-6, 4, -4]} intensity={0.5} color="#c8d8f0" />
+          <hemisphereLight skyColor="#d6e4f7" groundColor="#2a2a1a" intensity={0.4} />
+          <Environment preset="city" />
+          <SuperhouseModel
+            gateColorHex={doorHex}
+            roughness={door.roughness}
+            metalness={door.metalness}
+            wallColorHex={wall.hex}
+            wallRoughness={wall.roughness}
+            wallMetalness={wall.metalness}
+          />
+          <OrbitControls
+            enablePan={false}
+            minDistance={5}
+            maxDistance={22}
+            minPolarAngle={0.15}
+            maxPolarAngle={Math.PI / 2.1}
+            autoRotate
+            autoRotateSpeed={0.35}
+            target={[0, 1.5, 0]}
+          />
+        </LazyCanvas>
+
+        {/* ── Floating Controls Panel ── */}
+        <div className="rdp-sh-controls reveal reveal-delay-2">
+
+          {/* Door Finish */}
+          <div className="rdp-sh-ctrl-group">
+            <div className="rdp-sh-ctrl-label">Door Finish</div>
+            <div className="rdp-sh-swatches">
+              {GATE_COLORS.map((c, i) => (
+                <button
+                  key={c.id}
+                  className={`rdp-sh-swatch${activeDoor === i ? ' active' : ''}`}
+                  style={{ background: c.id === 'custom' ? customHex : c.hex }}
+                  title={c.name}
+                  onClick={() => setActiveDoor(i)}
+                  aria-label={c.name}
+                />
+              ))}
+              {door.id === 'custom' && (
+                <input
+                  type="color"
+                  value={customHex}
+                  onChange={e => setCustomHex(e.target.value)}
+                  className="rdp-sh-color-input"
+                  title="Pick a custom colour"
+                />
+              )}
+            </div>
+            <div className="rdp-sh-selected-name">{door.id === 'custom' ? `Custom (${customHex})` : door.name}</div>
+          </div>
+
+          {/* Divider */}
+          <div className="rdp-sh-divider" />
+
+          {/* Wall Colour */}
+          <div className="rdp-sh-ctrl-group">
+            <div className="rdp-sh-ctrl-label">Wall Colour</div>
+            <div className="rdp-sh-swatches">
+              {WALL_PRESETS.map((w, i) => (
+                <button
+                  key={w.id}
+                  className={`rdp-sh-swatch${activeWall === i ? ' active' : ''}`}
+                  style={{ background: w.hex, boxShadow: w.id === 'white' ? 'inset 0 0 0 1px rgba(255,255,255,0.3)' : undefined }}
+                  title={w.name}
+                  onClick={() => setActiveWall(i)}
+                  aria-label={w.name}
+                />
+              ))}
+            </div>
+            <div className="rdp-sh-selected-name">{wall.name}</div>
+          </div>
+
+        </div>
+
+        {/* Drag hint */}
+        <div className="rdp-sh-hint">Drag to rotate · Scroll to zoom</div>
       </div>
     </section>
   );
@@ -563,7 +687,7 @@ export default function RollerDoorsPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const sections = ['overview', 'studio', 'finishes', 'variants', 'features', 'automation', 'specs', 'quote'];
+    const sections = ['overview', 'studio', 'superhouse', 'finishes', 'variants', 'features', 'automation', 'specs', 'quote'];
     const onScroll = () => {
       let current = '';
       sections.forEach(id => {
@@ -584,6 +708,7 @@ export default function RollerDoorsPage() {
         <HeroSection />
         <OverviewSection />
         <StudioSection />
+        <SuperhouseSection />
         <FinishesSection />
         <VariantsSection />
         <FeaturesSection />

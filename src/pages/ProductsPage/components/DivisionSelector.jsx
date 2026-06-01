@@ -30,7 +30,7 @@ const DivisionSelector = ({ onSelectDivision }) => {
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.1, ease }}
         >
-          Five Pillars of <em className="ds-title-em">Industry.</em>
+          Six Divisions of <em className="ds-title-em">Excellence.</em>
         </motion.h2>
       </div>
 

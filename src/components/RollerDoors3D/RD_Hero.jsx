@@ -1,9 +1,9 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import LazyCanvas from '../RollerGates3D/LazyCanvas';
-import RollerDoorModel from './RollerDoorModel';
+import ModernHouseModel, { ModernHouseLights } from './ModernHouseModel';
 import './RD_Hero.css';
 
 const ease = [0.16, 1, 0.3, 1];
@@ -74,14 +74,11 @@ const RD_Hero = () => {
             gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
             shadows
             dpr={[1, 1.5]}
+            camera={{ position: [0, 2.7, 10.6], fov: 38 }}
             style={{ background: 'transparent' }}
           >
-            <RollerDoorModel
-              state="hero"
-              colorHex="#E8E4DE"
-              finish="metallic"
-              openProgress={0}
-            />
+            <ModernHouseLights />
+            <ModernHouseModel scale={0.92} />
           </Canvas>
         </LazyCanvas>
       </div>

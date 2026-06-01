@@ -21,109 +21,370 @@
   text-align: center;
 }
 
-/* ===== SCROLLING LOGO TICKERS ===== */
-.clients-tickers {
-  margin-top: 64px;
+/* ===== LOGO BELT — dark immersive section ===== */
+.cls-belt {
+  position: relative;
+  background: #07070e;
+  margin-top: 72px;
+  padding: 64px 0 72px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 0;
+  gap: 18px;
 }
 
-.ticker-row {
-  overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+/* Brand red radial glow */
+.cls-belt-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 500px;
+  background: radial-gradient(ellipse at center, rgba(218, 18, 18, 0.08) 0%, transparent 65%);
+  pointer-events: none;
 }
 
-.ticker-track {
-  display: flex;
-  width: max-content;
-  gap: 16px;
-}
-
-.ticker-left {
-  animation: tickerScrollLeft 35s linear infinite;
-}
-
-.ticker-right {
-  animation: tickerScrollRight 40s linear infinite;
-}
-
-@keyframes tickerScrollLeft {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@keyframes tickerScrollRight {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
-
-.ticker-logo {
-  flex-shrink: 0;
-  padding: 18px 36px;
-  background: var(--off-white);
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.4s var(--ease-out-expo);
-  position: relative;
+/* Stats strip above the tickers */
+.cls-belt-stats {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 140px;
-  min-height: 60px;
+  gap: 40px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 2;
 }
 
-.ticker-logo::before {
+.cls-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.cls-stat-num {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.cls-stat-plus {
+  font-size: 0.65em;
+  color: var(--accent-red, #DA1212);
+  vertical-align: super;
+}
+
+.cls-stat-lbl {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.cls-stat-div {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Left / right edge fades via pseudo-elements so rows can overflow vertically */
+.cls-belt::before,
+.cls-belt::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 160px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.cls-belt::before {
+  left: 0;
+  background: linear-gradient(to right, #07070e, transparent);
+}
+
+.cls-belt::after {
+  right: 0;
+  background: linear-gradient(to left, #07070e, transparent);
+}
+
+/* Individual marquee row */
+.cls-row {
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  padding: 14px 0;
+}
+
+.cls-track {
+  display: flex;
+  width: max-content;
+  gap: 16px;
+  will-change: transform;
+}
+
+.cls-track--left {
+  animation: clsScrollLeft linear infinite;
+}
+
+.cls-track--right {
+  animation: clsScrollRight linear infinite;
+}
+
+@keyframes clsScrollLeft {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes clsScrollRight {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* ===== Floating logo card ===== */
+.cls-card {
+  flex-shrink: 0;
+}
+
+/* Float animation layer — translateY only, no transform conflict with Framer Motion */
+.cls-card-float {
+  animation: clsFloat var(--float-dur, 4s) ease-in-out infinite var(--float-delay, 0s);
+}
+
+@keyframes clsFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(calc(var(--float-amp, 8px) * -1)); }
+}
+
+/* Glass card shell — Framer Motion controls scale + bg + border via variants */
+.cls-card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  gap: 0;
+}
+
+/* Red glow sweep on hover */
+.cls-card-inner::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(218, 18, 18, 0.05), rgba(4, 21, 98, 0.05));
+  background: radial-gradient(circle at 50% 0%, rgba(218, 18, 18, 0.07) 0%, transparent 70%);
   opacity: 0;
-  transition: opacity 0.4s;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  border-radius: inherit;
 }
 
-.ticker-logo:hover::before {
+.cls-card-inner:hover::after {
   opacity: 1;
 }
 
-.ticker-logo:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  border-color: rgba(218, 18, 18, 0.15);
-}
-
-/* Logo images — grayscale by default, color on hover */
-.ticker-logo-img {
-  height: 28px;
+.cls-card-img {
   width: auto;
-  max-width: 100px;
+  max-width: 110px;
   object-fit: contain;
-  filter: grayscale(100%) opacity(0.5);
-  transition: filter 0.4s var(--ease-out-expo);
+  display: block;
+  filter: grayscale(0.15);
+  transition: filter 0.35s ease;
 }
 
-.ticker-logo:hover .ticker-logo-img {
-  filter: grayscale(0%) opacity(1);
+.cls-card-inner:hover .cls-card-img {
+  filter: none;
 }
 
-/* Fallback text for broken logos */
-.ticker-logo-fallback {
-  font-size: 11px;
+/* Hover detail overlay — slides up from bottom of card */
+.cls-card-detail {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px;
+  background: linear-gradient(to top, rgba(7, 7, 14, 0.93) 0%, rgba(7, 7, 14, 0.6) 70%, transparent 100%);
+  border-radius: 0 0 15px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.cls-detail-sector {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 2.5px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(4, 21, 98, 0.25);
+  color: var(--accent-red, #DA1212);
+}
+
+.cls-detail-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.cls-detail-tag {
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px 6px;
   white-space: nowrap;
 }
 
-.ticker-logo:hover .ticker-logo-fallback {
-  color: rgba(4, 21, 98, 0.65);
+@media (prefers-reduced-motion: reduce) {
+  .cls-track      { animation: none; }
+  .cls-card-float { animation: none; }
 }
 
-/* ===== TESTIMONIALS — PREMIUM DESIGN ===== */
+/* ===== GOOGLE REVIEWS ===== */
+.google-reviews-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.google-reviews-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+  margin-bottom: 8px;
+}
+
+.google-reviews-title {
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.05;
+  color: var(--primary-navy);
+  margin: 0;
+}
+
+.google-reviews-place {
+  margin: 10px 0 0;
+  color: var(--mid-gray);
+  font-size: 13px;
+}
+
+.google-reviews-link {
+  color: var(--primary-navy);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(4, 21, 98, 0.14);
+  border-radius: 999px;
+  padding: 10px 16px;
+  white-space: nowrap;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.google-reviews-link:hover {
+  border-color: rgba(218, 18, 18, 0.28);
+  color: var(--accent-red);
+  transform: translateY(-2px);
+}
+
+.google-reviews-empty {
+  margin-top: 20px;
+  padding: 22px 24px;
+  border: 1px dashed rgba(4, 21, 98, 0.22);
+  border-radius: 12px;
+  background: var(--off-white);
+  color: var(--dark-gray);
+}
+
+.google-reviews-empty p {
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: var(--primary-navy);
+}
+
+.google-reviews-empty span {
+  color: var(--mid-gray);
+  font-size: 13px;
+}
+
+.google-reviews-empty-link {
+  display: inline-flex;
+  margin-top: 14px;
+  color: var(--accent-red);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.google-rating-card {
+  margin-top: 20px;
+  padding: 28px;
+  border: 1px solid rgba(4, 21, 98, 0.1);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(218, 18, 18, 0.04), rgba(4, 21, 98, 0.04)),
+    var(--off-white);
+}
+
+.google-rating-main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.google-rating-score {
+  font-size: clamp(44px, 7vw, 72px);
+  line-height: 0.9;
+  font-weight: 800;
+  color: var(--primary-navy);
+  letter-spacing: -1px;
+}
+
+.google-rating-main p,
+.google-rating-copy p,
+.google-rating-copy span {
+  margin: 0;
+}
+
+.google-rating-main p {
+  color: var(--mid-gray);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.google-rating-copy {
+  margin-top: 22px;
+  max-width: 620px;
+}
+
+.google-rating-copy p {
+  color: var(--primary-navy);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.google-rating-copy span {
+  color: var(--mid-gray);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ===== TESTIMONIALS - PREMIUM DESIGN ===== */
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -245,6 +506,13 @@
   font-weight: 700;
   color: var(--white);
   letter-spacing: 0.5px;
+  overflow: hidden;
+}
+
+.testimonial-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .testimonial-name {
@@ -260,6 +528,44 @@
   margin-top: 2px;
 }
 
+.testimonial-card-loading {
+  min-height: 280px;
+}
+
+.testimonial-skeleton {
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(4, 21, 98, 0.06), rgba(4, 21, 98, 0.12), rgba(4, 21, 98, 0.06));
+  background-size: 200% 100%;
+  animation: reviewSkeleton 1.4s ease-in-out infinite;
+}
+
+.testimonial-skeleton-stars {
+  width: 100px;
+  height: 16px;
+  margin-bottom: 24px;
+}
+
+.testimonial-skeleton-line {
+  width: 100%;
+  height: 14px;
+  margin-bottom: 14px;
+}
+
+.testimonial-skeleton-line.short {
+  width: 72%;
+  margin-bottom: 44px;
+}
+
+.testimonial-skeleton-author {
+  width: 160px;
+  height: 42px;
+}
+
+@keyframes reviewSkeleton {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .testimonials-grid {
@@ -268,19 +574,33 @@
 }
 
 @media (max-width: 768px) {
+  .google-reviews-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .google-reviews-link {
+    white-space: normal;
+  }
   .testimonials-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  .ticker-logo {
-    padding: 14px 24px;
-    min-width: 110px;
-  }
-  .ticker-logo-img {
-    height: 22px;
-  }
   .testimonial-card {
     padding: 32px 24px 24px;
+  }
+  .cls-belt-stats {
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+  .cls-card-inner {
+    padding: 12px 20px;
+  }
+  .cls-stat-div {
+    height: 28px;
+  }
+  .cls-belt::before,
+  .cls-belt::after {
+    width: 80px;
   }
 }
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FILTER_TABS } from '../../../data/productsData';
 import './ProductFilter.css';
 
 const ease = [0.16, 1, 0.3, 1];
 
-const ProductFilter = ({ activeFilter, onFilterChange }) => {
+const ProductFilter = ({ activeFilter, onFilterChange, tabs = [{id: 'all', label: 'All'}] }) => {
   return (
     <motion.div
       className="pf-bar"
@@ -17,7 +16,7 @@ const ProductFilter = ({ activeFilter, onFilterChange }) => {
       <div className="pf-inner">
         <span className="pf-prefix">Filter</span>
         <div className="pf-tabs">
-          {FILTER_TABS.map((tab) => (
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               className={`pf-tab ${activeFilter === tab.id ? 'pf-tab--active' : ''}`}

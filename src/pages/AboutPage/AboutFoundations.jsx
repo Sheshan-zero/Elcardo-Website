@@ -15,7 +15,7 @@ const foundations = [
   },
   {
     word: 'Innovation',
-    desc: 'We challenge convention. From roller gates to automotive design, we find better ways forward.',
+    desc: 'We challenge convention. From roller doors to stainless steel and solar, we find better ways to manufacture locally.',
   },
   {
     word: 'Trust',

@@ -13,13 +13,13 @@ import imgWood from '../assets/fp_wood.png';
 
 const products = [
   {
-    name: 'Roller Gates',
-    tag: 'Roller Gates',
-    bigTitle: 'Roller\nGates',
+    name: 'Roller Doors',
+    tag: 'Roller Doors',
+    bigTitle: 'Roller\nDoors',
     image: imgRollerGate,
     brochure: '/brochures/roller-gates-brochure.pdf',
     description:
-      'Precision-engineered automatic roller gates for residential, commercial, and industrial applications. Built for security, durability, and silent operation.',
+      'Australian-technology roller doors for domestic and industrial use, with quiet operation, auto-reverse safety, and manual operation during power failures.',
   },
   {
     name: 'Solar Systems',
@@ -31,22 +31,22 @@ const products = [
       'High-performance solar panel systems for rooftop and ground-mount installations. Reduce energy costs by up to 65% with intelligent grid solutions.',
   },
   {
-    name: 'Battery Solutions',
-    tag: 'Battery',
-    bigTitle: 'Battery\nSolutions',
+    name: 'Kitchen & Pantry Systems',
+    tag: 'Pantry',
+    bigTitle: 'Kitchen &\nPantry',
     image: imgBattery,
-    brochure: '/brochures/battery-brochure.pdf',
+    brochure: '/brochures/pantry-brochure.pdf',
     description:
-      'Industrial-grade lithium battery storage for commercial and residential use. Modular, scalable, and engineered for long cycle life.',
+      'Customized stainless steel and ECO board pantry systems with granite, glass, exhaust canopy, and kitchen table options.',
   },
   {
-    name: 'Steel & Fabrication',
-    tag: 'Steel',
-    bigTitle: 'Steel &\nFabrication',
+    name: 'SS Fabrication',
+    tag: 'Fabrication',
+    bigTitle: 'SS\nFabrication',
     image: imgSteel,
-    brochure: '/brochures/steel-brochure.pdf',
+    brochure: '/brochures/fabrication-brochure.pdf',
     description:
-      'Custom steel fabrication and structural engineering. From architectural staircases to industrial frameworks — precision-cut and welded in-house.',
+      'Precision stainless steel fabrication and structural engineering. From architectural staircases to industrial frameworks — cut and welded in-house.',
   },
   {
     name: 'Roofing Systems',
@@ -58,13 +58,13 @@ const products = [
       'Premium metal roofing profiles and installation systems. Standing seam, corrugated, and custom profiles built for tropical and coastal environments.',
   },
   {
-    name: 'Wood Decking',
+    name: 'WPC Decking',
     tag: 'Decking',
-    bigTitle: 'Wood\nDecking',
+    bigTitle: 'WPC\nDecking',
     image: imgWood,
-    brochure: '/brochures/wood-brochure.pdf',
+    brochure: '/brochures/wpc-brochure.pdf',
     description:
-      'High-quality natural and composite wood decking for poolside, terrace, and balcony applications. Weather-resistant with rich grain finishes.',
+      'Premium wood-plastic composite decking for poolside, terrace, and balcony applications. UV-stabilized, moisture-resistant, and low-maintenance.',
   },
 ];
 

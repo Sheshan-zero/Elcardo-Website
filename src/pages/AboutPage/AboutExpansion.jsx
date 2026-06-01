@@ -5,8 +5,8 @@ const ease = [0.16, 1, 0.3, 1];
 
 const sectors = [
   {
-    name: 'Roller Gates',
-    desc: 'Automated security solutions for commercial and industrial spaces.',
+    name: 'Roller Doors & Shutters',
+    desc: 'Australian-technology access systems for homes, storefronts, and industrial spaces.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -15,8 +15,8 @@ const sectors = [
     ),
   },
   {
-    name: 'Battery Technology',
-    desc: 'High-performance energy storage for automotive and deep-cycle applications.',
+    name: 'Elcardo Elsolar',
+    desc: 'Solar systems that reduce utility costs and support long-term energy savings.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="6" y="4" width="12" height="18" rx="2" />
@@ -26,8 +26,8 @@ const sectors = [
     ),
   },
   {
-    name: 'Anilad Hotel',
-    desc: 'Premium hospitality rooted in elegance and sustainability.',
+    name: 'Elcardo Hotels – Anilad Kandy',
+    desc: 'Comfortable accommodation in the picturesque hill capital of Kandy for leisure and business travellers.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 21h18M5 21V7l7-4 7 4v14" />
@@ -47,8 +47,8 @@ const sectors = [
     ),
   },
   {
-    name: 'Elme Cars',
-    desc: 'Bespoke vehicle modification and specialized automotive engineering.',
+    name: 'Elcardo Trading',
+    desc: 'Exclusive automobile accessories for luxury and four-wheel-drive vehicles.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 17h14M7 17l1-6h8l1 6" />
@@ -60,11 +60,22 @@ const sectors = [
     ),
   },
   {
-    name: 'Steel & Fabrication',
-    desc: 'Industrial fabrication, structural steel, and precision metalwork.',
+    name: 'Elcardo Steel & Fabrication',
+    desc: 'SUS 202 and 304 polished stainless steel pipes, tubes, and custom fabrication for construction and commercial interiors.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83-2.83l6.73-6.73A6 6 0 017.56 2.7l3.77 3.77" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Elcardo Elwood',
+    desc: 'WPC wood-plastic composite decking, staircases, handrails, and flooring — a sustainable timber alternative that looks and feels like natural wood.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="3" rx="1" />
+        <rect x="3" y="16" width="18" height="3" rx="1" />
+        <rect x="3" y="6" width="18" height="3" rx="1" />
       </svg>
     ),
   },
@@ -90,7 +101,7 @@ export default function AboutExpansion() {
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.1, ease }}
         >
-          Six Sectors. <em>One Vision.</em>
+          Seven Subsidiaries. <em>One Vision.</em>
         </motion.h2>
         <motion.p
           className="about-body"

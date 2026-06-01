@@ -8,10 +8,11 @@ const EASE = [0.16, 1, 0.3, 1];
 const PANEL_DATA = [
   { descriptor: 'Access Systems', accent: 'Engineering' },
   { descriptor: 'Energy Solutions', accent: 'Solar' },
-  { descriptor: 'Energy Infrastructure', accent: 'Battery' },
+  { descriptor: 'Wood & Flooring', accent: 'Materials' },
+  { descriptor: 'Steel Products', accent: 'Manufacturing' },
+  { descriptor: 'Automobile Accessories', accent: 'Automotive' },
+  { descriptor: 'Kitchen & Pantry', accent: 'Interiors' },
   { descriptor: 'Hospitality', accent: 'Experience' },
-  { descriptor: 'Interiors', accent: 'Functional' },
-  { descriptor: 'Automotive', accent: 'Performance' },
 ];
 
 const SECTION_HEIGHT_VH = 400;

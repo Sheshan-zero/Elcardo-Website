@@ -31,8 +31,8 @@ function AnimatedCounter({ target, suffix = '', duration = 2000 }) {
 }
 
 const stats = [
-  { value: 10, suffix: '+', label: 'Years of industry\nexperience' },
-  { value: 5, suffix: '', label: 'Distinct business\ndivisions' },
+  { value: 35, suffix: '+', label: 'Years of industry\nexperience' },
+  { value: 7, suffix: '', label: 'Distinct business\ndivisions' },
   { value: 200, suffix: '+', label: 'Projects\ndelivered' },
   { value: 500, suffix: '+', label: 'Satisfied\nclients' },
 ];
@@ -54,16 +54,12 @@ export default function About() {
             <span className="label-text">Who We Are</span>
           </div>
           <h2 className="about-headline display-md">
-            We build companies that<br />
-            power industries — and&nbsp;the<br />
-            people behind them.
+            One of Sri Lanka's premier<br />
+            engineering companies — building<br />
+            every possible item locally.
           </h2>
           <p className="about-body body-lg">
-            Elcardo Industries is a Sri Lankan conglomerate operating across five
-            distinct sectors: industrial engineering, renewable solar energy,
-            advanced battery technology, luxury hospitality, and specialized
-            automotive solutions. Each division is a market leader, unified
-            under one strategic vision.
+            Elcardo Industries is a diversified Sri Lankan industrial group registered in 1985 and ISO 9001:2015 certified. We operate across roller doors, shutters, gates, solar energy, stainless steel, pantry cupboards, WPC decking, automobile accessories, and hospitality — unified by local manufacturing, quality, and island-wide service.
           </p>
         </motion.div>
 

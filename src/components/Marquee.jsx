@@ -3,9 +3,10 @@ import './Marquee.css';
 const items = [
   'Engineering Excellence',
   'Renewable Innovation',
-  'Advanced Battery Technology',
-  'Luxury Hospitality',
-  'Automotive Precision',
+  'Roller Doors & Shutters',
+  'Steel & Roofing Products',
+  'Anilad Kandy',
+  'Automobile Accessories',
   'Built in Sri Lanka',
 ];
 

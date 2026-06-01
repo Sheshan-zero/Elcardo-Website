@@ -26,10 +26,10 @@ function Counter({ from, to, suffix = '', duration = 2.5 }) {
 }
 
 const stats = [
-  { from: 0, to: 10, suffix: '+', label: 'Years' },
-  { from: 0, to: 6, suffix: '', label: 'Divisions' },
-  { from: 0, to: 200, suffix: '+', label: 'Projects' },
-  { from: 0, to: 500, suffix: '+', label: 'Clients' },
+  { from: 0, to: 35, suffix: '+', label: 'Years' },
+  { from: 0, to: 7, suffix: '', label: 'Subsidiaries' },
+  { from: 0, to: 12, suffix: '', label: 'Locations' },
+  { from: 0, to: 17, suffix: '+', label: 'Product Lines' },
 ];
 
 export default function AboutToday() {
@@ -64,7 +64,7 @@ export default function AboutToday() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease }}
           >
-            From roller gates to hospitality, from battery technology to automotive engineering — Elcardo represents multi-sector capability driven by a singular commitment to excellence.
+            From roller doors and shutters to solar, steel, pantry cupboards, WPC decking, automobile accessories, and hospitality — Elcardo represents multi-sector capability driven by the vision to produce every possible item locally.
           </motion.p>
         </div>
 

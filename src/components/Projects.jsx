@@ -1,17 +1,17 @@
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
-import imgSolar from '../assets/company_solar.png';
+import { Link } from 'react-router-dom';
 import imgRollerGates from '../assets/company_roller_gates.png';
 import imgAutomotive from '../assets/company_automotive.png';
 import imgHotel from '../assets/company_hotel.png';
-import imgBattery from '../assets/company_battery.png';
+import imgPantry from '../assets/company_pantry.png';
 import imgSolarRoof from '../assets/project_solar_roof.png';
 import './Projects.css';
 
 const projects = [
   {
     img: imgSolarRoof,
-    category: 'Elcardo Solar • 2024',
+    category: 'Elcardo Elsolar',
     title: '150kW Commercial Rooftop Solar System',
     location: 'Colombo, Western Province',
     label: 'Solar Installation',
@@ -19,33 +19,35 @@ const projects = [
   },
   {
     img: imgRollerGates,
-    category: 'Roller Gates • 2024',
-    title: 'High-Security Industrial Gate System',
+    category: 'Elcardo Industries',
+    title: 'High-Security Roller Door & Gate System',
     location: 'Katunayake Free Trade Zone',
     label: 'Gate Automation',
   },
   {
     img: imgAutomotive,
-    category: 'Automotive • 2023',
+    category: 'Elcardo Trading',
     title: 'Commercial Fleet — 20 Custom Builds',
     location: 'Kandy, Central Province',
     label: 'Fleet Build',
   },
   {
     img: imgHotel,
-    category: 'Anilad Hotels • 2023',
+    category: 'Anilad Kandy',
     title: 'Beachfront Boutique Hotel',
     location: 'Negombo, Western Province',
     label: 'Hospitality',
   },
   {
-    img: imgBattery,
-    category: 'Elme Battery • 2023',
-    title: '500kWh Industrial Storage System',
-    location: 'Galle, Southern Province',
-    label: 'Battery Storage',
+    img: imgPantry,
+    category: 'Elcardo Pantry',
+    title: 'Customized Kitchen & Pantry System',
+    location: 'Sri Lanka',
+    label: 'Interiors',
   },
 ];
+
+const MotionLink = motion.create(Link);
 
 export default function Projects() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -67,8 +69,8 @@ export default function Projects() {
             <span className="text-italic">Real impact.</span>
           </h2>
         </motion.div>
-        <motion.a
-          href="#"
+        <MotionLink
+          to="/projects"
           className="projects-view-all"
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -76,7 +78,7 @@ export default function Projects() {
           data-cursor="expand"
         >
           All Projects →
-        </motion.a>
+        </MotionLink>
       </div>
 
       <motion.div

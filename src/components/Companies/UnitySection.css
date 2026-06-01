@@ -48,6 +48,7 @@
 .cns__headline em {
   font-style: italic;
   color: var(--mid-gray);
+  display: block;
 }
 
 .cns__subtext {
